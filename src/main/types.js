@@ -494,6 +494,9 @@ export class CallInfo {
         if (queueTimestamp) {
             Validator.validateDate(queueTimestamp);
         }
+        if (queueId) {
+            Validator.validateString(queueId);
+        }
         Validator.validateBoolean(isRecordingPaused);
         Validator.validateBoolean(isMuted);
         Validator.validateBoolean(isSoftphoneCall);
