@@ -460,6 +460,8 @@ export class CallInfo {
      * @param {boolean} param.isMuted
      * @param {string} [param.initialCallId]
      * @param {Date} [param.callStateTimestamp]
+     * @param {string} [param.queueId]
+     * @param {Date} [param.queueTimestamp]
      * @param {boolean} [param.isSoftphoneCall] - is it a softphone call 
      * @param {boolean} [param.acceptEnabled]
      * @param {boolean} [param.declineEnabled]
@@ -481,13 +483,16 @@ export class CallInfo {
      * @param {boolean} [param.showSwapButton]
      * @param {("ALWAYS"|"NEVER"|"ALWAYS_EXCEPT_ON_HOLD")} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call. 
      */
-    constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, isSoftphoneCall = true, 
+    constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
         showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS }) {
         if (callStateTimestamp) {
             Validator.validateDate(callStateTimestamp);
+        }
+        if (queueTimestamp) {
+            Validator.validateDate(queueTimestamp);
         }
         Validator.validateBoolean(isRecordingPaused);
         Validator.validateBoolean(isMuted);
@@ -517,6 +522,8 @@ export class CallInfo {
         this.isMuted = isMuted;
         this.isOnHold = isOnHold;
         this.initialCallId = initialCallId;
+        this.queueId = queueId;
+        this.queueTimestamp = queueTimestamp;
         this.isSoftphoneCall = isSoftphoneCall;
         this.acceptEnabled = acceptEnabled;
         this.declineEnabled = declineEnabled;
