@@ -477,21 +477,24 @@ describe('Types validation tests', () => {
             expect(callInfo.showRecordButton).toEqual(true);
             expect(callInfo.showAddCallerButton).toEqual(true);
             expect(callInfo.showMergeButton).toEqual(true);
+            expect(callInfo.queueName).toEqual(null);
             expect(callInfo.queueId).toEqual(null);
             expect(callInfo.queueTimestamp).toEqual(null);
         });
 
         it('Should create CallInfo object', () => {
             const callStateTimestamp = new Date();
+            const queueName = "queueName";
             const queueId = "queueId";
             const queueTimestamp = new Date();
             const isOnHold = false;
             let callInfo;
             expect(() => {
-                callInfo = new CallInfo({ callStateTimestamp, isOnHold, queueId, queueTimestamp });
+                callInfo = new CallInfo({ callStateTimestamp, isOnHold, queueName, queueId, queueTimestamp });
             }).not.toThrowError();
             expect(callInfo.callStateTimestamp).toEqual(callStateTimestamp);
             expect(callInfo.isOnHold).toEqual(isOnHold);
+            expect(callInfo.queueName).toEqual(queueName);
             expect(callInfo.queueId).toEqual(queueId);
             expect(callInfo.queueTimestamp).toEqual(queueTimestamp);
         });
