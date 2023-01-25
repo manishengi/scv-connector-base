@@ -485,6 +485,7 @@ export class CallInfo {
      * @param {boolean} param.isMuted
      * @param {string} [param.initialCallId]
      * @param {Date} [param.callStateTimestamp]
+     * @param {string} [param.queueName]
      * @param {string} [param.queueId]
      * @param {Date} [param.queueTimestamp]
      * @param {boolean} [param.isSoftphoneCall] - is it a softphone call 
@@ -508,7 +509,7 @@ export class CallInfo {
      * @param {boolean} [param.showSwapButton]
      * @param {("ALWAYS"|"NEVER"|"ALWAYS_EXCEPT_ON_HOLD")} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call. 
      */
-    constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueTimestamp = null, isSoftphoneCall = true, 
+    constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueName = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
@@ -521,6 +522,9 @@ export class CallInfo {
         }
         if (queueId) {
             Validator.validateString(queueId);
+        }
+        if (queueName) {
+            Validator.validateString(queueName);
         }
         Validator.validateBoolean(isRecordingPaused);
         Validator.validateBoolean(isMuted);
@@ -550,6 +554,7 @@ export class CallInfo {
         this.isMuted = isMuted;
         this.isOnHold = isOnHold;
         this.initialCallId = initialCallId;
+        this.queueName = queueName;
         this.queueId = queueId;
         this.queueTimestamp = queueTimestamp;
         this.isSoftphoneCall = isSoftphoneCall;
