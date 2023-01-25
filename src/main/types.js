@@ -101,6 +101,31 @@ export const Constants = {
 };
 
 /**
+ * Class representing a Custom Error
+ */
+export class CustomError extends Error {
+    /**
+     * Create Phone
+     * @param {object} param
+     * @param {String} param.labelName
+     * @param {String} param.namespace
+     * @param {String} [param.message]
+     */
+    constructor({ labelName, namespace, message }) {
+        super(message);
+
+        Validator.validateString(labelName);
+        Validator.validateString(namespace);
+        if (message) {
+            Validator.validateString(message);
+        }
+        this.labelName = labelName;
+        this.namespace = namespace;
+        this.message = message;
+    }
+}
+
+/**
  * Class representing a Phone type
  */
  export class Phone {
