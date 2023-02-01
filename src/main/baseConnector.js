@@ -10,8 +10,8 @@ import constants from './constants.js';
 import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTSWITH, CONNECTOR_CONFIG_EXCEPTION_FIELDS } from './constants.js';
 import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
-    VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, CapabilitiesResult,
-    AgentVendorStatusInfo, StateChangeResult, CustomError} from './types';
+    VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
+    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
