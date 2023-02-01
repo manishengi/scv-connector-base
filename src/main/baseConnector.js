@@ -122,9 +122,11 @@ function dispatchCustomError(error, eventType) {
     // eslint-disable-next-line no-console
     console.error(`SCV dispatched custom error for eventType ${eventType}`, error);
     dispatchEvent(constants.EVENT_TYPE.ERROR, {
-        labelName: error.labelName,
-        namespace: error.namespace,
-        message: error.message
+        customError: {
+            labelName: error.labelName,
+            namespace: error.namespace,
+            message: error.message
+        }
     }, false);
     dispatchEventLog(eventType, { errorType: constants.ERROR_TYPE.CUSTOM_ERROR, error }, true);
 }

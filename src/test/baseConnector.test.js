@@ -63,9 +63,11 @@ const dummyLabelName = 'dummyLabelName';
 const dummyNamespace = 'dummyNamespace';
 const dummyMessage = 'dummyMessage';
 const dummyCustomErrorPayload = {
-    labelName: dummyLabelName,
-    namespace: dummyNamespace,
-    message: dummyMessage
+    customError: {
+        labelName: dummyLabelName,
+        namespace: dummyNamespace,
+        message: dummyMessage
+    }
 };
 const initResult_showLogin = new InitResult({ showLogin: true, loginFrameHeight });
 const initResult_connectorReady = new InitResult({ showLogin: false, loginFrameHeight });
