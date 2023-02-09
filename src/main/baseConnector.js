@@ -176,7 +176,8 @@ async function setConnectorReady() {
                 [constants.CAPABILITIES_TYPE.MOS] : capabilitiesResult.supportsMos,
                 [constants.CAPABILITIES_TYPE.BLIND_TRANSFER] : capabilitiesResult.hasBlindTransfer,
                 [constants.CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : capabilitiesResult.hasTransferToOmniFlow,
-                [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange
+                [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange,
+                [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBookSupport
             },
             callInProgress: activeCalls.length > 0 ? activeCalls[0] : null
         }
