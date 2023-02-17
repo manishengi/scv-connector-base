@@ -53,6 +53,7 @@ export namespace Constants {
         OUTBOUND: string;
         CALLBACK: string;
         ADD_PARTICIPANT: string;
+        INTERNAL_CALL: string;
     };
     const DIALER_TYPE: {
         OUTBOUND_PREVIEW: string;
