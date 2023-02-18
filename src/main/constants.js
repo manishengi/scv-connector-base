@@ -149,7 +149,8 @@ export default {
         OUTBOUND: 'Outbound',
         CALLBACK: 'Callback',
         ADD_PARTICIPANT: 'AddParticipant',
-        TRANSFER:'Transfer'
+        TRANSFER:'Transfer',
+        INTERNAL_CALL: 'InternalCall'
     },
     DIALER_TYPE: {
         OUTBOUND_PREVIEW: 'OutboundPreview',
