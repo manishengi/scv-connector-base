@@ -458,7 +458,7 @@ async function channelMessageHandler(message) {
         break;
         case constants.MESSAGE_TYPE.ADD_PARTICIPANT:
             try {
-                const payload = await vendorConnector.addParticipant(new Contact(message.data.contact), message.data.call, message.data.isBlindTransfer);
+                const payload = await vendorConnector.addParticipant(new Contact(message.data.contact), message.data.call, message.data.isBlindTransfer, message.data.callAttributes);
                 publishEvent({ eventType: constants.EVENT_TYPE.PARTICIPANT_ADDED, payload });
                 if (message.data.isBlindTransfer) {
                     dispatchEvent(constants.EVENT_TYPE.HANGUP, message.data.call);
