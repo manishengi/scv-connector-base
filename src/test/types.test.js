@@ -18,7 +18,7 @@ jest.mock('../main/logger');
 describe('Types validation tests', () => {
     const invalid_argument = /^Invalid argument/;
     const dummyPhoneCall = new PhoneCall({ callId: 'callId', callType: Constants.CALL_TYPE.INBOUND, state: 'state', callAttributes: {}, phoneNumber: '100'});
-    const dummyCallInfo = new CallInfo({ isOnHold: false, showMuteButton: true, showAddBlindTransferButton: true, showRecordButton: true, showAddCallerButton: true, showMergeButton: true, showSwapButton: true, callAttributes: "\"SourceType\": \"Service\"" });
+    const dummyCallInfo = new CallInfo({ isOnHold: false, showMuteButton: true, showAddBlindTransferButton: true, showRecordButton: true, showAddCallerButton: true, showMergeButton: true, showSwapButton: true, additionalFields: "\"SourceType\": \"Service\"" });
 
     describe('CustomError tests', () => {
         const dummyLabelName = 'dummyLabelName';

@@ -511,13 +511,13 @@ export class CallInfo {
      * @param {boolean} [param.showMergeButton]
      * @param {boolean} [param.showSwapButton]
      * @param {("ALWAYS"|"NEVER"|"ALWAYS_EXCEPT_ON_HOLD")} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call.
-     * @param {String} [param.callAttributes] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
+     * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
      */
     constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueName = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
-        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, callAttributes = null }) {
+        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null }) {
         if (callStateTimestamp) {
             Validator.validateDate(callStateTimestamp);
         }
@@ -553,8 +553,8 @@ export class CallInfo {
             Validator.validateBoolean(isExternalTransfer);
         }
         Validator.validateEnum(removeParticipantVariant, Object.values(constants.REMOVE_PARTICIPANT_VARIANT));
-        if (callAttributes) {
-            Validator.validateString(callAttributes);
+        if (additionalFields) {
+            Validator.validateString(additionalFields);
         }
         this.callStateTimestamp = callStateTimestamp;
         this.isRecordingPaused = isRecordingPaused;
@@ -584,7 +584,7 @@ export class CallInfo {
         this.showAddBlindTransferButton = showAddBlindTransferButton;
         this.showMergeButton = showMergeButton;
         this.showSwapButton = showSwapButton;
-        this.callAttributes = callAttributes;
+        this.additionalFields = additionalFields;
     }
 }
 
@@ -917,11 +917,12 @@ export class VendorConnector {
 
     /**
      * Add participant to call
-     * @param {Contact} contact
-     * @param {PhoneCall} call
+     * @param {Contact} contact: The transfer target
+     * @param {PhoneCall} parentCall: The call to which a participant will be added
+     * @param {Boolean} isBlindTransfer: True if blind transfering a call and hanging up upon transfer
      * @returns {Promise<ParticipantResult>} 
      */
-    addParticipant(contact, call) {
+    addParticipant(contact, parentCall, isBlindTransfer) {
         throw new Error('Not implemented');
     }
 
