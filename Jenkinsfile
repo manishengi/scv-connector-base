@@ -17,7 +17,18 @@ def complianceFlags = [
                         validateCommitsInPR: true // For ensuring all commits have WI mentioned     
                       ]
 
-def envDef = [ compliance: complianceFlags, buildImage: "331455399823.dkr.ecr.us-east-2.amazonaws.com/sfci/sfci/centos-sfci-nodejs:5f48ebb", maxDaysToKeepBuild: 10 , maxNumToKeepBuild: 100]   
+def releaseParameters = {
+    parameters([
+        booleanParam(
+            defaultValue: false,
+            description: 'Do you want to release?',
+            name: 'RELEASE')
+    ])
+}
+
+def buildImage = "331455399823.dkr.ecr.us-east-2.amazonaws.com/sfci/sfci/centos-sfci-nodejs:latest"
+
+def envDef = [releaseParameters: releaseParameters, compliance: complianceFlags, buildImage: buildImage, maxDaysToKeepBuild: 10 , maxNumToKeepBuild: 100]
 
 def coverage_config = [
     tool_name              : 'clover',
@@ -66,6 +77,14 @@ executePipeline(envDef) {
     stage('GUS Compliance'){
         git2gus()
     }
+
+    // Release to internal npm
+    if (BuildUtils.isReleaseBuild(env) && params.RELEASE){
+        stage('Release'){
+            npm publish --registry=https://nexus.soma.salesforce.com/nexus/content/repositories/npmjs-internal/
+        }
+    }
+
     stage('Complete'){
         currentBuild.result = 'SUCCESS'
     }
