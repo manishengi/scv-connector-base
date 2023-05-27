@@ -81,7 +81,7 @@ executePipeline(envDef) {
     // Release to internal npm
     if (BuildUtils.isReleaseBuild(env) && params.RELEASE){
         stage('Release'){
-            npm publish --registry=https://nexus.soma.salesforce.com/nexus/content/repositories/npmjs-internal/
+            sh 'npm publish --registry=https://nexus.soma.salesforce.com/nexus/content/repositories/npmjs-internal/'
         }
     }
 
