@@ -93,7 +93,7 @@ executePipeline(envDef) {
                     sh "npm config set //${registry}:_authToken ${authToken}"
                 }
             }
-            sh "npm publish"
+            sh "npm publish --registry=https://nexus.soma.salesforce.com/nexus/content/repositories/npmjs-internal/"
         }
     }
 
