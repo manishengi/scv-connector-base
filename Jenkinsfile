@@ -44,7 +44,7 @@ def coverage_config = [
 executePipeline(envDef) {   
     stage('Init') {
             checkout scm
-            npmInit()
+            npmInit([nexusCredsId: 'sfci-nexus'])
             sh 'npm install'
     }   
     stage('NPM Test and Build'){
