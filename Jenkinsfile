@@ -43,35 +43,35 @@ def coverage_config = [
 
 executePipeline(envDef) {   
     stage('Init') {
-            checkout scm
-            npmInit([nexusCredsId: 'sfci-nexus'])
-            sh 'npm install'
+        checkout scm
+        npmInit([nexusCredsId: 'sfci-nexus'])
+        sh 'npm install'
     }   
     stage('NPM Test and Build'){
-      sh 'npm run test' 
+        sh 'npm run test' 
     } 
    
     stage('Coverage Report') {
-          publishHTML([
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: false,
-              reportDir: 'jest-report',
-              reportFiles: 'index.html',
-              reportName: 'JEST Results',
-              reportTitles: ''
-          ])
-          publishHTML([
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: false,
-              reportDir: 'coverage/lcov-report',
-              reportFiles: 'index.html',
-              reportName: 'JEST Coverage',
-              reportTitles: ''
-          ]) 
-          CodeCoverageUtils.uploadReportForGusDashboard(this, coverage_config)
-      }
+        publishHTML([
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: false,
+            reportDir: 'jest-report',
+            reportFiles: 'index.html',
+            reportName: 'JEST Results',
+            reportTitles: ''
+        ])
+        publishHTML([
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: false,
+            reportDir: 'coverage/lcov-report',
+            reportFiles: 'index.html',
+            reportName: 'JEST Coverage',
+            reportTitles: ''
+        ]) 
+        CodeCoverageUtils.uploadReportForGusDashboard(this, coverage_config)
+    }
     
     // More information: https://salesforce.quip.com/A7RBA2kk3b74
     stage('GUS Compliance'){
@@ -88,12 +88,12 @@ executePipeline(envDef) {
                 passwordVariable: 'NEXUS_PASSWORD'
             )]) {
                 // Get the auth token and configure npm (securely)
-                String authToken = sh([script: "echo -n ${NEXUS_USERNAME}:${NEXUS_PASSWORD} | base64", returnStdout: true]).trim()
+                String authToken = sh([script: 'echo -n ${NEXUS_USERNAME}:${NEXUS_PASSWORD} | base64', returnStdout: true]).trim()
                 wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: authToken, var: 'SECRET']]]) {
-                  sh "npm config set //${registry}:_auth ${authToken}"
+                    sh "npm config set //${registry}:_auth ${authToken}"
                 }
             }
-          sh "npm publish --registry=https://${registry}"
+            sh "npm publish --registry=https://${registry}"
         }
     }
 
