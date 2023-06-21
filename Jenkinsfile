@@ -88,8 +88,6 @@ executePipeline(envDef) {
                 passwordVariable: 'NEXUS_PASSWORD'
             )]) {
                 // Get the auth token and configure npm (securely)
-                String pw = "${NEXUS_PASSWORD}"
-                println(pw.collect {it})
                 String authToken = sh([script: 'echo -n ${NEXUS_USERNAME}:${NEXUS_PASSWORD} | base64', returnStdout: true]).trim()
                 wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: authToken, var: 'SECRET']]]) {
                     sh "npm config set //${registry}:_auth ${authToken}"
