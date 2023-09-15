@@ -692,7 +692,13 @@ async function windowMessageHandler(message) {
                             loginFrameHeight: payload.loginFrameHeight
                         });
                     } else {
-                        setConnectorReady();
+                        if (payload.isSilentLogin) {
+                            dispatchEvent(constants.EVENT_TYPE.SHOW_LOGIN, {
+                                isSilentLogin: payload.isSilentLogin
+                            });
+                        } else {
+                            setConnectorReady();
+                        }
                     }
                 } catch (e) {
                     if (e instanceof CustomError) {

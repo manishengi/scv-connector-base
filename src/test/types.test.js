@@ -435,12 +435,14 @@ describe('Types validation tests', () => {
         it('Should create InitResult object', () => {
             const showLogin = false;
             const loginFrameHeight = 450;
+            const isSilentLogin = true;
             let initResult;
             expect(() => {
-                initResult = new InitResult({ showLogin, loginFrameHeight });
+                initResult = new InitResult({ showLogin, loginFrameHeight, isSilentLogin });
             }).not.toThrowError();
             expect(initResult.showLogin).toEqual(showLogin);
             expect(initResult.loginFrameHeight).toEqual(loginFrameHeight);
+            expect(initResult.isSilentLogin).toEqual(true);
         });
     });
 
