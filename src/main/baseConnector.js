@@ -696,8 +696,8 @@ async function windowMessageHandler(message) {
                             isSilentLogin: payload.isSilentLogin
                         });
                     } else {
-                            setConnectorReady();
-                        }
+                        setConnectorReady();
+                    }
                 } catch (e) {
                     if (e instanceof CustomError) {
                         dispatchCustomError(e, constants.MESSAGE_TYPE.SETUP_CONNECTOR);
