@@ -691,15 +691,13 @@ async function windowMessageHandler(message) {
                         dispatchEvent(constants.EVENT_TYPE.SHOW_LOGIN, {
                             loginFrameHeight: payload.loginFrameHeight
                         });
+                    } else if (payload.isSilentLogin) {
+                        dispatchEvent(constants.EVENT_TYPE.SHOW_LOGIN, {
+                            isSilentLogin: payload.isSilentLogin
+                        });
                     } else {
-                        if (payload.isSilentLogin) {
-                            dispatchEvent(constants.EVENT_TYPE.SHOW_LOGIN, {
-                                isSilentLogin: payload.isSilentLogin
-                            });
-                        } else {
                             setConnectorReady();
                         }
-                    }
                 } catch (e) {
                     if (e instanceof CustomError) {
                         dispatchCustomError(e, constants.MESSAGE_TYPE.SETUP_CONNECTOR);
