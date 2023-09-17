@@ -220,12 +220,19 @@ export default {
         PARTNER: "PARTNER"
     },
     CONTACTS_FILTER_TYPES: {
-        "AGENT": "AGENT",
-        "QUEUE": "QUEUE",
-        "CONTACT": "CONTACT",
-        "DIRECTORY": "DIRECTORY",
-        "FLOW": "FLOW",
-        "AVAILABLE": "AVAILABLE"
+        AGENT: "AGENT",
+        QUEUE: "QUEUE",
+        CONTACT: "CONTACT",
+        DIRECTORY: "DIRECTORY",
+        FLOW: "FLOW",
+        AVAILABLE: "AVAILABLE"
+    },
+    WORK_LIFECYCLE_EVENT: {
+        ASSIGNED: 'ASSIGNED',
+        ACCEPTED: 'ACCEPTED',
+        DECLINED: 'DECLINED',
+        COMPLETED: 'COMPLETED',
+        CLOSED: 'CLOSED'
     }
 };
 
