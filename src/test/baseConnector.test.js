@@ -208,6 +208,7 @@ describe('SCVConnectorBase tests', () => {
     DemoAdapter.prototype.handleMessage = jest.fn(),
     DemoAdapter.prototype.downloadLogs = jest.fn();
     DemoAdapter.prototype.logMessageToVendor = jest.fn();
+    DemoAdapter.prototype.onAgentWorkEvent = jest.fn();
     // TelephonyConnector overrides
     DemoTelephonyAdapter.prototype.acceptCall = jest.fn().mockResolvedValue(callResult);
     DemoTelephonyAdapter.prototype.declineCall = jest.fn().mockResolvedValue(callResult);
@@ -283,7 +284,7 @@ describe('SCVConnectorBase tests', () => {
         initializeConnector(adapter);
     });
 
-    describe.only('SCVConnectorBase initialization tests', () => {
+    describe('SCVConnectorBase initialization tests', () => {
         it('Should NOT dispatch init to the vendor after wrong initialization', () => {
             const message = {
                 data: {
@@ -455,15 +456,15 @@ describe('SCVConnectorBase tests', () => {
             });
         });
 
-        it.only('Should dispatch CONNECTOR_READY after initialization', async () => {
+        it('Should dispatch CONNECTOR_READY after initialization', async () => {
             adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
-            console.log('MOck call', channelPort.postMessage.mock.calls[1]);
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.MESSAGE_TYPE.CONNECTOR_READY,
                 payload: {
@@ -489,6 +490,7 @@ describe('SCVConnectorBase tests', () => {
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(emptyActiveCallsResult);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(emptyActiveCallsResult);
@@ -528,6 +530,7 @@ describe('SCVConnectorBase tests', () => {
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(invalidResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
@@ -558,6 +561,7 @@ describe('SCVConnectorBase tests', () => {
         it('Should replay active calls on agent available', async () => {
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult1);
             fireMessage(constants.MESSAGE_TYPE.AGENT_AVAILABLE, { isAvailable: true });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult1);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.PARTICIPANT_CONNECTED, payload: {
                 phoneNumber: dummyTransferredPhoneCall.contact.phoneNumber,
@@ -579,8 +583,10 @@ describe('SCVConnectorBase tests', () => {
         });
 
         it('Should replay active calls on agent available with barge in', async () => {
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult1);
             fireMessage(constants.MESSAGE_TYPE.AGENT_AVAILABLE, { isAvailable: true });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult1);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.PARTICIPANT_CONNECTED, payload: {
                 phoneNumber: dummyTransferredPhoneCall.contact.phoneNumber,
@@ -601,6 +607,7 @@ describe('SCVConnectorBase tests', () => {
         });
 
         it ('Should NOT replay active calls on when is not replayable', async () => {
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult2);
             fireMessage(constants.MESSAGE_TYPE.AGENT_AVAILABLE, { isAvailable: true });
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult2);
@@ -608,6 +615,7 @@ describe('SCVConnectorBase tests', () => {
         });
 
         it ('Should NOT replay active calls on agent un-available', async () => {
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult1);
             fireMessage(constants.MESSAGE_TYPE.AGENT_AVAILABLE, { isAvailable: false });
             expect(telephonyAdapter.getActiveCalls).not.toHaveBeenCalled();
@@ -621,6 +629,7 @@ describe('SCVConnectorBase tests', () => {
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
@@ -647,6 +656,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_ACCEPT_THE_CALL on a failed acceptCall() invocation', async () => {
                 telephonyAdapter.acceptCall = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.ACCEPT_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.acceptCall()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.INFO, payload: {
                     message: constants.INFO_TYPE.CAN_NOT_ACCEPT_THE_CALL
@@ -664,6 +674,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CALL_CONNECTED on a successful acceptCall() invocation', async () => {
                 telephonyAdapter.acceptCall = jest.fn().mockResolvedValue(callResult);
                 fireMessage(constants.MESSAGE_TYPE.ACCEPT_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.acceptCall()).resolves.toBe(callResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_CONNECTED, payload: callResult.call });
                 assertChannelPortPayloadEventLog({
@@ -676,6 +687,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CALL_STARTED on a successful acceptCall() invocation for callback', async () => {
                 telephonyAdapter.acceptCall = jest.fn().mockResolvedValue(callbackResult);
                 fireMessage(constants.MESSAGE_TYPE.ACCEPT_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.acceptCall()).resolves.toBe(callbackResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_STARTED, payload: callbackResult.call });
                 assertChannelPortPayloadEventLog({
@@ -698,6 +710,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected acceptCall() invocation', async () => {
                 telephonyAdapter.acceptCall = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.ACCEPT_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.acceptCall()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -715,6 +728,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected declineCall() invocation', async () => {
                 telephonyAdapter.declineCall = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.DECLINE_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.declineCall()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -730,6 +744,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_DECLINE_THE_CALL on a failed declineCall() invocation', async () => {
                 telephonyAdapter.declineCall = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.DECLINE_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.declineCall()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_DECLINE_THE_CALL
@@ -747,6 +762,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch HANGUP on a successful declineCall() invocation', async () => {
                 telephonyAdapter.declineCall = jest.fn().mockResolvedValue(callResult);
                 fireMessage(constants.MESSAGE_TYPE.DECLINE_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.declineCall()).resolves.toBe(callResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.HANGUP, payload: callResult.call });
                 assertChannelPortPayloadEventLog({
@@ -762,6 +778,7 @@ describe('SCVConnectorBase tests', () => {
                 const error = 'error';
                 telephonyAdapter.endCall = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.END_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.endCall()).rejects.toBe(error);
                 assertChannelPortPayloadEventLog({
                     eventType: constants.MESSAGE_TYPE.END_CALL,
@@ -776,6 +793,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should NOT dispatch HANGUP on a failed endCall() invocation - custom error', async () => {
                 telephonyAdapter.endCall = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.END_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.endCall()).rejects.toBe(customErrorResult);
                 assertChannelPortPayloadEventLog({
                     eventType: constants.MESSAGE_TYPE.END_CALL,
@@ -790,6 +808,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should NOT dispatch HANGUP on a successful endCall() invocation with non empty active calls', async () => {
                 telephonyAdapter.endCall = jest.fn().mockResolvedValue();
                 fireMessage(constants.MESSAGE_TYPE.END_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.endCall()).resolves.toEqual();
             });
 
@@ -797,6 +816,7 @@ describe('SCVConnectorBase tests', () => {
                 telephonyAdapter.endCall = jest.fn().mockResolvedValue(callHangUpResult);
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(emptyActiveCallsResult);
                 fireMessage(constants.MESSAGE_TYPE.END_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.endCall()).resolves.toEqual(callHangUpResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(emptyActiveCallsResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.HANGUP, payload: callHangUpResult.calls });
@@ -811,6 +831,7 @@ describe('SCVConnectorBase tests', () => {
                 telephonyAdapter.endCall = jest.fn().mockResolvedValue(callHangUpResult);
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
                 fireMessage(constants.MESSAGE_TYPE.END_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.endCall()).resolves.toEqual(callHangUpResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(activeCallsResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: callHangUpResult.calls[0] });
@@ -827,6 +848,7 @@ describe('SCVConnectorBase tests', () => {
                 const error = 'error';
                 telephonyAdapter.mute = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.MUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.mute()).rejects.toBe(error);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_MUTE_CALL
@@ -836,6 +858,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a failed mute() invocation', async () => {
                 telephonyAdapter.mute = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.MUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.mute()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
             });
@@ -843,6 +866,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch MUTE_TOGGLE on a successful mute() invocation', async () => {
                 telephonyAdapter.mute = jest.fn().mockResolvedValue(muteToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.MUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 const result = await telephonyAdapter.mute();
                 const payload = { isMuted: result.isMuted };
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.MUTE_TOGGLE, payload });
@@ -859,6 +883,7 @@ describe('SCVConnectorBase tests', () => {
                 const error = 'error';
                 telephonyAdapter.unmute = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.UNMUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.unmute()).rejects.toBe(error);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_UNMUTE_CALL
@@ -868,6 +893,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected unmute() invocation', async () => {
                 telephonyAdapter.unmute = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.UNMUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.unmute()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
             });
@@ -876,6 +902,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.CAN_NOT_UNMUTE_CALL });
                 telephonyAdapter.unmute = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.UNMUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.unmute()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_UNMUTE_CALL
@@ -893,6 +920,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch MUTE_TOGGLE on a successful unmute() invocation', async () => {
                 telephonyAdapter.unmute = jest.fn().mockResolvedValue(unmuteToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.UNMUTE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 const result = await telephonyAdapter.unmute();
                 const payload = { isMuted: result.isMuted };
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.MUTE_TOGGLE, payload });
@@ -908,6 +936,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_TOGGLE_HOLD on default failed hold() invocation', async () => {
                 telephonyAdapter.hold = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.HOLD);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.hold()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_TOGGLE_HOLD
@@ -925,6 +954,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected hold() invocation', async () => {
                 telephonyAdapter.hold = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.HOLD);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.hold()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -941,6 +971,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.INVALID_PARTICIPANT });
                 telephonyAdapter.hold = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.HOLD);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.hold()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.INVALID_PARTICIPANT
@@ -958,6 +989,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_HOLD_CALL on untyped rejected hold() invocation', async () => {
                 telephonyAdapter.hold = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.HOLD);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.hold()).rejects.toBe(error);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_HOLD_CALL
@@ -975,6 +1007,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch HOLD_TOGGLE on a successful hold() invocation', async () => {
                 telephonyAdapter.hold = jest.fn().mockResolvedValue(holdToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.HOLD);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.hold()).resolves.toBe(holdToggleResult);
                 const payload = {
                     isThirdPartyOnHold: holdToggleResult.isThirdPartyOnHold,
@@ -994,6 +1027,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_TOGGLE_HOLD on default failed resume() invocation', async () => {
                 telephonyAdapter.resume = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resume()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_TOGGLE_HOLD
@@ -1011,6 +1045,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected resume() invocation', async () => {
                 telephonyAdapter.resume = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resume()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1027,6 +1062,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.INVALID_PARTICIPANT });
                 telephonyAdapter.resume = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resume()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.INVALID_PARTICIPANT
@@ -1044,6 +1080,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_RESUME_CALL on untyped rejected resume() invocation', async () => {
                 telephonyAdapter.resume = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.RESUME);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resume()).rejects.toBe(error);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_RESUME_CALL
@@ -1061,6 +1098,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch HOLD_TOGGLE on a successful resume() invocation', async () => {
                 telephonyAdapter.resume = jest.fn().mockResolvedValue(holdToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resume()).resolves.toBe(holdToggleResult);
                 const payload = {
                     isThirdPartyOnHold: holdToggleResult.isThirdPartyOnHold,
@@ -1217,6 +1255,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_START_THE_CALL on default failed dial() invocation', async () => {
                 telephonyAdapter.dial = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.DIAL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.dial()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_FAILED });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
@@ -1235,6 +1274,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on typed rejected dial() invocation', async () => {
                 telephonyAdapter.dial = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.dial()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_FAILED });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
@@ -1252,6 +1292,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.GENERIC_ERROR });
                 telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_FAILED });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
@@ -1271,6 +1312,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.INVALID_DESTINATION });
                 telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_FAILED });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
@@ -1289,6 +1331,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_START_THE_CALL on untyped rejected dial() invocation', async () => {
                 telephonyAdapter.dial = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.dial()).rejects.toBe(error);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_FAILED });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
@@ -1307,6 +1350,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CALL_STARTED on a successful dial() invocation', async () => {
                 telephonyAdapter.dial = jest.fn().mockResolvedValue(callResult);
                 fireMessage(constants.MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.dial()).resolves.toBe(callResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_STARTED, payload: callResult.call });
                 assertChannelPortPayloadEventLog({
@@ -1321,6 +1365,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected getPhoneContacts() invocation', async () => {
                 telephonyAdapter.getPhoneContacts = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.GET_PHONE_CONTACTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getPhoneContacts()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1336,6 +1381,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_GET_PHONE_CONTACTS on a failed getPhoneContacts() invocation', async () => {
                 telephonyAdapter.getPhoneContacts = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.GET_PHONE_CONTACTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getPhoneContacts()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_GET_PHONE_CONTACTS
@@ -1353,6 +1399,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch PHONE_CONTACTS on a successful getPhoneContacts() invocation', async () => {
                 telephonyAdapter.getPhoneContacts = jest.fn().mockResolvedValue(phoneContactsResult);
                 fireMessage(constants.MESSAGE_TYPE.GET_PHONE_CONTACTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getPhoneContacts()).resolves.toBe(phoneContactsResult);
                 const contacts = phoneContactsResult.contacts.map((contact) => {
                     return {
@@ -1377,12 +1424,14 @@ describe('SCVConnectorBase tests', () => {
         describe('sendDigits()', () => {
             it('Should be able to invoke sendDigits()', async () => {
                 fireMessage(constants.MESSAGE_TYPE.SEND_DIGITS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.sendDigits()).resolves.not.toThrow();
             });
 
             it('Should dispatch event log on failed sendDigits()', async () => {
                 telephonyAdapter.sendDigits = jest.fn().mockImplementationOnce(() => { throw new Error; });
                 fireMessage(constants.MESSAGE_TYPE.SEND_DIGITS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 assertChannelPortPayloadEventLog({
                     eventType: constants.MESSAGE_TYPE.SEND_DIGITS,
                     payload: undefined,
@@ -1395,6 +1444,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_SWAP_PARTICIPANTS on a invalid swap() payload', async () => {
                 telephonyAdapter.swap = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.SWAP_PARTICIPANTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.swap()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_SWAP_PARTICIPANTS
@@ -1412,6 +1462,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected swap() invocation', async () => {
                 telephonyAdapter.swap = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.SWAP_PARTICIPANTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.swap()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1428,6 +1479,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.CAN_NOT_SWAP_PARTICIPANTS });
                 telephonyAdapter.swap = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.SWAP_PARTICIPANTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.swap()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_SWAP_PARTICIPANTS
@@ -1445,6 +1497,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch HOLD_TOGGLE on a successful swap() invocation', async () => {
                 telephonyAdapter.swap = jest.fn().mockResolvedValue(holdToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.SWAP_PARTICIPANTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.swap()).resolves.toBe(holdToggleResult);
                 const payload = {
                     isThirdPartyOnHold: holdToggleResult.isThirdPartyOnHold,
@@ -1464,6 +1517,8 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_CONFERENCE on an invalid conference() payload', async () => {
                 telephonyAdapter.conference = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.CONFERENCE);
+                
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.conference()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_CONFERENCE
@@ -1481,6 +1536,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch HOLD_TOGGLE on a successful conference() invocation', async () => {
                 telephonyAdapter.conference = jest.fn().mockResolvedValue(holdToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.CONFERENCE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.conference()).resolves.toBe(holdToggleResult);
                 const payload = {
                     isThirdPartyOnHold: holdToggleResult.isThirdPartyOnHold,
@@ -1497,6 +1553,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected conference() invocation', async () => {
                 telephonyAdapter.conference = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.CONFERENCE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.conference()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1513,6 +1570,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.CAN_NOT_CONFERENCE });
                 telephonyAdapter.conference = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.CONFERENCE);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.conference()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_CONFERENCE
@@ -1530,9 +1588,10 @@ describe('SCVConnectorBase tests', () => {
 
         describe('addParticipant()', () => {
             it('Should dispatch CAN_NOT_ADD_PARTICIPANT on default failed addParticipant() invocation', async () => {
-                adapter.addParticipant = jest.fn().mockResolvedValue(invalidResult);
+                telephonyAdapter.addParticipant = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.ADD_PARTICIPANT, { contact: dummyContact });
-                await expect(adapter.addParticipant()).resolves.toBe(invalidResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.addParticipant()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_ADD_PARTICIPANT
                 }});
@@ -1547,9 +1606,10 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch custom error on typed rejected addParticipant() invocation', async () => {
-                adapter.addParticipant = jest.fn().mockRejectedValue(customErrorResult);
+                telephonyAdapter.addParticipant = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.ADD_PARTICIPANT, { contact: dummyContact });
-                await expect(adapter.addParticipant()).rejects.toBe(customErrorResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.addParticipant()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
                     eventType: constants.MESSAGE_TYPE.ADD_PARTICIPANT,
@@ -1563,9 +1623,10 @@ describe('SCVConnectorBase tests', () => {
 
             it('Should dispatch INVALID_DESTINATION on typed rejected addParticipant() invocation', async () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.INVALID_DESTINATION });
-                adapter.addParticipant = jest.fn().mockRejectedValue(errorResult);
+                telephonyAdapter.addParticipant = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.ADD_PARTICIPANT, { contact: dummyContact });
-                await expect(adapter.addParticipant()).rejects.toBe(errorResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.addParticipant()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.INVALID_DESTINATION
                 }});
@@ -1580,9 +1641,10 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch CAN_NOT_ADD_PARTICIPANT on untyped rejected addParticipant() invocation', async () => {
-                adapter.addParticipant = jest.fn().mockRejectedValue(error);
+                telephonyAdapter.addParticipant = jest.fn().mockRejectedValue(error);
                 fireMessage(constants.MESSAGE_TYPE.ADD_PARTICIPANT, { contact: dummyContact });
-                await expect(adapter.addParticipant()).rejects.toBe(error);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.addParticipant()).rejects.toBe(error);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: {
                     reason: constants.EVENT_TYPE.ERROR.toLowerCase()
                 }});
@@ -1600,9 +1662,10 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch PARTICIPANT_ADDED on a successful addParticipant() invocation', async () => {
-                adapter.addParticipant = jest.fn().mockResolvedValue(participantResult);
+                telephonyAdapter.addParticipant = jest.fn().mockResolvedValue(participantResult);
                 fireMessage(constants.MESSAGE_TYPE.ADD_PARTICIPANT, { contact: dummyContact });
-                await expect(adapter.addParticipant()).resolves.toBe(participantResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.addParticipant()).resolves.toBe(participantResult);
                 const payload = {
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
@@ -1618,10 +1681,11 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch PARTICIPANT_ADDED on a successful addParticipant() invocation with blind transfer', async () => {
-                adapter.addParticipant = jest.fn().mockResolvedValue(participantResult);
+                telephonyAdapter.addParticipant = jest.fn().mockResolvedValue(participantResult);
                 const isBlindTransfer = true;
                 fireMessage(constants.MESSAGE_TYPE.ADD_PARTICIPANT, { call: dummyPhoneCall, contact: dummyContact, isBlindTransfer });
-                await expect(adapter.addParticipant()).resolves.toBe(participantResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.addParticipant()).resolves.toBe(participantResult);
                 const payload = {
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
@@ -1641,6 +1705,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_TOGGLE_RECORD on an invalid pauseRecording() payload', async () => {
                 telephonyAdapter.pauseRecording = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.PAUSE_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.pauseRecording()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_TOGGLE_RECORD
@@ -1658,6 +1723,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected pauseRecording() invocation', async () => {
                 telephonyAdapter.pauseRecording = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.PAUSE_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.pauseRecording()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1674,6 +1740,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.CAN_NOT_PAUSE_RECORDING });
                 telephonyAdapter.pauseRecording = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.PAUSE_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.pauseRecording()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_PAUSE_RECORDING
@@ -1691,6 +1758,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch RECORDING_TOGGLE on a successful pauseRecording() invocation', async () => {
                 telephonyAdapter.pauseRecording = jest.fn().mockResolvedValue(recordingToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.PAUSE_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.pauseRecording()).resolves.toBe(recordingToggleResult);
                 const payload = {
                     isRecordingPaused: recordingToggleResult.isRecordingPaused,
@@ -1712,6 +1780,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_TOGGLE_RECORD on a failed resumeRecording() payload', async () => {
                 telephonyAdapter.resumeRecording = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resumeRecording()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_TOGGLE_RECORD
@@ -1729,6 +1798,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected resumeRecording() invocation', async () => {
                 telephonyAdapter.resumeRecording = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resumeRecording()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1745,6 +1815,7 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.CAN_NOT_RESUME_RECORDING });
                 telephonyAdapter.resumeRecording = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resumeRecording()).rejects.toBe(errorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_RESUME_RECORDING
@@ -1762,6 +1833,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch RECORDING_TOGGLE on a successful resumeRecording() invocation', async () => {
                 telephonyAdapter.resumeRecording = jest.fn().mockResolvedValue(recordingToggleResult);
                 fireMessage(constants.MESSAGE_TYPE.RESUME_RECORDING);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.resumeRecording()).resolves.toBe(recordingToggleResult);
                 const payload = {
                     isRecordingPaused: recordingToggleResult.isRecordingPaused,
@@ -1837,6 +1909,7 @@ describe('SCVConnectorBase tests', () => {
         describe('setAgentConfig()', () => {
             it('Should call setAgentConfig', async () => {
                 fireMessage(constants.MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.setAgentConfig()).resolves.toBe(genericResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.AGENT_CONFIG_UPDATED, payload: genericResult});
                 assertChannelPortPayloadEventLog({
@@ -1848,6 +1921,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_SET_AGENT_CONFIG on a invalid response from setAgentConfig() invocation', async () => {
                 telephonyAdapter.setAgentConfig = jest.fn().mockResolvedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.setAgentConfig()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_SET_AGENT_CONFIG
@@ -1865,6 +1939,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch custom error on a rejected setAgentConfig() invocation', async () => {
                 telephonyAdapter.setAgentConfig = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.setAgentConfig()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
@@ -1880,6 +1955,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch CAN_NOT_SET_AGENT_CONFIG on a rejected response from setAgentConfig() invocation', async () => {
                 telephonyAdapter.setAgentConfig = jest.fn().mockRejectedValue(invalidResult);
                 fireMessage(constants.MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.setAgentConfig()).rejects.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                     message: constants.ERROR_TYPE.CAN_NOT_SET_AGENT_CONFIG
@@ -1898,13 +1974,15 @@ describe('SCVConnectorBase tests', () => {
                 const errorResult = new ErrorResult({ type: Constants.ERROR_TYPE.CAN_NOT_UPDATE_PHONE_NUMBER });
                 telephonyAdapter.setAgentConfig = jest.fn().mockRejectedValue(errorResult);
                 fireMessage(constants.MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.setAgentConfig()).rejects.toBe(errorResult);
             });
         });
 
         describe('wrapUpCall()', () => {
-            it('Should invoke wrapUpCall()', () => {
+            it('Should invoke wrapUpCall()', async () => {
                 fireMessage(constants.MESSAGE_TYPE.WRAP_UP_CALL, { call: dummyPhoneCall });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 expect(telephonyAdapter.wrapUpCall).toBeCalledWith(dummyPhoneCall);
             });
         });
@@ -1917,6 +1995,7 @@ describe('SCVConnectorBase tests', () => {
                     vendorCallKey: 'vendorCallKey',
                     callId: 'callId'
                 });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getSignedRecordingUrl()).rejects.toBe(invalidResult);
                 const signedRecordingUrlResult = new SignedRecordingUrlResult({ success: false });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.SIGNED_RECORDING_URL,
@@ -1935,6 +2014,7 @@ describe('SCVConnectorBase tests', () => {
                     vendorCallKey: 'vendorCallKey',
                     callId: 'callId'
                 });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getSignedRecordingUrl()).resolves.toBe(signedRecordingUrlResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.SIGNED_RECORDING_URL,
                     payload: signedRecordingUrlResult});
@@ -1968,7 +2048,21 @@ describe('SCVConnectorBase tests', () => {
                         c: "d"
                     });
             });
-        })
+        });
+
+        describe('onAgentWorkEvent()', () => {
+            it('Should invoke onAgentWorkEvent() when MESSAGE_TYPE.AGENT_WORK_EVENT is published', () => {
+                const workItemId = 'workItemId';
+                const workId = 'workId';
+                const workEvent = 'ASSIGNED';
+                fireMessage(constants.MESSAGE_TYPE.AGENT_WORK_EVENT, {
+                    workItemId,
+                    workId,
+                    workEvent
+                });
+                expect(adapter.onAgentWorkEvent).toBeCalledWith({ workItemId, workId, workEvent });
+            });
+        });
     });
 
     describe('SCVConnectorBase publish event tests', () => {
@@ -1996,6 +2090,7 @@ describe('SCVConnectorBase tests', () => {
                 assertChannelPortPayload({ eventType: Constants.EVENT_TYPE.LOGIN_RESULT, payload: {
                     success: genericResult.success
                 }});
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
                 await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
@@ -2028,6 +2123,7 @@ describe('SCVConnectorBase tests', () => {
                     payload: genericResult,
                     isError: false
                 });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
                 await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
@@ -2157,7 +2253,7 @@ describe('SCVConnectorBase tests', () => {
             });
         });
 
-        describe('call badge in', () => {
+        describe('call barge in', () => {
             it('Should dispatch CALL_BARGED_IN', async () => {
                 publishEvent({ eventType: constants.EVENT_TYPE.CALL_BARGED_IN, payload: supervisedCallInfo });
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_BARGED_IN, payload: supervisedCallInfo });
@@ -2338,6 +2434,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch PARTICIPANT_REMOVED on a valid payload', async () => {
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(dummyActiveTransferredallResult);
                 publishEvent({ eventType: Constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: thirdPartyRemovedResult });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
                 const payload = {
                     reason: thirdPartyRemovedResult.reason
@@ -2353,6 +2450,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch PARTICIPANT_REMOVED on a empty payload', async () => {
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(dummyActiveTransferredallResult);
                 publishEvent({ eventType: Constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: new CallResult({}) });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
                 const payload = {
                     reason: null
@@ -2368,6 +2466,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should not dispatch error when PARTICIPANT_REMOVED is sent but activeCalls payload is not valid', async () => {
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(invalidResult);
                 publishEvent({ eventType: Constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: thirdPartyRemovedResult });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(invalidResult);
                 expect(channelPort.postMessage).not.toHaveBeenCalledWith();
             }); 
@@ -2375,6 +2474,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch HangUp with removing initial caller and empty active calls', async () => {
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(emptyActiveCallsResult);
                 publishEvent({ eventType: Constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: initialCallerRemovedResult });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(emptyActiveCallsResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.HANGUP, payload: initialCallerRemovedResult.call });
                 assertChannelPortPayloadEventLog({
@@ -2387,6 +2487,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch PARTICIPANT_ADDED with removing initial caller and transferring active calls', async () => {
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(dummyActiveTransferringCallResult);
                 publishEvent({ eventType: Constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: initialCallerRemovedResult });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferringCallResult);
                 const payload = {
                     initialCallHasEnded : true
@@ -2402,6 +2503,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch PARTICIPANT_CONNECTED with removing initial caller and transferred active calls', async () => {
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(dummyActiveTransferredallResult);
                 publishEvent({ eventType: Constants.EVENT_TYPE.PARTICIPANT_REMOVED, payload: initialCallerRemovedResult });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
                 const payload = {
                     initialCallHasEnded : true
@@ -2492,6 +2594,7 @@ describe('SCVConnectorBase tests', () => {
                     payload: { type: constants.MESSAGE_TYPE.ACCEPT_CALL },
                     isError: false
                 });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.acceptCall()).resolves.toBe(invalidResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.INFO, payload: {
                     message: constants.INFO_TYPE.CAN_NOT_ACCEPT_THE_CALL
@@ -2981,6 +3084,7 @@ describe('SCVConnectorBase tests', () => {
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResultWithMos);
@@ -3060,6 +3164,7 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResultWithSoftphone);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
@@ -3081,10 +3186,12 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseDeskphoneCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
             fireMessage(constants.MESSAGE_TYPE.ACCEPT_CALL);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(supervisorHangupResult);
             await expect(telephonyAdapter.acceptCall()).resolves.toBe(callResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.CALL_CONNECTED, payload: callResult.call });
@@ -3103,10 +3210,12 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseDeskphoneCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
             publishEvent({ eventType: Constants.EVENT_TYPE.CALL_CONNECTED, payload: callResult });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(supervisorHangupResult);
             assertChannelPortPayload({ eventType: Constants.EVENT_TYPE.CALL_CONNECTED, payload: callResult.call });
             assertChannelPortPayloadEventLog({
@@ -3123,6 +3232,7 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseDeskphoneCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
@@ -3138,6 +3248,7 @@ describe('SCVConnectorBase tests', () => {
         it('Should dispatch custom error on a rejected superviseCall() invocation', async () => {
             telephonyAdapter.superviseCall = jest.fn().mockRejectedValue(customErrorResult);
             fireMessage(constants.MESSAGE_TYPE.SUPERVISE_CALL);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).rejects.toBe(customErrorResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
             assertChannelPortPayloadEventLog({
@@ -3154,6 +3265,7 @@ describe('SCVConnectorBase tests', () => {
             telephonyAdapter.superviseCall = jest.fn().mockResolvedValue(invalidResult);
             fireMessage(constants.MESSAGE_TYPE.SUPERVISE_CALL);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(invalidResult);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                 message: constants.ERROR_TYPE.CAN_NOT_SUPERVISE_CALL
             }});
@@ -3172,6 +3284,7 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_DISCONNECT, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(supervisorHangupResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.SUPERVISOR_HANGUP,
                 payload: supervisorHangupResult.calls});
@@ -3187,6 +3300,7 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_DISCONNECT, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(supervisorHangupMultipleCallsResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.SUPERVISOR_HANGUP,
                 payload: supervisorHangupMultipleCallsResult.calls});
@@ -3200,6 +3314,7 @@ describe('SCVConnectorBase tests', () => {
         it('Should dispatch custom error on a rejected supervisorDisconnect() invocation', async () => {
             telephonyAdapter.supervisorDisconnect = jest.fn().mockRejectedValue(customErrorResult);
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_DISCONNECT);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).rejects.toBe(customErrorResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
             assertChannelPortPayloadEventLog({
@@ -3215,6 +3330,7 @@ describe('SCVConnectorBase tests', () => {
         it('Should dispatch CAN_NOT_DISCONNECT_SUPERVISOR on a failed supervisorDisconnect() invocation', async () => {
             telephonyAdapter.supervisorDisconnect = jest.fn().mockResolvedValue(invalidResult);
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_DISCONNECT);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(invalidResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                 message: constants.ERROR_TYPE.CAN_NOT_DISCONNECT_SUPERVISOR
@@ -3234,6 +3350,7 @@ describe('SCVConnectorBase tests', () => {
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_BARGE_IN, {
                 call: {}
             });
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorBargeIn()).resolves.toBe(superviseCallResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.SUPERVISOR_BARGED_IN,
                 payload: superviseCallResult.call});
@@ -3247,6 +3364,7 @@ describe('SCVConnectorBase tests', () => {
         it('Should dispatch custom error on a rejected supervisorBargeIn() invocation', async () => {
             telephonyAdapter.supervisorBargeIn = jest.fn().mockRejectedValue(customErrorResult);
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_BARGE_IN);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorBargeIn()).rejects.toBe(customErrorResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
             assertChannelPortPayloadEventLog({
@@ -3262,6 +3380,7 @@ describe('SCVConnectorBase tests', () => {
         it('Should dispatch CAN_NOT_BARGE_IN_SUPERVISOR on a failed supervisorBargeIn() invocation', async () => {
             telephonyAdapter.supervisorBargeIn = jest.fn().mockResolvedValue(invalidResult);
             fireMessage(constants.MESSAGE_TYPE.SUPERVISOR_BARGE_IN);
+            await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorBargeIn()).resolves.toBe(invalidResult);
             assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
                 message: constants.ERROR_TYPE.CAN_NOT_BARGE_IN_SUPERVISOR

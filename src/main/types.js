@@ -101,7 +101,7 @@ export const Constants = {
     /**
      * @enum {String}
      */
-    WORK_LIFECYCLE_EVENT: { ...constants.WORK_LIFECYCLE_EVENT }
+    WORK_EVENT: { ...constants.WORK_EVENT }
 };
 
 /**
@@ -1007,11 +1007,11 @@ export class VendorConnector {
     }
 
     /**
-     * Sends the work lifecycle events to vendor
+     * Sends non-voice agent work events to vendor such as work accepted, declined, etc
      * @param {AgentWork} agentWork
      * 
      */
-    onWorkLifecycleEvent(agentWork) {
+    onAgentWorkEvent(agentWork) {
         throw new Error('Not implemented');
     }
 
@@ -1126,12 +1126,13 @@ export class AgentWork {
      * @param {object} param
      * @param {string} [param.workItemId] - The salesforce work item Id
      * @param {string} [param.workId] - The work Id
-     * @param {WORK_LIFECYCLE_EVENT} [param.workEvent] - The work lifecycle event
+     * @param {WORK_EVENT} [param.workEvent] - The work lifecycle event
      */
     constructor({ workItemId, workId, workEvent }) {
+        Validator.validateEnum(workEvent, Object.values(constants.WORK_EVENT));
+        this.workEvent = workEvent;
         this.workItemId = workItemId;
         this.workId = workId;
-        this.workEvent = workEvent;
     }
  }
 

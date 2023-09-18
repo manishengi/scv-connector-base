@@ -12,7 +12,7 @@ jest.mock('../main/downloadData');
 
 
 
-describe.skip('Logger tests', () => {
+describe('Logger tests', () => {
 
     beforeEach(() => {
         jest.resetModules();

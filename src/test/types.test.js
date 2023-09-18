@@ -7,15 +7,15 @@
 
 import { ActiveCallsResult, AgentConfigResult, CapabilitiesResult, RecordingToggleResult, ParticipantResult, LogoutResult,
     PhoneContactsResult, CallResult, HoldToggleResult, InitResult, GenericResult, MuteToggleResult, SignedRecordingUrlResult,
-    Contact, PhoneCall, PhoneCallAttributes, CallInfo, VendorConnector, Phone, AgentStatusInfo, HangupResult, AgentConfig, 
+    Contact, PhoneCall, PhoneCallAttributes, CallInfo, VendorConnector, TelephonyConnector, Phone, AgentStatusInfo, HangupResult, AgentConfig, 
     StatsInfo, AudioStats, AudioStatsElement, Constants, SupervisorHangupResult, SupervisedCallInfo, AgentVendorStatusInfo, 
-    StateChangeResult, CustomError } from '../main/index';
+    StateChangeResult, CustomError, AgentWork } from '../main/index';
 
 
 import { downloadLogs } from '../main/logger';
 jest.mock('../main/logger');
 
-describe.skip('Types validation tests', () => {
+describe('Types validation tests', () => {
     const invalid_argument = /^Invalid argument/;
     const dummyPhoneCall = new PhoneCall({ callId: 'callId', callType: Constants.CALL_TYPE.INBOUND, state: 'state', callAttributes: {}, phoneNumber: '100'});
     const dummyCallInfo = new CallInfo({ isOnHold: false, showMuteButton: true, showAddBlindTransferButton: true, showRecordButton: true, showAddCallerButton: true, showMergeButton: true, showSwapButton: true, additionalFields: "\"SourceType\": \"Service\"" });
@@ -477,6 +477,18 @@ describe.skip('Types validation tests', () => {
         });
     });
 
+    describe('AgentWork tests', () => {
+        const workItemId = 'dummyWorkItemId';
+        const workId = 'dummyWorkId';
+        it('Should create AgentWork object with valid work lifecycle event', () => {
+            let agentWork;
+            expect(() => {
+                agentWork = new AgentWork({ workItemId, workId, workEvent: Constants.WORK_EVENT.ACCEPTED})
+            }).not.toThrowError();
+            expect(agentWork).not.toBeNull();
+        });
+    });
+
     describe('CallInfo tests', () => {
         it('Should create CallInfo object - default', () => {
             const isOnHold = false;
@@ -905,36 +917,12 @@ describe.skip('Types validation tests', () => {
             expect(() => vendorConnector.init()).toThrowError('Not implemented');
         });
 
-        it('Should implement getActiveCalls', () => {
-            expect(() => vendorConnector.getTelephonyConnector().getActiveCalls()).toThrowError('Not implemented');
+        it('Should implement getTelephonyConnector', () => {
+            expect(() => vendorConnector.getTelephonyConnector()).toThrowError('Not implemented');
         });
 
-        it('Should implement acceptCall', () => {
-            expect(() => vendorConnector.getTelephonyConnector().acceptCall()).toThrowError('Not implemented');
-        });
-
-        it('Should implement declineCall', () => {
-            expect(() => vendorConnector.getTelephonyConnector().declineCall()).toThrowError('Not implemented');
-        });
-
-        it('Should implement endCall', () => {
-            expect(() => vendorConnector.getTelephonyConnector().endCall()).toThrowError('Not implemented');
-        });
-
-        it('Should implement mute', () => {
-            expect(() => vendorConnector.getTelephonyConnector().mute()).toThrowError('Not implemented');
-        });
-
-        it('Should implement unmute', () => {
-            expect(() => vendorConnector.getTelephonyConnector().unmute()).toThrowError('Not implemented');
-        });
-
-        it('Should implement hold', () => {
-            expect(() => vendorConnector.getTelephonyConnector().hold()).toThrowError('Not implemented');
-        });
-
-        it('Should implement resume', () => {
-            expect(() => vendorConnector.getTelephonyConnector().resume()).toThrowError('Not implemented');
+        it('Should implement onAgentWorkEvent', () => {
+            expect(() => vendorConnector.onAgentWorkEvent()).toThrowError('Not implemented');
         });
 
         it('Should implement setAgentStatus', () => {
@@ -944,62 +932,12 @@ describe.skip('Types validation tests', () => {
         it('Should implement getAgentStatus', () => {
             expect(vendorConnector.getAgentStatus()).toBeUndefined();
         });
-
-        it('Should implement dial', () => {
-            expect(() => vendorConnector.getTelephonyConnector().dial()).toThrowError('Not implemented');
-        });
-
-        it('Should implement sendDigits', () => {
-            expect(() => vendorConnector.getTelephonyConnector().sendDigits()).toThrowError('Not implemented');
-        });
-
-        it('Should implement getPhoneContacts', () => {
-            expect(() => vendorConnector.getTelephonyConnector().getPhoneContacts()).toThrowError('Not implemented');
-        });
-
-        it('Should implement swap', () => {
-            expect(() => vendorConnector.getTelephonyConnector().swap()).toThrowError('Not implemented');
-        });
-
-        it('Should implement conference', () => {
-            expect(() => vendorConnector.getTelephonyConnector().conference()).toThrowError('Not implemented');
-        });
-
-        it('Should implement addParticipant', () => {
-            expect(() => vendorConnector.getTelephonyConnector().addParticipant()).toThrowError('Not implemented');
-        });
-
-        it('Should implement pauseRecording', () => {
-            expect(() => vendorConnector.getTelephonyConnector().pauseRecording()).toThrowError('Not implemented');
-        });
-
-        it('Should implement resumeRecording', () => {
-            expect(() => vendorConnector.getTelephonyConnector().resumeRecording()).toThrowError('Not implemented');
-        });
-
-        it('Should implement getAgentConfig', () => {
-            expect(() => vendorConnector.getTelephonyConnector().getAgentConfig()).toThrowError('Not implemented');
-        });
-        it('Should implement setAgentConfig', () => {
-            expect(() => vendorConnector.getTelephonyConnector().setAgentConfig()).toThrowError('Not implemented');
-        });
-        it('Should implement getCapabilities', () => {
-            expect(() => vendorConnector.getTelephonyConnector().getCapabilities()).toThrowError('Not implemented');
-        });
         it('Should implement logout', () => {
             expect(() => vendorConnector.logout()).toThrowError('Not implemented');
         });
 
         it('Should implement handleMessage', () => {
             expect(() => vendorConnector.handleMessage()).toThrowError('Not implemented');
-        });
-
-        it('Should implement wrapUpCall', () => {
-            expect(() => vendorConnector.getTelephonyConnector().wrapUpCall()).toThrowError('Not implemented');
-        });
-
-        it('Should implement getSignedRecordingUrl', () => {
-            expect(() => vendorConnector.getTelephonyConnector().getSignedRecordingUrl()).toThrowError('Not implemented');
         });
 
         it('Should implement downloadLogs', () => {
@@ -1010,17 +948,105 @@ describe.skip('Types validation tests', () => {
         it('Can implement logMessageToVendor', () => {
             expect(() => vendorConnector.logMessageToVendor()).not.toThrowError('Not implemented');
         });
+    });
+
+    describe('Telephony connector tests', () => {
+        let telephonyConnector;
+        beforeAll(() => {
+            telephonyConnector = new TelephonyConnector();
+        });
+
+        it('Should implement getActiveCalls', () => {
+            expect(() => telephonyConnector.getActiveCalls()).toThrowError('Not implemented');
+        });
 
         it('Should implement superviseCall', () => {
-            expect(() => vendorConnector.getTelephonyConnector().superviseCall()).toThrowError('Not implemented');
+            expect(() => telephonyConnector.superviseCall()).toThrowError('Not implemented');
+        });
+
+        it('Should implement wrapUpCall', () => {
+            expect(() => telephonyConnector.wrapUpCall()).toThrowError('Not implemented');
+        });
+
+        it('Should implement getSignedRecordingUrl', () => {
+            expect(() => telephonyConnector.getSignedRecordingUrl()).toThrowError('Not implemented');
         });
 
         it('Should implement supervisorDisconnect', () => {
-            expect(() => vendorConnector.getTelephonyConnector().supervisorDisconnect()).toThrowError('Not implemented');
+            expect(() => telephonyConnector.supervisorDisconnect()).toThrowError('Not implemented');
         });
 
         it('Should implement supervisorBargeIn', () => {
-            expect(() => vendorConnector.getTelephonyConnector().supervisorBargeIn()).toThrowError('Not implemented');
+            expect(() => telephonyConnector.supervisorBargeIn()).toThrowError('Not implemented');
+        });
+
+        it('Should implement acceptCall', () => {
+            expect(() => telephonyConnector.acceptCall()).toThrowError('Not implemented');
+        });
+
+        it('Should implement declineCall', () => {
+            expect(() => telephonyConnector.declineCall()).toThrowError('Not implemented');
+        });
+
+        it('Should implement endCall', () => {
+            expect(() => telephonyConnector.endCall()).toThrowError('Not implemented');
+        });
+
+        it('Should implement mute', () => {
+            expect(() => telephonyConnector.mute()).toThrowError('Not implemented');
+        });
+
+        it('Should implement unmute', () => {
+            expect(() => telephonyConnector.unmute()).toThrowError('Not implemented');
+        });
+
+        it('Should implement hold', () => {
+            expect(() => telephonyConnector.hold()).toThrowError('Not implemented');
+        });
+
+        it('Should implement resume', () => {
+            expect(() => telephonyConnector.resume()).toThrowError('Not implemented');
+        });
+        it('Should implement dial', () => {
+            expect(() => telephonyConnector.dial()).toThrowError('Not implemented');
+        });
+
+        it('Should implement sendDigits', () => {
+            expect(() => telephonyConnector.sendDigits()).toThrowError('Not implemented');
+        });
+
+        it('Should implement getPhoneContacts', () => {
+            expect(() => telephonyConnector.getPhoneContacts()).toThrowError('Not implemented');
+        });
+
+        it('Should implement swap', () => {
+            expect(() => telephonyConnector.swap()).toThrowError('Not implemented');
+        });
+
+        it('Should implement conference', () => {
+            expect(() => telephonyConnector.conference()).toThrowError('Not implemented');
+        });
+
+        it('Should implement addParticipant', () => {
+            expect(() => telephonyConnector.addParticipant()).toThrowError('Not implemented');
+        });
+
+        it('Should implement pauseRecording', () => {
+            expect(() => telephonyConnector.pauseRecording()).toThrowError('Not implemented');
+        });
+
+        it('Should implement resumeRecording', () => {
+            expect(() => telephonyConnector.resumeRecording()).toThrowError('Not implemented');
+        });
+
+        it('Should implement getAgentConfig', () => {
+            expect(() => telephonyConnector.getAgentConfig()).toThrowError('Not implemented');
+        });
+        it('Should implement setAgentConfig', () => {
+            expect(() => telephonyConnector.setAgentConfig()).toThrowError('Not implemented');
+        });
+        it('Should implement getCapabilities', () => {
+            expect(() => telephonyConnector.getCapabilities()).toThrowError('Not implemented');
         });
     });
 

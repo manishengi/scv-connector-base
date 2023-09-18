@@ -77,7 +77,6 @@ function dispatchEventLog(eventType, payload, isError) {
     const sanitizedPayload = sanitizePayload(payload);
     const logLevel = isError ? constants.LOG_LEVEL.ERROR : constants.LOG_LEVEL.INFO;
     log({eventType, payload}, logLevel, constants.LOG_SOURCE.SYSTEM);
-    console.log('dispatchEventLog logs', eventType, payload);
     channelPort.postMessage({
         type: constants.MESSAGE_TYPE.LOG,
         payload: { eventType, payload: sanitizedPayload, isError }
@@ -90,7 +89,6 @@ function dispatchEventLog(eventType, payload, isError) {
  * @param {Boolean} registerLog optional argument to not register the event
  */
 function dispatchEvent(eventType, payload, registerLog = true) {
-    console.log('dispatch Event', eventType, payload);
     channelPort.postMessage({
         type: constants.MESSAGE_TYPE.TELEPHONY_EVENT_DISPATCHED,
         payload: { telephonyEventType: eventType, telephonyEventPayload: payload }
@@ -181,7 +179,6 @@ async function setConnectorReady() {
             },
             callInProgress: activeCalls.length > 0 ? activeCalls[0] : null
         }
-        console.log('setConnectorReady', type, payload);
         channelPort.postMessage({
             type,
             payload
@@ -189,7 +186,6 @@ async function setConnectorReady() {
         dispatchEventLog(type, payload, false);
     } catch (e) {
         // Post CONNECTOR_READY even if getAgentConfig/getCapabilities/getActiveCalls is not implemented
-        console.log('Failing');
         channelPort.postMessage({
             type: constants.MESSAGE_TYPE.CONNECTOR_READY,
             payload: {}
@@ -653,7 +649,7 @@ async function channelMessageHandler(message) {
                 } else {
                     dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_CALL_STARTED, result.call);
                 }
-            } catch (e){
+            } catch (e) {
                 isSupervisorConnected = false;
                 if (e instanceof CustomError) {
                     dispatchCustomError(e, constants.MESSAGE_TYPE.SUPERVISE_CALL);
@@ -669,7 +665,7 @@ async function channelMessageHandler(message) {
                 Validator.validateClassObject(result, SupervisorHangupResult);
                 isSupervisorConnected = false;
                 dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_HANGUP, result.calls);
-            } catch (e){
+            } catch (e) {
                 if (e instanceof CustomError) {
                     dispatchCustomError(e, constants.MESSAGE_TYPE.SUPERVISOR_DISCONNECT);
                 } else {
@@ -683,13 +679,22 @@ async function channelMessageHandler(message) {
                 const result = await telephonyConnector.supervisorBargeIn(message.data.call);
                 Validator.validateClassObject(result, SuperviseCallResult);
                 dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_BARGED_IN, result.call );
-            } catch (e){
+            } catch (e) {
                 if (e instanceof CustomError) {
                     dispatchCustomError(e, constants.MESSAGE_TYPE.SUPERVISOR_BARGE_IN);
                 } else {
                     dispatchError(constants.ERROR_TYPE.CAN_NOT_BARGE_IN_SUPERVISOR, e, constants.MESSAGE_TYPE.SUPERVISOR_BARGE_IN);
                 }
             }
+        break;
+        case constants.MESSAGE_TYPE.AGENT_WORK_EVENT: {
+            let { workItemId, workId, workEvent } = message.data;
+            vendorConnector.onAgentWorkEvent({
+                workItemId,
+                workId,
+                workEvent
+            });
+        }
         break;
         default:
             break;
