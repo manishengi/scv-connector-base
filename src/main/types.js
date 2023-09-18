@@ -97,7 +97,7 @@ export const Constants = {
     /**
      * @enum {String}
      */
-    CONTACTS_FILTER_TYPES: { ...constants.CONTACTS_FILTER_TYPES }
+    CONTACTS_FILTER_TYPES: { ...constants.CONTACTS_FILTER_TYPES },
     /**
      * @enum {String}
      */
