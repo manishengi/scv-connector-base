@@ -761,6 +761,9 @@ export class PhoneCall {
     }
 }
 
+/** 
+* Class representing a TelephonyConnector
+*/
 export class TelephonyConnector {
     /**
      * Get the currently active calls
