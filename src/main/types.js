@@ -444,11 +444,7 @@ export class InitResult {
     constructor({ showLogin = false, loginFrameHeight = 350, isSilentLogin = false }) {
         this.showLogin = showLogin;
         this.loginFrameHeight = loginFrameHeight;
-        if(this.showLogin) {
-            this.isSilentLogin = false;
-        } else {
-            this.isSilentLogin = isSilentLogin;
-        }
+        this.isSilentLogin = this.showLogin ? false : isSilentLogin;
     }
 }
 
