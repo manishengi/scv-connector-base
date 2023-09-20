@@ -432,15 +432,30 @@ describe('Types validation tests', () => {
             expect(initResult.loginFrameHeight).toEqual(350);
         });
 
-        it('Should create InitResult object', () => {
+        it('Should create InitResult object - isSilentLogin true ', () => {
             const showLogin = false;
             const loginFrameHeight = 450;
+            const isSilentLogin = true;
             let initResult;
             expect(() => {
-                initResult = new InitResult({ showLogin, loginFrameHeight });
+                initResult = new InitResult({ showLogin, loginFrameHeight, isSilentLogin });
             }).not.toThrowError();
             expect(initResult.showLogin).toEqual(showLogin);
             expect(initResult.loginFrameHeight).toEqual(loginFrameHeight);
+            expect(initResult.isSilentLogin).toEqual(true);
+        });
+
+        it('Should create InitResult object - showLogin true & isSilentLogin false ', () => {
+            const showLogin = true;
+            const loginFrameHeight = 450;
+            const isSilentLogin = true;
+            let initResult;
+            expect(() => {
+                initResult = new InitResult({ showLogin, loginFrameHeight, isSilentLogin });
+            }).not.toThrowError();
+            expect(initResult.showLogin).toEqual(showLogin);
+            expect(initResult.loginFrameHeight).toEqual(loginFrameHeight);
+            expect(initResult.isSilentLogin).toEqual(false);
         });
     });
 
