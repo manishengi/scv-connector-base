@@ -1120,15 +1120,13 @@ export class Validator {
 
 /** 
 * Class representing an AgentWork
-* @param {object} param
-
 */
 export class AgentWork {
     /**
      * Create an AgentWork.
      * @param {object} param
-     * @param {string} [param.workItemId] - The salesforce work item Id
-     * @param {string} [param.workId] - The work Id
+     * @param {string} [param.workItemId] - Salesforce agent work item Id
+     * @param {string} [param.workId] - Salesforce work Id
      * @param {WORK_EVENT} [param.workEvent] - The work lifecycle event
      */
     constructor({ workItemId, workId, workEvent }) {
