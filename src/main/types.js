@@ -97,11 +97,7 @@ export const Constants = {
     /**
      * @enum {String}
      */
-    CONTACTS_FILTER_TYPES: { ...constants.CONTACTS_FILTER_TYPES },
-    /**
-     * @enum {String}
-     */
-    WORK_EVENT: { ...constants.WORK_EVENT }
+    CONTACTS_FILTER_TYPES: { ...constants.CONTACTS_FILTER_TYPES }
 };
 
 /**
@@ -764,9 +760,19 @@ export class PhoneCall {
 }
 
 /** 
-* Class representing a TelephonyConnector
+* Class representing a VendorConnector
 */
-export class TelephonyConnector {
+export class VendorConnector {
+    /**
+     * Initialize the connector
+     * @param {object} connectorConfig
+     * @returns {Promise<InitResult>} 
+     * 
+     */
+    init(config) {
+        throw new Error('Not implemented');
+    }
+
     /**
      * Get the currently active calls
      * @returns {Promise<ActiveCallsResult>} 
@@ -843,6 +849,27 @@ export class TelephonyConnector {
      */
     resume(call) {
         throw new Error('Not implemented');
+    }
+
+    /**
+     * Set agent status
+     * @param {string} agentStatus
+     * @param {StatusInfo} statusInfo
+     * @param {Boolean} enqueueNextState - flag to determine if this status change request should be enqueued if neccessary
+     * @returns {Promise<GenericResult>} 
+     * 
+     */
+    setAgentStatus(agentStatus, statusInfo, enqueueNextState) {
+        throw new Error('Not implemented');
+    }
+
+    /**
+     * Get agent status
+     * @returns {Promise<AgentStatusInfo>} 
+     * 
+     */
+     getAgentStatus() {
+        this.logMessageToVendor(constants.LOG_LEVEL.INFO, 'getAgentStatus API is NOT Implemented' );
     }
 
     /**
@@ -943,6 +970,23 @@ export class TelephonyConnector {
     getCapabilities() {
         throw new Error('Not implemented');
     }
+    
+
+    /**
+     * Logout from Omni
+     * @returns {Promise<LogoutResult>} 
+     */
+    logout() {
+        throw new Error('Not implemented');
+    }
+
+    /**
+     * Handle message from LWC/Aura component
+     * @param {object} message
+     */
+    handleMessage(message) {
+        throw new Error('Not implemented');
+    }
 
     /**
      * Wrap up call
@@ -964,10 +1008,27 @@ export class TelephonyConnector {
     }
 
     /**
+     * Triggers a browser download for Vendor Logs
+     * @param {String[]} logs Array of log messages.
+     */
+    downloadLogs(logs) {
+        downloadLogs();
+    }
+
+    /**
+     * Sends the logs with a logLevel and payload to the vendor connector.
+     * Does a no-op, if not implemented.
+     * @param {String} logLevel Log Level (INFO, WARN, ERROR)
+     * @param {String} message Message to be logged
+     * @param {Object} payload An optional payload to be logged
+     */
+    logMessageToVendor(logLevel, message, payload) {}
+
+    /**
      * Supervise a call
      * @param {PhoneCall} call Call to be supervised
      */
-    superviseCall(call) {
+     superviseCall(call) {
         throw new Error('Not implemented');
     }
 
@@ -986,93 +1047,6 @@ export class TelephonyConnector {
     supervisorBargeIn(call) {
         throw new Error('Not implemented');
     }
-}
-
-/** 
-* Class representing a VendorConnector
-*/
-export class VendorConnector {
-    /**
-     * Initialize the connector
-     * @param {object} connectorConfig
-     * @returns {Promise<InitResult>} 
-     * 
-     */
-    init(config) {
-        throw new Error('Not implemented');
-    }
-
-    /**
-     * Gets the telephonyConnector
-     * @returns {Promise<TelephonyConnector>} 
-     * 
-     */
-    getTelephonyConnector() {
-        throw new Error('Not implemented');
-    }
-
-    /**
-     * Sends non-voice agent work events to vendor such as work accepted, declined, etc
-     * @param {AgentWork} agentWork
-     * 
-     */
-    onAgentWorkEvent(agentWork) {
-        throw new Error('Not implemented');
-    }
-
-    /**
-     * Set agent status
-     * @param {string} agentStatus
-     * @param {StatusInfo} statusInfo
-     * @param {Boolean} enqueueNextState - flag to determine if this status change request should be enqueued if neccessary
-     * @returns {Promise<GenericResult>} 
-     * 
-     */
-    setAgentStatus(agentStatus, statusInfo, enqueueNextState) {
-        throw new Error('Not implemented');
-    }
-
-    /**
-     * Get agent status
-     * @returns {Promise<AgentStatusInfo>} 
-     * 
-     */
-     getAgentStatus() {
-        this.logMessageToVendor(constants.LOG_LEVEL.INFO, 'getAgentStatus API is NOT Implemented' );
-    }
-
-    /**
-     * Logout from Omni
-     * @returns {Promise<LogoutResult>} 
-     */
-    logout() {
-        throw new Error('Not implemented');
-    }
-
-    /**
-     * Handle message from LWC/Aura component
-     * @param {object} message
-     */
-    handleMessage(message) {
-        throw new Error('Not implemented');
-    }
-
-    /**
-     * Triggers a browser download for Vendor Logs
-     * @param {String[]} logs Array of log messages.
-     */
-    downloadLogs(logs) {
-        downloadLogs();
-    }
-
-    /**
-     * Sends the logs with a logLevel and payload to the vendor connector.
-     * Does a no-op, if not implemented.
-     * @param {String} logLevel Log Level (INFO, WARN, ERROR)
-     * @param {String} message Message to be logged
-     * @param {Object} payload An optional payload to be logged
-     */
-    logMessageToVendor(logLevel, message, payload) {}
 }
 
 export class Validator {
@@ -1119,25 +1093,6 @@ export class Validator {
         return this;
     }
 }
-
-/** 
-* Class representing an AgentWork
-*/
-export class AgentWork {
-    /**
-     * Create an AgentWork.
-     * @param {object} param
-     * @param {string} [param.workItemId] - Salesforce agent work item Id
-     * @param {string} [param.workId] - Salesforce work Id
-     * @param {WORK_EVENT} [param.workEvent] - The work lifecycle event
-     */
-    constructor({ workItemId, workId, workEvent }) {
-        Validator.validateEnum(workEvent, Object.values(constants.WORK_EVENT));
-        this.workEvent = workEvent;
-        this.workItemId = workItemId;
-        this.workId = workId;
-    }
- }
 
 /** 
  * Class representing an Agent status information. This object is used to represent 
