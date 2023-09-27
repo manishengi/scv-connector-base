@@ -3376,4 +3376,12 @@ describe('SCVConnectorBase tests', () => {
             }});
         });
     });
+    
+    describe('Callback request tests', () => {
+        it('Should dispatch SHOW_TRANSFER_VIEW', async () => {
+            publishEvent({eventType: constants.EVENT_TYPE.SHOW_TRANSFER_VIEW});
+            assertChannelPortPayload({eventType: constants.EVENT_TYPE.SHOW_TRANSFER_VIEW});
+            expect(channelPort.postMessage).toHaveBeenCalled();
+        });
+    });
 });
