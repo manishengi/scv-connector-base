@@ -1101,6 +1101,11 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
             break;
         }
 
+        case constants.EVENT_TYPE.SHOW_TRANSFER_VIEW: {
+            dispatchEvent(constants.EVENT_TYPE.SHOW_TRANSFER_VIEW, payload);
+            break;
+        }
+
         /**
          * NOTE: SALESFORCE INTERNAL USE ONLY
          */
