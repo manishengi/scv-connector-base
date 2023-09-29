@@ -71,6 +71,7 @@ const dummyCustomErrorPayload = {
 };
 const initResult_showLogin = new InitResult({ showLogin: true, loginFrameHeight });
 const initResult_connectorReady = new InitResult({ showLogin: false, loginFrameHeight });
+const initResult_isSilentLogin = new InitResult({ isSilentLogin: true });
 const emptyActiveCallsResult = new ActiveCallsResult({ activeCalls: [] });
 const activeCallsResult = new ActiveCallsResult({ activeCalls: [ dummyPhoneCall ] });
 const activeCallsResult1 = new ActiveCallsResult({ activeCalls: [ dummyPhoneCall, dummyRingingPhoneCall, dummyConnectedPhoneCall, dummyTransferringPhoneCall, dummyTransferredPhoneCall, dummySupervisorRingingPhoneCall, dummySupervisorConnectedPhoneCall, dummySupervisorBargedInPhoneCall ] });
@@ -448,6 +449,12 @@ describe('SCVConnectorBase tests', () => {
                 },
                 isError: false
             });
+        });
+
+        it('Should dispatch SHOW_LOGIN (isSilentLogin) after initialization', async () => {
+            adapter.init = jest.fn().mockResolvedValue(initResult_isSilentLogin);
+            eventMap['message'](message);
+            await expect(adapter.init()).resolves.toBe(initResult_isSilentLogin);
         });
 
         it('Should dispatch CONNECTOR_READY after initialization', async () => {

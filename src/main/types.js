@@ -440,10 +440,12 @@ export class InitResult {
      * @param {object} param
      * @param {boolean} [param.showLogin]
      * @param {number} [param.loginFrameHeight]
+     * @param {boolean} [param.isSilentLogin]
      */
-    constructor({ showLogin = false, loginFrameHeight = 350 }) {
+    constructor({ showLogin = false, loginFrameHeight = 350, isSilentLogin = false }) {
         this.showLogin = showLogin;
         this.loginFrameHeight = loginFrameHeight;
+        this.isSilentLogin = this.showLogin ? false : isSilentLogin;
     }
 }
 
