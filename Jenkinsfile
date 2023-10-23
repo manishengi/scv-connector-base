@@ -81,7 +81,7 @@ executePipeline(envDef) {
     // Release to internal npm
     if (BuildUtils.isReleaseBuild(env) && params.RELEASE){
         stage('Release'){
-            final String registry = 'nexus.soma.salesforce.com/nexus/content/repositories/npmjs-internal/'
+            final String registry = 'nexus-proxy.repo.local.sfdc.net/nexus/content/repositories/npmjs-internal/'
             withCredentials([usernamePassword(
                 credentialsId: 'sfci-nexus',
                 usernameVariable: 'NEXUS_USERNAME',
