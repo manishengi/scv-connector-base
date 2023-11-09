@@ -854,7 +854,7 @@ export function publishError({ eventType, error }) {
  * Publish an event to Sfdc. The event payload will be verified to be the correct type before being published. 
  * @param {object} param
  * @param {("LOGIN_RESULT"|"LOGOUT_RESULT"|"CALL_STARTED"|"QUEUED_CALL_STARTED"|"CALL_CONNECTED"|"HANGUP"|"PARTICIPANT_CONNECTED"|"PARTICIPANT_ADDED"|"PARTICIPANTS_SWAPPED"|"PARTICIPANTS_CONFERENCED"|"MESSAGE"|"MUTE_TOGGLE"|"HOLD_TOGGLE"|"RECORDING_TOGGLE")} param.eventType Event type to publish
- * @param {object} param.payload Payload for the event. Must to be an object of the payload class associated with the EVENT_TYPE else the event is NOT dispatched
+ * @param {object} param.payload Payload for the event. Must be an object of the payload class associated with the EVENT_TYPE else the event is NOT dispatched
  * LOGIN_RESULT - GenericResult
  * LOGOUT_RESULT - LogoutResult
  * CALL_STARTED - CallResult
