@@ -855,7 +855,6 @@ export function publishError({ eventType, error }) {
  * @param {object} param
  * @param {("LOGIN_RESULT"|"LOGOUT_RESULT"|"CALL_STARTED"|"QUEUED_CALL_STARTED"|"CALL_CONNECTED"|"HANGUP"|"PARTICIPANT_CONNECTED"|"PARTICIPANT_ADDED"|"PARTICIPANTS_SWAPPED"|"PARTICIPANTS_CONFERENCED"|"MESSAGE"|"MUTE_TOGGLE"|"HOLD_TOGGLE"|"RECORDING_TOGGLE")} param.eventType Event type to publish
  * @param {object} param.payload Payload for the event. Must to be an object of the payload class associated with the EVENT_TYPE else the event is NOT dispatched
- * @param {boolean} param.registerLog Boolean to opt out of registering logs for events
  * LOGIN_RESULT - GenericResult
  * LOGOUT_RESULT - LogoutResult
  * CALL_STARTED - CallResult
@@ -871,11 +870,11 @@ export function publishError({ eventType, error }) {
  * HOLD_TOGGLE - HoldToggleResult
  * RECORDING_TOGGLE - RecordingToggleResult
  */
-export async function publishEvent({ eventType, payload, registerLog = true }) {
+export async function publishEvent({ eventType, payload }) {
     switch(eventType) {
         case constants.EVENT_TYPE.LOGIN_RESULT: {
             if (validatePayload(payload, GenericResult, constants.ERROR_TYPE.CAN_NOT_LOG_IN, constants.EVENT_TYPE.LOGIN_RESULT)) {
-                dispatchEvent(constants.EVENT_TYPE.LOGIN_RESULT, payload, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.LOGIN_RESULT, payload);
                 if (payload.success) {
                     setConnectorReady();
                 }
@@ -887,17 +886,17 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                 dispatchEvent(constants.EVENT_TYPE.LOGOUT_RESULT, {
                     success: payload.success,
                     loginFrameHeight: payload.loginFrameHeight
-                }, registerLog);
+                });
             }
             break;
         case constants.EVENT_TYPE.CALL_STARTED:
             if (validatePayload(payload, CallResult, constants.ERROR_TYPE.CAN_NOT_START_THE_CALL, constants.EVENT_TYPE.CALL_STARTED)) {
-                dispatchEvent(constants.EVENT_TYPE.CALL_STARTED, payload.call, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.CALL_STARTED, payload.call);
             }
             break;
         case constants.EVENT_TYPE.QUEUED_CALL_STARTED:
             if (validatePayload(payload, CallResult, constants.ERROR_TYPE.CAN_NOT_START_THE_CALL, constants.EVENT_TYPE.QUEUED_CALL_STARTED)) {
-                dispatchEvent(constants.EVENT_TYPE.QUEUED_CALL_STARTED, payload.call, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.QUEUED_CALL_STARTED, payload.call);
             }
             break;
         case constants.EVENT_TYPE.CALL_CONNECTED:
@@ -907,16 +906,16 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     const hangupPayload = await vendorConnector.supervisorDisconnect();
                     Validator.validateClassObject(hangupPayload, SupervisorHangupResult);
                     isSupervisorConnected = false;
-                    dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_HANGUP, hangupPayload, registerLog);
-                    dispatchEvent(constants.EVENT_TYPE.CALL_CONNECTED, payload.call, registerLog);
+                    dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_HANGUP, hangupPayload);
+                    dispatchEvent(constants.EVENT_TYPE.CALL_CONNECTED, payload.call);
                     break;
                 } 
-                dispatchEvent(constants.EVENT_TYPE.CALL_CONNECTED, payload.call, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.CALL_CONNECTED, payload.call);
             }
             break;
         case constants.EVENT_TYPE.HANGUP: {
             if (validatePayload(payload, HangupResult, constants.ERROR_TYPE.CAN_NOT_END_THE_CALL, constants.EVENT_TYPE.HANGUP)) {
-                dispatchEvent(constants.EVENT_TYPE.HANGUP, payload.calls, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.HANGUP, payload.calls);
             }
             break;
         }
@@ -928,7 +927,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     callInfo,
                     phoneNumber,
                     callId
-                }, registerLog);
+                });
             }
             break;
         }
@@ -940,7 +939,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     callInfo,
                     phoneNumber,
                     callId
-                }, registerLog);
+                });
             }
             break;
         }
@@ -955,7 +954,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     // when no more active calls, fire HANGUP
                     const activeCalls = activeCallsResult.activeCalls;
                     if (activeCalls.length === 0) {
-                        dispatchEvent(constants.EVENT_TYPE.HANGUP, call, registerLog);
+                        dispatchEvent(constants.EVENT_TYPE.HANGUP, call);
                     } else if (call && call.callAttributes && call.callAttributes.participantType === constants.PARTICIPANT_TYPE.INITIAL_CALLER) {
                         // when there is still transfer call, based on the state of the transfer call, fire PARTICIPANT_ADDED or PARTICIPANT_CONNECTED
                         const transferCall = Object.values(activeCalls).filter((obj) => obj['callType'] === constants.CALL_TYPE.ADD_PARTICIPANT).pop();
@@ -966,21 +965,21 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     } else {
                         dispatchEvent(constants.EVENT_TYPE.PARTICIPANT_REMOVED, {
                             reason: call? call.reason : null
-                        }, registerLog);
+                        });
                     }
                 }
             }
             break;
         }
         case constants.EVENT_TYPE.MESSAGE:
-            dispatchEvent(constants.EVENT_TYPE.MESSAGE, payload, registerLog);
+            dispatchEvent(constants.EVENT_TYPE.MESSAGE, payload);
             break;
         // TODO: Add validations for the ACW & Wrap up ended
         case constants.EVENT_TYPE.AFTER_CALL_WORK_STARTED:
-            dispatchEvent(constants.EVENT_TYPE.AFTER_CALL_WORK_STARTED, payload, registerLog);
+            dispatchEvent(constants.EVENT_TYPE.AFTER_CALL_WORK_STARTED, payload);
             break;
         case constants.EVENT_TYPE.WRAP_UP_ENDED:
-            dispatchEvent(constants.EVENT_TYPE.WRAP_UP_ENDED, payload, registerLog);
+            dispatchEvent(constants.EVENT_TYPE.WRAP_UP_ENDED, payload);
             break;
         /* This is only added to aid in connector development */
         case constants.EVENT_TYPE.REMOTE_CONTROLLER:
@@ -988,7 +987,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
             break;
         case constants.EVENT_TYPE.MUTE_TOGGLE:
             if (validatePayload(payload, MuteToggleResult, constants.ERROR_TYPE.CAN_NOT_TOGGLE_MUTE, constants.EVENT_TYPE.MUTE_TOGGLE)) {
-                dispatchEvent(constants.EVENT_TYPE.MUTE_TOGGLE, payload, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.MUTE_TOGGLE, payload);
             }
             break;
         case constants.EVENT_TYPE.HOLD_TOGGLE: {
@@ -998,7 +997,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     isThirdPartyOnHold,
                     isCustomerOnHold,
                     calls
-                }, registerLog);
+                });
             }
             break;
         }
@@ -1016,7 +1015,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     initialContactId,
                     instanceId,
                     region
-                }, registerLog);
+                });
             }
         break;
         }
@@ -1027,7 +1026,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     isThirdPartyOnHold,
                     isCustomerOnHold,
                     calls
-                }, registerLog);
+                });
             }
         }
         break;
@@ -1037,7 +1036,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                 dispatchEvent(constants.EVENT_TYPE.HOLD_TOGGLE, {
                     isThirdPartyOnHold,
                     isCustomerOnHold
-                }, registerLog);
+                });
             }
         break;
         }
@@ -1049,7 +1048,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                 if (payload.isAudioStatsCompleted && payload.callId) {
                     const callId = payload.callId;
                     const mos = getMOS();
-                    dispatchEvent(constants.EVENT_TYPE.UPDATE_AUDIO_STATS_COMPLETED, {callId, mos}, registerLog);
+                    dispatchEvent(constants.EVENT_TYPE.UPDATE_AUDIO_STATS_COMPLETED, {callId, mos});
                 }
             }
             break;
@@ -1057,14 +1056,14 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
 
         case constants.EVENT_TYPE.SUPERVISOR_BARGED_IN: {
             if (validatePayload(payload, SuperviseCallResult, constants.ERROR_TYPE.CAN_NOT_BARGE_IN_SUPERVISOR, constants.EVENT_TYPE.SUPERVISOR_BARGED_IN)) {
-                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_BARGED_IN, payload.call, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_BARGED_IN, payload.call);
             }
             break;
         }
 
         case constants.EVENT_TYPE.CALL_BARGED_IN: {
             if (validatePayload(payload, SupervisedCallInfo,  constants.ERROR_TYPE.GENERIC_ERROR, constants.EVENT_TYPE.CALL_BARGED_IN)) {
-                dispatchEvent(constants.EVENT_TYPE.CALL_BARGED_IN, payload, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.CALL_BARGED_IN, payload);
             }
             break;
         }
@@ -1072,7 +1071,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         case constants.EVENT_TYPE.SUPERVISOR_CALL_STARTED: {
             if (validatePayload(payload, SuperviseCallResult,  constants.ERROR_TYPE.CAN_NOT_SUPERVISE_CALL, constants.EVENT_TYPE.SUPERVISOR_CALL_STARTED)) {
                 isSupervisorConnected = true;
-                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_CALL_STARTED, payload.call, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_CALL_STARTED, payload.call);
             }
             break;
         }
@@ -1080,7 +1079,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         case constants.EVENT_TYPE.SUPERVISOR_CALL_CONNECTED: {
             if (validatePayload(payload, SuperviseCallResult,  constants.ERROR_TYPE.CAN_NOT_SUPERVISE_CALL, constants.EVENT_TYPE.SUPERVISOR_CALL_CONNECTED)) {
                 isSupervisorConnected = true;
-                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_CALL_CONNECTED, payload.call, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_CALL_CONNECTED, payload.call);
             }
             break;
         }
@@ -1088,7 +1087,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         case constants.EVENT_TYPE.SUPERVISOR_HANGUP: {
             if (validatePayload(payload, SupervisorHangupResult,  constants.ERROR_TYPE.CAN_NOT_DISCONNECT_SUPERVISOR, constants.EVENT_TYPE.SUPERVISOR_HANGUP)) {
                 isSupervisorConnected = false;
-                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_HANGUP, payload.calls, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.SUPERVISOR_HANGUP, payload.calls);
             }
             break;
         }
@@ -1096,7 +1095,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         case constants.EVENT_TYPE.SET_AGENT_STATUS: {
             if (validatePayload(payload, AgentStatusInfo,  constants.ERROR_TYPE.CAN_NOT_SET_AGENT_STATUS, constants.EVENT_TYPE.SET_AGENT_STATUS)) {
                 const statusId = payload.statusId;
-                dispatchEvent(constants.EVENT_TYPE.SET_AGENT_STATUS, { statusId }, registerLog);
+                dispatchEvent(constants.EVENT_TYPE.SET_AGENT_STATUS, { statusId });
             }
             break;
         }
