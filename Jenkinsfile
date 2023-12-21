@@ -10,7 +10,7 @@
 import net.sfdc.dci.BuildUtils
 import net.sfdc.dci.CodeCoverageUtils
 
-env.RELEASE_BRANCHES = ['master']
+env.RELEASE_BRANCHES = ['master', 'byo-cc']
 
 def complianceFlags = [
                         enable: true,//For ensuring PR has WI mentiooned
