@@ -530,9 +530,10 @@ describe('Types validation tests', () => {
             const showAddBlindTransferButton = true;
             const showMergeButton = true;
             const showSwapButton = true;
+            const isMultiParty = true;
             let callInfo;
             expect(() => {
-                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton });
+                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty });
             }).not.toThrowError();
             expect(callInfo.callStateTimestamp).toBeNull();
             expect(callInfo.isOnHold).toEqual(isOnHold);
@@ -548,6 +549,7 @@ describe('Types validation tests', () => {
             expect(callInfo.queueName).toEqual(null);
             expect(callInfo.queueId).toEqual(null);
             expect(callInfo.queueTimestamp).toEqual(null);
+            expect(callInfo.isMultiParty).toEqual(true);
         });
 
         it('Should create CallInfo object', () => {
