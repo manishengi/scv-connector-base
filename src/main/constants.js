@@ -18,6 +18,7 @@ export default {
         MESSAGE: 'MESSAGE',
         DOWNLOAD_VENDOR_LOGS: 'DOWNLOAD_VENDOR_LOGS',
         AGENT_WORK_EVENT: 'AGENT_WORK_EVENT',
+        GET_CONTACTS: 'GET_CONTACTS',
 
         // Telephony Message Types: sent from SFDC to Telephony Vendor
         VOICE: {
@@ -62,6 +63,7 @@ export default {
         REMOTE_CONTROLLER: 'REMOTE_CONTROLLER',
         SHOW_STORAGE_ACCESS: 'SHOW_STORAGE_ACCESS',
         STORAGE_ACCESS_RESULT: 'STORAGE_ACCESS_RESULT',
+        GET_CONTACTS_RESULT: 'GET_CONTACTS_RESULT',
         VOICE: {
             QUEUED_CALL_STARTED: 'QUEUED_CALL_STARTED',
             CALL_STARTED: 'CALL_STARTED',

@@ -44,7 +44,8 @@ export const Constants = {
         SET_AGENT_STATUS: constants.EVENT_TYPE.SET_AGENT_STATUS,
         GET_AGENT_STATUS: constants.EVENT_TYPE.GET_AGENT_STATUS,
         STATE_CHANGE: constants.EVENT_TYPE.STATE_CHANGE,
-        STORAGE_ACCESS_RESULT: constants.EVENT_TYPE.STORAGE_ACCESS_RESULT
+        STORAGE_ACCESS_RESULT: constants.EVENT_TYPE.STORAGE_ACCESS_RESULT,
+        GET_CONTACTS_RESULT: constants.EVENT_TYPE.GET_CONTACTS_RESULT
     },
     /**
     * @enum {string}
@@ -1101,6 +1102,16 @@ export class VendorConnector {
      * @param {Object} payload An optional payload to be logged
      */
     logMessageToVendor(logLevel, message, payload) {}
+
+    /**
+     * To get the Contacts for this workItem's transfer/other channel operation
+     * @param {Object} filter It has fields like the search term  and contact Type
+     * @param {String} workItemId
+     * @returns {Promise<PhoneContactsResult>} 
+     */
+    getContacts(filter, workItemId) {
+        throw new Error('Not implemented');
+    }
 }
 
 export class Validator {
