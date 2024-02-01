@@ -2,39 +2,44 @@ export namespace Constants {
     namespace EVENT_TYPE {
         const LOGIN_RESULT: string;
         const LOGOUT_RESULT: string;
-        const CALL_STARTED: string;
-        const QUEUED_CALL_STARTED: string;
-        const CALL_CONNECTED: string;
-        const HANGUP: string;
-        const MUTE_TOGGLE: string;
-        const HOLD_TOGGLE: string;
-        const RECORDING_TOGGLE: string;
-        const PARTICIPANTS_SWAPPED: string;
-        const PARTICIPANTS_CONFERENCED: string;
-        const PARTICIPANT_ADDED: string;
-        const PARTICIPANT_CONNECTED: string;
-        const PARTICIPANT_REMOVED: string;
         const MESSAGE: string;
-        const AFTER_CALL_WORK_STARTED: string;
-        const WRAP_UP_ENDED: string;
-        const AGENT_ERROR: string;
-        const SOFTPHONE_ERROR: string;
-        const UPDATE_AUDIO_STATS: string;
-        const SUPERVISOR_BARGED_IN: string;
-        const SUPERVISOR_CALL_STARTED: string;
-        const SUPERVISOR_CALL_CONNECTED: string;
-        const SUPERVISOR_HANGUP: string;
         const SET_AGENT_STATUS: string;
         const GET_AGENT_STATUS: string;
         const STATE_CHANGE: string;
+        namespace VOICE {
+            const CALL_STARTED: string;
+            const QUEUED_CALL_STARTED: string;
+            const CALL_CONNECTED: string;
+            const HANGUP: string;
+            const MUTE_TOGGLE: string;
+            const HOLD_TOGGLE: string;
+            const RECORDING_TOGGLE: string;
+            const PARTICIPANTS_SWAPPED: string;
+            const PARTICIPANTS_CONFERENCED: string;
+            const PARTICIPANT_ADDED: string;
+            const PARTICIPANT_CONNECTED: string;
+            const PARTICIPANT_REMOVED: string;
+            const AFTER_CALL_WORK_STARTED: string;
+            const WRAP_UP_ENDED: string;
+            const AGENT_ERROR: string;
+            const SOFTPHONE_ERROR: string;
+            const UPDATE_AUDIO_STATS: string;
+            const SUPERVISOR_BARGED_IN: string;
+            const SUPERVISOR_CALL_STARTED: string;
+            const SUPERVISOR_CALL_CONNECTED: string;
+            const SUPERVISOR_HANGUP: string;
+            const SHOW_TRANSFER_VIEW: string;
+        }
     }
     namespace ERROR_TYPE {
         const GENERIC_ERROR: string;
-        const INVALID_PARTICIPANT: string;
-        const INVALID_DESTINATION: string;
-        const INVALID_PARAMS: string;
         const INVALID_AGENT_STATUS: string;
-        const CAN_NOT_UPDATE_PHONE_NUMBER: string;
+        namespace VOICE {
+            const INVALID_PARTICIPANT: string;
+            const INVALID_DESTINATION: string;
+            const INVALID_PARAMS: string;
+            const CAN_NOT_UPDATE_PHONE_NUMBER: string;
+        }
     }
     const AGENT_STATUS: {
         ONLINE: string;
@@ -53,7 +58,9 @@ export namespace Constants {
         OUTBOUND: string;
         CALLBACK: string;
         ADD_PARTICIPANT: string;
+        TRANSFER: string;
         INTERNAL_CALL: string;
+        DIALED_CALLBACK: string;
     };
     const DIALER_TYPE: {
         OUTBOUND_PREVIEW: string;
@@ -64,6 +71,7 @@ export namespace Constants {
         QUEUE: string;
         PHONENUMBER: string;
         AGENT: string;
+        FLOW: string;
     };
     const CALL_STATE: {
         RINGING: string;
@@ -95,13 +103,38 @@ export namespace Constants {
         INFO: string;
     };
     const CONTACTS_FILTER_TYPES: {
-        AGENT: string,
-        QUEUE: string,
-        CONTACT: string,
-        DIRECTORY: string,
-        FLOW: string,
-        AVAILABLE: string
+        AGENT: string;
+        QUEUE: string;
+        CONTACT: string;
+        DIRECTORY: string;
+        FLOW: string;
+        AVAILABLE: strin;
     };
+    const WORK_EVENT: {
+        ASSIGNED: string;
+        ACCEPTED: string;
+        DECLINED: string;
+        COMPLETED: string;
+        CLOSED: string;
+    };
+}
+
+export class CustomError extends Error {
+    /**
+     * Custom error
+     * @param {object} param
+     * @param {String} param.labelName
+     * @param {String} param.namespace
+     * @param {String} [param.message]
+     */
+    constructor({ labelName, namespace, message }: {
+        labelName: string;
+        namespace: string;
+        message?: string;
+    });
+    labelName: string;
+    namespace: string;
+    message: string;
 }
 /**
  * Class representing a Phone type
@@ -148,6 +181,7 @@ export class ActiveCallsResult {
     });
     activeCalls: PhoneCall[];
 }
+
 /**
  * Class representing result type for getAgentConfig()
  */
@@ -288,11 +322,14 @@ export class PhoneContactsResult {
      * Create PhoneContactsResult
      * @param {object} param
      * @param {Contact[]} [param.contacts]
+     * @param {String[]} [param.contactTypes]
      */
-    constructor({ contacts }: {
+    constructor({ contacts, contactTypes }: {
         contacts?: Contact[];
+        contactTypes?: string[];
     });
     contacts: Contact[];
+    contactTypes: string[];
 }
 /**
  * Class representing result type for accept(), decline(), dial()
@@ -374,14 +411,35 @@ export class InitResult {
      * @param {object} param
      * @param {boolean} [param.showLogin]
      * @param {number} [param.loginFrameHeight]
+     * @param {boolean} [param.isSilentLogin]
+     * @param {boolean} [param.showStorageAccess]
      */
-    constructor({ showLogin, loginFrameHeight }: {
+    constructor({ showLogin, loginFrameHeight, isSilentLogin, showStorageAccess }: {
         showLogin?: boolean;
         loginFrameHeight?: number;
+        isSilentLogin?: boolean;
+        showStorageAccess?: boolean;
     });
     showLogin: boolean;
     loginFrameHeight: number;
+    isSilentLogin: boolean;
+    showStorageAccess: boolean;
 }
+
+/**
+ * Class representing dial options for outbound dialing 
+ */
+export class DialOptions {
+    /**
+     * Create DialOptions
+     * @param {boolean} [param.isCallback]
+     */
+    constructor({ isCallback }: {
+        isCallback: boolean;
+    });
+    isCallback: boolean;
+}
+
 /**
  * Class representing generic result type
  */
@@ -425,6 +483,9 @@ export class CallInfo {
      * @param {boolean} param.isMuted
      * @param {string} [param.initialCallId]
      * @param {Date} [param.callStateTimestamp]
+     * @param {string} [param.queueName]
+     * @param {string} [param.queueId]
+     * @param {Date} [param.queueTimestamp]
      * @param {boolean} [param.isSoftphoneCall] - is it a softphone call
      * @param {boolean} [param.acceptEnabled]
      * @param {boolean} [param.declineEnabled]
@@ -438,14 +499,25 @@ export class CallInfo {
      * @param {boolean} [param.isReplayable]
      * @param {boolean} [param.isBargeable]
      * @param {boolean} [param.isExternalTransfer]
+     * @param {boolean} [param.showMuteButton]
+     * @param {boolean} [param.showRecordButton]
+     * @param {boolean} [param.showAddCallerButton]
+     * @param {boolean} [param.showAddBlindTransferButton]
+     * @param {boolean} [param.showMergeButton]
+     * @param {boolean} [param.showSwapButton]
      * @param {("ALWAYS"|"NEVER"|"ALWAYS_EXCEPT_ON_HOLD")} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call.
+     * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
+     * @param {boolean} [param.isMultiParty]
      */
-    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant }: {
+    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty }: {
         isOnHold: boolean;
         isRecordingPaused: boolean;
         isMuted: boolean;
         initialCallId?: string;
         callStateTimestamp?: Date;
+        queueName?: string;
+        queueId?: string;
+        queueTimestamp?: Date;
         isSoftphoneCall?: boolean;
         acceptEnabled?: boolean;
         declineEnabled?: boolean;
@@ -459,27 +531,46 @@ export class CallInfo {
         isReplayable?: boolean;
         isBargeable?: boolean;
         isExternalTransfer?: boolean;
+        showMuteButton?: boolean;
+        showRecordButton?: boolean;
+        showAddCallerButton?: boolean;
+        showAddBlindTransferButton?: boolean;
+        showMergeButton?: boolean;
+        showSwapButton?: boolean;
         removeParticipantVariant?: string;
+        additionalFields?: string;
+        isMultiParty?: boolean;
     });
-    callStateTimestamp: Date;
-    isRecordingPaused: boolean;
-    isMuted: boolean;
-    isOnHold: boolean;
-    initialCallId: string;
-    isSoftphoneCall: boolean;
-    acceptEnabled: boolean;
-    declineEnabled: boolean;
-    muteEnabled: boolean;
-    swapEnabled: boolean;
-    conferenceEnabled: boolean;
-    holdEnabled: boolean;
-    recordEnabled: boolean;
-    addCallerEnabled: boolean;
-    extensionEnabled: boolean;
-    isReplayable: boolean;
-    isBargeable: boolean;
-    isExternalTransfer: boolean;
-    removeParticipantVariant: string;
+        isOnHold: boolean;
+        isRecordingPaused: boolean;
+        isMuted: boolean;
+        initialCallId: string;
+        callStateTimestamp: Date;
+        queueName: string;
+        queueId: string;
+        queueTimestamp: Date;
+        isSoftphoneCall: boolean;
+        acceptEnabled: boolean;
+        declineEnabled: boolean;
+        muteEnabled: boolean;
+        swapEnabled: boolean;
+        conferenceEnabled: boolean;
+        holdEnabled: boolean;
+        recordEnabled: boolean;
+        addCallerEnabled: boolean;
+        extensionEnabled: boolean;
+        isReplayable: boolean;
+        isBargeable: boolean;
+        isExternalTransfer: boolean;
+        showMuteButton: boolean;
+        showRecordButton: boolean;
+        showAddCallerButton: boolean;
+        showAddBlindTransferButton: boolean;
+        showMergeButton: boolean;
+        showSwapButton: boolean;
+        removeParticipantVariant: string;
+        additionalFields: string;
+        isMultiParty: boolean;
 }
 /**
  * Class representing a Contact. This object is used to represent
@@ -499,9 +590,10 @@ export class Contact {
      * @param {string} [param.queue]
      * @param {string} [param.availability]
      * @param {string} [param.recordId] - Salesforce RecordId
-     * @param {string} [param.description] - Contact Description 
+     * @param {string} [param.description] - Contact Description
+     * @param {string} [param.queueWaitTime] - Estimated Queue Wait Time
      */
-    constructor({ phoneNumber, id, type, name, prefix, extension, endpointARN, queue, availability, recordId, description }: {
+    constructor({ phoneNumber, id, type, name, prefix, extension, endpointARN, queue, availability, recordId, description, queueWaitTime }: {
         id?: string;
         type?: ("PhoneBook" | "Queue" | "PhoneNumber" | "Agent");
         name?: string;
@@ -513,6 +605,7 @@ export class Contact {
         availability?: string;
         recordId?: string;
         description?: string;
+        queueWaitTime?: string;
     });
     phoneNumber: string;
     id: string;
@@ -525,6 +618,7 @@ export class Contact {
     availability: string;
     recordId: string;
     description: string;
+    queueWaitTime: string;
 }
 /**
 * Class representing PhoneCallAttributes
@@ -538,19 +632,22 @@ export class PhoneCallAttributes {
      * @param {DIALER_TYPE} [param.dialerType] - The dialer type of the call
      * @param {string} [param.parentId] - The parent call id of the call
      * @param {boolean} [param.isOnHold]
+     * @param {boolean} [param.hasSupervisorBargedIn]
      */
-    constructor({ voiceCallId, participantType, dialerType, parentId, isOnHold }: {
+    constructor({ voiceCallId, participantType, dialerType, parentId, isOnHold, hasSupervisorBargedIn}: {
         voiceCallId?: string;
         participantType?: string;
         dialerType?: string;
         parentId?: string;
         isOnHold?: boolean;
+        hasSupervisorBargedIn?: boolean;
     });
     voiceCallId: string;
     participantType: string;
+    dialerType: string;
     parentId: string;
     isOnHold: boolean;
-    dialerType: string;
+    hasSupervisorBargedIn: boolean;
 }
 /**
 * Class representing a PhoneCall.
@@ -593,8 +690,9 @@ export class PhoneCall {
     state: string;
     callAttributes: PhoneCallAttributes;
 }
-/**
-* Class representing a VendorConnector
+
+/** 
+* Class representing a vendor connector
 */
 export class VendorConnector {
     /**
@@ -604,6 +702,61 @@ export class VendorConnector {
      *
      */
     init(config: any): Promise<InitResult>;
+    /**
+     * Gets the telephonyConnector
+     * @returns {Promise<TelephonyConnector>} 
+     * 
+     */
+    getTelephonyConnector(): Promise<TelephonyConnector>;
+    /**
+     * Sends non-voice agent work events to vendor such as work accepted, declined, etc
+     * @param {AgentWork} agentWork
+     * 
+     */
+    onAgentWorkEvent(agentWork: AgentWork): void;
+    /**
+     * Set agent status
+     * @param {string} agentStatus
+     * @param {StatusInfo} statusInfo
+     * @param {boolean} enqueueNextState
+     * @returns {Promise<GenericResult>}
+     *
+     */
+    setAgentStatus(agentStatus: string, statusInfo: StatusInfo, enqueueNextState: boolean): Promise<GenericResult>;
+    /**
+     * Get agent status
+     * @returns {Promise<AgentStatusInfo>}
+     *
+     */
+    getAgentStatus(): Promise<AgentStatusInfo>;
+    /**
+     * Logout from Omni
+     * @returns {Promise<LogoutResult>}
+     */
+    logout(): Promise<LogoutResult>;
+    /**
+     * Handle message from LWC/Aura component
+     * @param {object} message
+     */
+    handleMessage(message: object): void;
+    /**
+     * Triggers a browser download for Vendor Logs
+     * * @param {String[]} logs Array of log messages
+     */
+    downloadLogs(logs): void;
+    /**
+     * Sends the logs with a logLevel and payload to the vendor connector.
+     * Does a no-op, if not implemented.
+     * @param {String} logLevel Log Level (INFO, WARN, ERROR)
+     * @param {String} message Message to be logged
+     * @param {Object} payload An optional payload to be logged
+     */
+    logMessageToVendor(logLevel: string, message: string, payload: any): void;
+}
+/**
+* Class representing a telephony connector
+*/
+export class TelephonyConnector {
     /**
      * Get the currently active calls
      * @returns {Promise<ActiveCallsResult>}
@@ -659,21 +812,6 @@ export class VendorConnector {
      */
     resume(call: PhoneCall): Promise<HoldToggleResult>;
     /**
-     * Set agent status
-     * @param {string} agentStatus
-     * @param {StatusInfo} statusInfo
-     * @param {boolean} enqueueNextState
-     * @returns {Promise<GenericResult>}
-     *
-     */
-    setAgentStatus(agentStatus: string, statusInfo: StatusInfo, enqueueNextState: boolean): Promise<GenericResult>;
-    /**
-     * Get agent status
-     * @returns {Promise<AgentStatusInfo>}
-     *
-     */
-    getAgentStatus(): Promise<AgentStatusInfo>;
-    /**
      * Dial out Number
      * @param {Contact} contact
      * @returns {Promise<CallResult>}
@@ -687,9 +825,10 @@ export class VendorConnector {
     sendDigits(digits: string): void;
     /**
      * Get phone contacts
+     * @param {CONTACTS_FILTER_TYPES} filterType
      * @returns {Promise<PhoneContactsResult>}
      */
-    getPhoneContacts(): Promise<PhoneContactsResult>;
+    getPhoneContacts(filterType: string): Promise<PhoneContactsResult>;
     /**
      * Swap calls
      * @param {PhoneCall} call1
@@ -707,9 +846,10 @@ export class VendorConnector {
      * Add participant to call
      * @param {Contact} contact
      * @param {PhoneCall} call
+     * @param {Boolean} isBlindTransfer: True if blind transfering a call and hanging up upon transfer
      * @returns {Promise<ParticipantResult>}
      */
-    addParticipant(contact: Contact, call: PhoneCall): Promise<ParticipantResult>;
+    addParticipant(contact: Contact, call: PhoneCall, isBlindTransfer: boolean): Promise<ParticipantResult>;
     /**
      * Pause recording
      * @param {PhoneCall} call
@@ -739,16 +879,6 @@ export class VendorConnector {
      */
     getCapabilities(): Promise<CapabilitiesResult>;
     /**
-     * Logout from Omni
-     * @returns {Promise<LogoutResult>}
-     */
-    logout(): Promise<LogoutResult>;
-    /**
-     * Handle message from LWC/Aura component
-     * @param {object} message
-     */
-    handleMessage(message: object): void;
-    /**
      * Wrap up call
      * @param {PhoneCall} call
      */
@@ -761,19 +891,6 @@ export class VendorConnector {
     * @returns {Promise<SignedRecordingUrlResult>}
     */
     getSignedRecordingUrl(recordingUrl: string, vendorCallKey: string, callId: string): Promise<SignedRecordingUrlResult>;
-    /**
-     * Triggers a browser download for Vendor Logs
-     * * @param {String[]} logs Array of log messages
-     */
-    downloadLogs(logs): void;
-    /**
-     * Sends the logs with a logLevel and payload to the vendor connector.
-     * Does a no-op, if not implemented.
-     * @param {String} logLevel Log Level (INFO, WARN, ERROR)
-     * @param {String} message Message to be logged
-     * @param {Object} payload An optional payload to be logged
-     */
-    logMessageToVendor(logLevel: string, message: string, payload: any): void;
     /**
      * Supervise a call
      * @param {PhoneCall} call Call to be supervised
@@ -798,6 +915,27 @@ export class Validator {
     static validateDate(value: any): typeof Validator;
     static validateClassObject(object: any, className: any): typeof Validator;
 }
+
+/** 
+* Class representing an AgentWork
+*/
+export class AgentWork {
+    /**
+     * Create an AgentWork.
+     * @param {object} param
+     * @param {string} [param.workItemId] - Salesforce agent work item Id
+     * @param {string} [param.workId] - Salesforce work Id
+     * @param {WORK_EVENT} [param.workEvent] - The work lifecycle event
+     */
+    constructor({ workItemId, workId, workEvent }: {
+        workItemId: string;
+        workId: string;
+        workEvent: string;
+    });
+    workItemId: string;
+    workId: string;
+    workEvent: string;
+ }
 /**
  * Class representing an Agent status information. This object is used to represent
  * agent status information
@@ -971,4 +1109,22 @@ export class SuperviseCallResult {
  * Class representing result type for supervisorDisconnected()
  */
 export class SupervisorHangupResult extends HangupResult {
+}
+
+/** 
+ * Class representing result type for STORAGE_ACCESS_RESULT
+ * @param {object} param
+ * @param {boolean} [param.success]
+ * @param {boolean} [param.showLogin] 
+ * @param {number} [param.loginFrameHeight]
+ */
+export class ShowStorageAccessResult {
+    constructor({success, showLogin, loginFrameHeight}: {
+        success?: boolean;
+        showLogin?: boolean;
+        loginFrameHeight?: number;
+    });
+    success: boolean;
+    showLogin: boolean;
+    loginFrameHeight: number;
 }

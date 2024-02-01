@@ -119,7 +119,7 @@ export const Constants = {
  */
 export class CustomError extends Error {
     /**
-     * Create Phone
+     * Custom error
      * @param {object} param
      * @param {String} param.labelName
      * @param {String} param.namespace
@@ -642,7 +642,7 @@ export class Contact {
      * @param {string} [param.availability]
      * @param {string} [param.recordId] - Salesforce RecordId
      * @param {string} [param.description] - Contact Description
-     * @param {string} [param.queueWaitTime] - Estimated Queue Wait Time 
+     * @param {string} [param.queueWaitTime] - Estimated Queue Wait Time
      */
     constructor({phoneNumber, id, type, name, prefix, extension, endpointARN, queue, availability, recordId, description, queueWaitTime}) {
         if (phoneNumber) {
@@ -894,9 +894,10 @@ export class TelephonyConnector {
 
     /**
      * Get phone contacts
+     * @param {CONTACTS_FILTER_TYPES} filterType
      * @returns {Promise<PhoneContactsResult>} 
      */
-    getPhoneContacts() {
+    getPhoneContacts(filterType) {
         throw new Error('Not implemented');
     }
 
