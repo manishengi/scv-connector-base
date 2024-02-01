@@ -1,122 +1,120 @@
+import constants from '../src/main/constants.js';
 export namespace Constants {
-    namespace EVENT_TYPE {
-        const LOGIN_RESULT: string;
-        const LOGOUT_RESULT: string;
-        const MESSAGE: string;
-        const SET_AGENT_STATUS: string;
-        const GET_AGENT_STATUS: string;
-        const STATE_CHANGE: string;
-        namespace VOICE {
-            const CALL_STARTED: string;
-            const QUEUED_CALL_STARTED: string;
-            const CALL_CONNECTED: string;
-            const HANGUP: string;
-            const MUTE_TOGGLE: string;
-            const HOLD_TOGGLE: string;
-            const RECORDING_TOGGLE: string;
-            const PARTICIPANTS_SWAPPED: string;
-            const PARTICIPANTS_CONFERENCED: string;
-            const PARTICIPANT_ADDED: string;
-            const PARTICIPANT_CONNECTED: string;
-            const PARTICIPANT_REMOVED: string;
-            const AFTER_CALL_WORK_STARTED: string;
-            const WRAP_UP_ENDED: string;
-            const AGENT_ERROR: string;
-            const SOFTPHONE_ERROR: string;
-            const UPDATE_AUDIO_STATS: string;
-            const SUPERVISOR_BARGED_IN: string;
-            const SUPERVISOR_CALL_STARTED: string;
-            const SUPERVISOR_CALL_CONNECTED: string;
-            const SUPERVISOR_HANGUP: string;
-            const SHOW_TRANSFER_VIEW: string;
-        }
+    enum EVENT_TYPE {
+        LOGIN_RESULT = constants.EVENT_TYPE.LOGIN_RESULT,
+        LOGOUT_RESULT = constants.EVENT_TYPE.LOGOUT_RESULT,
+        MESSAGE = constants.EVENT_TYPE.MESSAGE,
+        SET_AGENT_STATUS = constants.EVENT_TYPE.SET_AGENT_STATUS,
+        GET_AGENT_STATUS = constants.EVENT_TYPE.GET_AGENT_STATUS,
+        STATE_CHANGE = constants.EVENT_TYPE.STATE_CHANGE,
+        STORAGE_ACCESS_RESULT = constants.EVENT_TYPE.STORAGE_ACCESS_RESULT,
+        CALL_STARTED = constants.EVENT_TYPE.VOICE.CALL_STARTED,
+        QUEUED_CALL_STARTED = constants.EVENT_TYPE.VOICE.QUEUED_CALL_STARTED,
+        CALL_CONNECTED = constants.EVENT_TYPE.VOICE.CALL_CONNECTED,
+        HANGUP = constants.EVENT_TYPE.VOICE.HANGUP,
+        MUTE_TOGGLE = constants.EVENT_TYPE.VOICE.MUTE_TOGGLE,
+        HOLD_TOGGLE = constants.EVENT_TYPE.VOICE.HOLD_TOGGLE,
+        RECORDING_TOGGLE = constants.EVENT_TYPE.VOICE.RECORDING_TOGGLE,
+        PARTICIPANTS_SWAPPED = constants.EVENT_TYPE.VOICE.PARTICIPANTS_SWAPPED,
+        PARTICIPANTS_CONFERENCED = constants.EVENT_TYPE.VOICE.PARTICIPANTS_CONFERENCED,
+        PARTICIPANT_ADDED = constants.EVENT_TYPE.VOICE.PARTICIPANT_ADDED,
+        PARTICIPANT_CONNECTED = constants.EVENT_TYPE.VOICE.PARTICIPANT_CONNECTED,
+        PARTICIPANT_REMOVED = constants.EVENT_TYPE.VOICE.PARTICIPANT_REMOVED,
+        AFTER_CALL_WORK_STARTED = constants.EVENT_TYPE.VOICE.AFTER_CALL_WORK_STARTED,
+        WRAP_UP_ENDED = constants.EVENT_TYPE.VOICE.WRAP_UP_ENDED,
+        AGENT_ERROR = constants.EVENT_TYPE.VOICE.AGENT_ERROR,
+        SOFTPHONE_ERROR = constants.EVENT_TYPE.VOICE.SOFTPHONE_ERROR,
+        UPDATE_AUDIO_STATS = constants.EVENT_TYPE.VOICE.UPDATE_AUDIO_STATS,
+        SUPERVISOR_BARGED_IN = constants.EVENT_TYPE.VOICE.SUPERVISOR_BARGED_IN,
+        SUPERVISOR_CALL_STARTED = constants.EVENT_TYPE.VOICE.SUPERVISOR_CALL_STARTED,
+        SUPERVISOR_CALL_CONNECTED = constants.EVENT_TYPE.VOICE.SUPERVISOR_CALL_CONNECTED,
+        SUPERVISOR_HANGUP = constants.EVENT_TYPE.VOICE.SUPERVISOR_HANGUP,
+        SHOW_TRANSFER_VIEW = constants.EVENT_TYPE.VOICE.SHOW_TRANSFER_VIEW,
     }
-    namespace ERROR_TYPE {
-        const GENERIC_ERROR: string;
-        const INVALID_AGENT_STATUS: string;
-        namespace VOICE {
-            const INVALID_PARTICIPANT: string;
-            const INVALID_DESTINATION: string;
-            const INVALID_PARAMS: string;
-            const CAN_NOT_UPDATE_PHONE_NUMBER: string;
-        }
+    enum ERROR_TYPE {
+        GENERIC_ERROR = constants.ERROR_TYPE.GENERIC_ERROR,
+        INVALID_AGENT_STATUS = constants.ERROR_TYPE.INVALID_AGENT_STATUS,
+        INVALID_PARTICIPANT = constants.ERROR_TYPE.VOICE.INVALID_PARTICIPANT,
+        INVALID_DESTINATION = constants.ERROR_TYPE.VOICE.INVALID_DESTINATION,
+        INVALID_PARAMS = constants.ERROR_TYPE.VOICE.INVALID_PARAMS,
+        CAN_NOT_UPDATE_PHONE_NUMBER = constants.ERROR_TYPE.VOICE.CAN_NOT_UPDATE_PHONE_NUMBER,
     }
-    const AGENT_STATUS: {
-        ONLINE: string;
-        OFFLINE: string;
-        ACW: string;
-        CALLBACK_MISSED_OR_REJECTED: string;
-    };
-    const PARTICIPANT_TYPE: {
-        AGENT: string;
-        INITIAL_CALLER: string;
-        THIRD_PARTY: string;
-        SUPERVISOR: string;
-    };
-    const CALL_TYPE: {
-        INBOUND: string;
-        OUTBOUND: string;
-        CALLBACK: string;
-        ADD_PARTICIPANT: string;
-        TRANSFER: string;
-        INTERNAL_CALL: string;
-        DIALED_CALLBACK: string;
-    };
-    const DIALER_TYPE: {
-        OUTBOUND_PREVIEW: string;
-        NONE: string;
-    };
-    const CONTACT_TYPE: {
-        PHONEBOOK: string;
-        QUEUE: string;
-        PHONENUMBER: string;
-        AGENT: string;
-        FLOW: string;
-    };
-    const CALL_STATE: {
-        RINGING: string;
-        CONNECTED: string;
-        TRANSFERRING: string;
-        TRANSFERRED: string;
-        ENDED: string;
-    };
-    const HANGUP_REASON: {
-        PHONE_CALL_ERROR: string;
-        PHONE_CALL_ENDED: string;
-    };
-    const PHONE_TYPE: {
-        DESK_PHONE: string;
-        SOFT_PHONE: string;
-    };
-    const AGENT_AVAILABILITY: {
-        AVAILABLE: string;
-        BUSY: string;
-        OFFLINE: string;
-    };
-    const REMOVE_PARTICIPANT_VARIANT: {
-        ALWAYS: string;
-        NEVER: string;
-        ALWAYS_EXCEPT_ON_HOLD: string;
-    };
-    const LOG_LEVEL: {
-        ERROR: string;
-        INFO: string;
-    };
-    const CONTACTS_FILTER_TYPES: {
-        AGENT: string;
-        QUEUE: string;
-        CONTACT: string;
-        DIRECTORY: string;
-        FLOW: string;
-        AVAILABLE: strin;
-    };
-    const WORK_EVENT: {
-        ASSIGNED: string;
-        ACCEPTED: string;
-        DECLINED: string;
-        COMPLETED: string;
-        CLOSED: string;
-    };
+    enum AGENT_STATUS {
+        ONLINE = constants.AGENT_STATUS.ONLINE,
+        OFFLINE = constants.AGENT_STATUS.OFFLINE,
+        ACW = constants.AGENT_STATUS.ACW,
+        CALLBACK_MISSED_OR_REJECTED = constants.AGENT_STATUS.CALLBACK_MISSED_OR_REJECTED,
+    }
+    enum PARTICIPANT_TYPE {
+        AGENT = constants.PARTICIPANT_TYPE.AGENT,
+        INITIAL_CALLER = constants.PARTICIPANT_TYPE.INITIAL_CALLER,
+        THIRD_PARTY = constants.PARTICIPANT_TYPE.THIRD_PARTY,
+        SUPERVISOR = constants.PARTICIPANT_TYPE.SUPERVISOR,
+    }
+    enum CALL_TYPE {
+        INBOUND = constants.CALL_TYPE.INBOUND,
+        OUTBOUND = constants.CALL_TYPE.OUTBOUND,
+        CALLBACK = constants.CALL_TYPE.CALLBACK,
+        ADD_PARTICIPANT = constants.CALL_TYPE.ADD_PARTICIPANT,
+        TRANSFER = constants.CALL_TYPE.TRANSFER,
+        INTERNAL_CALL = constants.CALL_TYPE.INTERNAL_CALL,
+        DIALED_CALLBACK = constants.CALL_TYPE.DIALED_CALLBACK,
+    }
+    enum DIALER_TYPE {
+        OUTBOUND_PREVIEW = constants.DIALER_TYPE.OUTBOUND_PREVIEW,
+        NONE = constants.DIALER_TYPE.NONE,
+    }
+    enum CONTACT_TYPE {
+        PHONEBOOK = constants.CONTACT_TYPE.PHONEBOOK,
+        QUEUE = constants.CONTACT_TYPE.PHONEBOOK,
+        PHONENUMBER = constants.CONTACT_TYPE.PHONEBOOK,
+        AGENT = constants.CONTACT_TYPE.PHONEBOOK,
+        FLOW = constants.CONTACT_TYPE.PHONEBOOK,
+    }
+    enum CALL_STATE {
+        RINGING = constants.CALL_STATE.RINGING,
+        CONNECTED = constants.CALL_STATE.CONNECTED,
+        TRANSFERRING = constants.CALL_STATE.TRANSFERRING,
+        TRANSFERRED = constants.CALL_STATE.TRANSFERRED,
+        ENDED = constants.CALL_STATE.ENDED,
+    }
+    enum HANGUP_REASON {
+        PHONE_CALL_ERROR = constants.HANGUP_REASON.PHONE_CALL_ERROR,
+        PHONE_CALL_ENDED = constants.HANGUP_REASON.PHONE_CALL_ENDED,
+    }
+    enum PHONE_TYPE {
+        DESK_PHONE = constants.PHONE_TYPE.DESK_PHONE,
+        SOFT_PHONE = constants.PHONE_TYPE.SOFT_PHONE,
+    }
+    enum AGENT_AVAILABILITY {
+        AVAILABLE = constants.AGENT_AVAILABILITY.AVAILABLE,
+        BUSY = constants.AGENT_AVAILABILITY.BUSY,
+        OFFLINE = constants.AGENT_AVAILABILITY.OFFLINE,
+    }
+    enum REMOVE_PARTICIPANT_VARIANT {
+        ALWAYS = constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS,
+        NEVER = constants.REMOVE_PARTICIPANT_VARIANT.NEVER,
+        ALWAYS_EXCEPT_ON_HOLD = constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS_EXCEPT_ON_HOLD,
+    }
+    enum LOG_LEVEL {
+        ERROR = constants.LOG_LEVEL.ERROR,
+        INFO = constants.LOG_LEVEL.INFO,
+    }
+    enum CONTACTS_FILTER_TYPES {
+        AGENT = constants.CONTACTS_FILTER_TYPES.AGENT,
+        QUEUE = constants.CONTACTS_FILTER_TYPES.QUEUE,
+        CONTACT = constants.CONTACTS_FILTER_TYPES.CONTACT,
+        DIRECTORY = constants.CONTACTS_FILTER_TYPES.DIRECTORY,
+        FLOW = constants.CONTACTS_FILTER_TYPES.FLOW,
+        AVAILABLE = constants.CONTACTS_FILTER_TYPES.AVAILABLE,
+    }
+    enum WORK_EVENT {
+        ASSIGNED = constants.WORK_EVENT.ASSIGNED,
+        ACCEPTED = constants.WORK_EVENT.ACCEPTED,
+        DECLINED = constants.WORK_EVENT.DECLINED,
+        COMPLETED = constants.WORK_EVENT.COMPLETED,
+        CLOSED = constants.WORK_EVENT.CLOSED,
+    }
 }
 
 export class CustomError extends Error {
