@@ -823,10 +823,10 @@ export class TelephonyConnector {
     sendDigits(digits: string): void;
     /**
      * Get phone contacts
-     * @param {Constants.CONTACTS_FILTER_TYPES} filterType
+     * @param {ContactsFilter} filter
      * @returns {Promise<PhoneContactsResult>}
      */
-    getPhoneContacts(filterType: Constants.CONTACTS_FILTER_TYPES): Promise<PhoneContactsResult>;
+    getPhoneContacts(filter: ContactsFilter): Promise<PhoneContactsResult>;
     /**
      * Swap calls
      * @param {PhoneCall} call1
@@ -1125,4 +1125,25 @@ export class ShowStorageAccessResult {
     success: boolean;
     showLogin: boolean;
     loginFrameHeight: number;
+}
+
+/**
+ * Class used to filter contacts. Passed as a parameter to TelephonyConnector.getPhoneContacts
+ * @param {object} param
+ * @param {string} param.contains
+ * @param {number} param.limit
+ * @param {number} param.offset
+ * @param {Constants.CONTACTS_FILTER_TYPES[]} param.types 
+ */ 
+export class ContactsFilter {
+    constructor({contains, limit, offset, types}: {
+        contains?: string;
+        limit?: number;
+        offset?: number;
+        types?: Constants.CONTACTS_FILTER_TYPES[];
+    }); 
+    contains: string;
+    limit: number;
+    offset: number;
+    types: Constants.CONTACTS_FILTER_TYPES[];
 }

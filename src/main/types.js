@@ -894,10 +894,10 @@ export class TelephonyConnector {
 
     /**
      * Get phone contacts
-     * @param {CONTACTS_FILTER_TYPES} filterType
+     * @param {ContactsFilter} filterType
      * @returns {Promise<PhoneContactsResult>} 
      */
-    getPhoneContacts(filterType) {
+    getPhoneContacts(filter) {
         throw new Error('Not implemented');
     }
 
@@ -1409,5 +1409,33 @@ export class ShowStorageAccessResult {
         this.success = success;
         this.showLogin = showLogin;
         this.loginFrameHeight = loginFrameHeight;
+    }
+}
+
+/**
+ * Class used to filter contacts. Passed as a parameter to TelephonyConnector.getPhoneContacts
+ * @param {object} param
+ * @param {string} param.contains
+ * @param {number} param.limit
+ * @param {number} param.offset
+ * @param {CONTACTS_FILTER_TYPES[]} param.types 
+ */ 
+export class ContactsFilter {
+    constructor(param) {
+        if (param) {
+            const {contains = null, limit = 50, offset = 0, types = []} = param;
+            if (contains) {
+                Validator.validateString(contains);
+            }
+            Validator.validateNumber(limit);
+            Validator.validateNumber(offset);
+            for (const type of types){
+                Validator.validateEnum(types, Object.values(constants.CONTACTS_FILTER_TYPES));
+            }
+            this.contains = contains;
+            this.limit = limit;
+            this.offset = offset;
+            this.types = types;
+        }
     }
 }
