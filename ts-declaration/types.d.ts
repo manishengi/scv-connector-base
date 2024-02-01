@@ -66,10 +66,10 @@ export namespace Constants {
     }
     enum CONTACT_TYPE {
         PHONEBOOK = constants.CONTACT_TYPE.PHONEBOOK,
-        QUEUE = constants.CONTACT_TYPE.PHONEBOOK,
-        PHONENUMBER = constants.CONTACT_TYPE.PHONEBOOK,
-        AGENT = constants.CONTACT_TYPE.PHONEBOOK,
-        FLOW = constants.CONTACT_TYPE.PHONEBOOK,
+        QUEUE = constants.CONTACT_TYPE.QUEUE,
+        PHONENUMBER = constants.CONTACT_TYPE.PHONENUMBER,
+        AGENT = constants.CONTACT_TYPE.AGENT,
+        FLOW = constants.CONTACT_TYPE.FLOW,
     }
     enum CALL_STATE {
         RINGING = constants.CALL_STATE.RINGING,
@@ -141,14 +141,14 @@ export class Phone {
     /**
      * Create Phone
      * @param {object} param
-     * @param {PHONE_TYPE} param.type
+     * @param {Constants.PHONE_TYPE} param.type
      * @param {string} [param.number]
      */
     constructor({ type, number }: {
-        type: string;
+        type: Constants.PHONE_TYPE;
         number?: string;
     });
-    type: string;
+    type: Constants.PHONE_TYPE;
     number: string;
 }
 /**
@@ -320,14 +320,14 @@ export class PhoneContactsResult {
      * Create PhoneContactsResult
      * @param {object} param
      * @param {Contact[]} [param.contacts]
-     * @param {String[]} [param.contactTypes]
+     * @param {Constants.CONTACT_TYPE[]} [param.contactTypes]
      */
     constructor({ contacts, contactTypes }: {
         contacts?: Contact[];
         contactTypes?: string[];
     });
     contacts: Contact[];
-    contactTypes: string[];
+    contactTypes: Constants.CONTACT_TYPE[];
 }
 /**
  * Class representing result type for accept(), decline(), dial()
@@ -503,7 +503,7 @@ export class CallInfo {
      * @param {boolean} [param.showAddBlindTransferButton]
      * @param {boolean} [param.showMergeButton]
      * @param {boolean} [param.showSwapButton]
-     * @param {("ALWAYS"|"NEVER"|"ALWAYS_EXCEPT_ON_HOLD")} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call.
+     * @param {Constants.REMOVE_PARTICIPANT_VARIANT} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call.
      * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
      * @param {boolean} [param.isMultiParty]
      */
@@ -535,7 +535,7 @@ export class CallInfo {
         showAddBlindTransferButton?: boolean;
         showMergeButton?: boolean;
         showSwapButton?: boolean;
-        removeParticipantVariant?: string;
+        removeParticipantVariant?: Constants.REMOVE_PARTICIPANT_VARIANT;
         additionalFields?: string;
         isMultiParty?: boolean;
     });
@@ -579,7 +579,7 @@ export class Contact {
      * Create a Contact.
      * @param {object} param
      * @param {string} [param.id] - The unique contactId
-     * @param {("PhoneBook"|"Queue"|"PhoneNumber"|"Agent")} [param.type] - The type of the contact, one of the CONTACT_TYPE values
+     * @param {Constants.CONTACT_TYPE} [param.type] - The type of the contact, one of the CONTACT_TYPE values
      * @param {string} [param.name] - The label for this contact to be displayed in the UI
      * @param {string} [param.phoneNumber] - The phone number associcated with this contact
      * @param {string} [param.prefix] - Any prefix to be dialed before dialing the number (i.e. +1)
@@ -593,7 +593,7 @@ export class Contact {
      */
     constructor({ phoneNumber, id, type, name, prefix, extension, endpointARN, queue, availability, recordId, description, queueWaitTime }: {
         id?: string;
-        type?: ("PhoneBook" | "Queue" | "PhoneNumber" | "Agent");
+        type?: Constants.CONTACT_TYPE;
         name?: string;
         phoneNumber?: string;
         prefix?: string;
@@ -607,7 +607,7 @@ export class Contact {
     });
     phoneNumber: string;
     id: string;
-    type: "Agent" | "PhoneBook" | "Queue" | "PhoneNumber";
+    type: Constants.CONTACT_TYPE;
     name: string;
     prefix: string;
     extension: string;
@@ -626,23 +626,23 @@ export class PhoneCallAttributes {
      * Create PhoneCallAttributes.
      * @param {object} param
      * @param {string} [param.voiceCallId] - The voice call id
-     * @param {PARTICIPANT_TYPE} [param.participantType] - The participant type of the call
-     * @param {DIALER_TYPE} [param.dialerType] - The dialer type of the call
+     * @param {Constants.PARTICIPANT_TYPE} [param.participantType] - The participant type of the call
+     * @param {Constants.DIALER_TYPE} [param.dialerType] - The dialer type of the call
      * @param {string} [param.parentId] - The parent call id of the call
      * @param {boolean} [param.isOnHold]
      * @param {boolean} [param.hasSupervisorBargedIn]
      */
     constructor({ voiceCallId, participantType, dialerType, parentId, isOnHold, hasSupervisorBargedIn}: {
         voiceCallId?: string;
-        participantType?: string;
-        dialerType?: string;
+        participantType?: Constants.PARTICIPANT_TYPE;
+        dialerType?: Constants.DIALER_TYPE;
         parentId?: string;
         isOnHold?: boolean;
         hasSupervisorBargedIn?: boolean;
     });
     voiceCallId: string;
-    participantType: string;
-    dialerType: string;
+    participantType: Constants.PARTICIPANT_TYPE;
+    dialerType: Constants.DIALER_TYPE;
     parentId: string;
     isOnHold: boolean;
     hasSupervisorBargedIn: boolean;
@@ -655,7 +655,7 @@ export class PhoneCall {
      * Create a PhoneCall.
      * @param {object} param
      * @param {string} [param.callId] - The unique callId. This is a required parameter
-     * @param {CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
+     * @param {Constants.CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {Contact} [param.contact] - The Call Target / Contact
      * @param {string} [param.state] - The state of the call, i.e. ringing, connected, declined, failed
      * @param {PhoneCallAttributes} [param.callAttributes] - Any additional call attributes
@@ -667,7 +667,7 @@ export class PhoneCall {
      */
     constructor({ callId, callType, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus }: {
         callId?: string;
-        callType?: string;
+        callType?: Constants.CALL_TYPE;
         contact?: Contact;
         state?: string;
         callAttributes?: PhoneCallAttributes;
@@ -678,7 +678,7 @@ export class PhoneCall {
         agentStatus?: string;
     });
     callId: string;
-    callType: string;
+    callType: Constants.CALL_TYPE;
     phoneNumber: string;
     callInfo: CallInfo;
     contact: Contact;
@@ -778,11 +778,11 @@ export class TelephonyConnector {
     /**
      * End call
      * @param {PhoneCall} call - The call to be ended
-     * @param {AGENT_STATUS} agentStatus
+     * @param {Constants.AGENT_STATUS} agentStatus
      * @returns {Promise<HangupResult>}
      *
      */
-    endCall(call: PhoneCall, agentStatus: string): Promise<HangupResult>;
+    endCall(call: PhoneCall, agentStatus: Constants.AGENT_STATUS): Promise<HangupResult>;
     /**
      * Mute call
      * @returns {Promise<MuteToggleResult>}
@@ -823,10 +823,10 @@ export class TelephonyConnector {
     sendDigits(digits: string): void;
     /**
      * Get phone contacts
-     * @param {CONTACTS_FILTER_TYPES} filterType
+     * @param {Constants.CONTACTS_FILTER_TYPES} filterType
      * @returns {Promise<PhoneContactsResult>}
      */
-    getPhoneContacts(filterType: string): Promise<PhoneContactsResult>;
+    getPhoneContacts(filterType: Constants.CONTACTS_FILTER_TYPES): Promise<PhoneContactsResult>;
     /**
      * Swap calls
      * @param {PhoneCall} call1
@@ -923,16 +923,16 @@ export class AgentWork {
      * @param {object} param
      * @param {string} [param.workItemId] - Salesforce agent work item Id
      * @param {string} [param.workId] - Salesforce work Id
-     * @param {WORK_EVENT} [param.workEvent] - The work lifecycle event
+     * @param {Constants.WORK_EVENT} [param.workEvent] - The work lifecycle event
      */
     constructor({ workItemId, workId, workEvent }: {
         workItemId: string;
         workId: string;
-        workEvent: string;
+        workEvent: Constants.WORK_EVENT;
     });
     workItemId: string;
     workId: string;
-    workEvent: string;
+    workEvent: Constants.WORK_EVENT;
  }
 /**
  * Class representing an Agent status information. This object is used to represent
@@ -964,16 +964,16 @@ export class AgentVendorStatusInfo {
      * Create a AgentVendorStatusInfo.
      * @param {object} param
      * @param {string} [param.statusId] - The unique statusId (e.g agentStateARN)
-     * @param {string} [param.statusType] - The agent's current availability state type
+     * @param {Constants.AGENT_STATUS} [param.statusType] - The agent's current availability state type
      * @param {string} [param.statusName] - The name of the agent's current availability state
      */
     constructor({ statusId, statusType, statusName }: {
         statusId?: string;
-        statusType?: string;
+        statusType?: Constants.AGENT_STATUS;
         statusName?: string;
     });
     statusId: string;
-    statusType: string;
+    statusType: Constants.AGENT_STATUS;
     statusName: string;
 }
 /**
@@ -1005,7 +1005,7 @@ export class SupervisedCallInfo {
      * @param {object} param
      * @param {string} [param.callId] - The unique supervised vendor call ID (required)
      * @param {string} [param.voiceCallId] - The supervised salesforce voice call ID
-     * @param {string} [param.callType] - The type of the call, one of the CALL_TYPE values
+     * @param {Constants.CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {string} [param.from] - From phone number (for Inbound calls)
      * @param {string} [param.to] - To phone number (for Outbound calls)
      * @param {string} [param.supervisorName] - The supervisor name (shown to the supervised agent on barge in)
@@ -1014,7 +1014,7 @@ export class SupervisedCallInfo {
     constructor({ callId, voiceCallId, callType, from, to, supervisorName, isBargedIn }: {
         callId?: string;
         voiceCallId?: string;
-        callType?: string;
+        callType?: Constants.CALL_TYPE;
         from?: string;
         to?: string;
         supervisorName?: string;
@@ -1022,7 +1022,7 @@ export class SupervisedCallInfo {
     });
     callId: string;
     voiceCallId: string;
-    callType: string;
+    callType: Constants.CALL_TYPE;
     from: string;
     to: string;
     supervisorName: string;
