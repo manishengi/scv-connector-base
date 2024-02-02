@@ -980,6 +980,10 @@ describe('Types validation tests', () => {
         it('Can implement logMessageToVendor', () => {
             expect(() => vendorConnector.logMessageToVendor()).not.toThrowError('Not implemented');
         });
+
+        it('Should implement getContacts', () => {
+            expect(() => vendorConnector.getContacts()).toThrowError('Not implemented');
+        });
     });
 
     describe('Telephony connector tests', () => {

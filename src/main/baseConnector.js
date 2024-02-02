@@ -449,6 +449,35 @@ async function channelMessageHandler(message) {
                 }
             }
         break;
+        case constants.MESSAGE_TYPE.GET_CONTACTS:
+            try  {
+                // TODO: Update this to vendorConnetor getContacts() when demo connector story is done.
+                const telephonyConnector = await vendorConnector.getTelephonyConnector();
+                const payload = await telephonyConnector.getPhoneContacts(message.data.filter);
+                Validator.validateClassObject(payload, PhoneContactsResult);
+                const contacts = payload.contacts.map((contact) => {
+                    return {
+                        id: contact.id,
+                        type: contact.type,
+                        name: contact.name,
+                        phoneNumber: contact.phoneNumber,
+                        prefix: contact.prefix,
+                        extension: contact.extension,
+                        endpointARN: contact.endpointARN,
+                        queue: contact.queue,
+                        availability: contact.availability,
+                        queueWaitTime: contact.queueWaitTime,
+                        recordId: contact.recordId,
+                        description: contact.description
+                    };
+                });
+                dispatchEvent(constants.EVENT_TYPE.GET_CONTACTS_RESULT, {
+                    contacts, contactTypes: payload.contactTypes
+                });
+            } catch (e) {
+                dispatchCustomError(e, constants.MESSAGE_TYPE.GET_CONTACTS);
+            }
+        break;
         case constants.MESSAGE_TYPE.VOICE.SWAP_PARTICIPANTS:
             try {
                 // TODO: Create PhoneCall from call1.callId & call2.callId

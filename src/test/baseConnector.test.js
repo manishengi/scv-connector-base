@@ -1486,6 +1486,48 @@ describe('SCVConnectorBase tests', () => {
             });
         });
 
+        describe('getContacts()', () => {
+            it('Should dispatch custom error on a rejected getContacts() invocation', async () => {
+                telephonyAdapter.getPhoneContacts = jest.fn().mockRejectedValue(customErrorResult);
+                fireMessage(constants.MESSAGE_TYPE.GET_CONTACTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.getPhoneContacts()).rejects.toBe(customErrorResult);
+                assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.MESSAGE_TYPE.GET_CONTACTS,
+                    payload: {
+                        errorType: constants.ERROR_TYPE.CUSTOM_ERROR,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch GET_CONTACTS_RESULT on a successful getContacts() invocation', async () => {
+                telephonyAdapter.getPhoneContacts = jest.fn().mockResolvedValue(phoneContactsResult);
+                fireMessage(constants.MESSAGE_TYPE.GET_CONTACTS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.getPhoneContacts()).resolves.toBe(phoneContactsResult);
+                const contacts = phoneContactsResult.contacts.map((contact) => {
+                    return {
+                        id: contact.id,
+                        endpointARN: contact.endpointARN,
+                        phoneNumber: contact.phoneNumber,
+                        name: contact.name,
+                        type: contact.type,
+                        availability: contact.availability
+                    };
+                });
+                const payload = { contacts, contactTypes };
+                assertChannelPortPayload({ eventType: constants.EVENT_TYPE.GET_CONTACTS_RESULT, payload });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.EVENT_TYPE.GET_CONTACTS_RESULT,
+                    payload,
+                    isError: false
+                });
+            });
+        });
+
         describe('sendDigits()', () => {
             it('Should be able to invoke sendDigits()', async () => {
                 fireMessage(constants.MESSAGE_TYPE.VOICE.SEND_DIGITS);
