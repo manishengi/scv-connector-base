@@ -451,6 +451,7 @@ async function channelMessageHandler(message) {
         break;
         case constants.MESSAGE_TYPE.GET_CONTACTS:
             try  {
+                // TODO: Update this to vendorConnetor getContacts() when demo connector story is done.
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
                 const payload = await telephonyConnector.getPhoneContacts(message.data.filter);
                 Validator.validateClassObject(payload, PhoneContactsResult);
