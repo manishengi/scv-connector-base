@@ -750,6 +750,14 @@ export class VendorConnector {
      * @param {Object} payload An optional payload to be logged
      */
     logMessageToVendor(logLevel: string, message: string, payload: any): void;
+
+    /**
+     * To get the Contacts for this workItem's transfer/other channel operation
+     * @param {ContactsFilter} filter It has fields like the search term  and contact Type
+     * @param {String} workItemId
+     * @returns {Promise<PhoneContactsResult>} 
+     */
+    getContacts(filter: ContactsFilter, workItemId: string): Promise<PhoneContactsResult>;
 }
 /**
 * Class representing a telephony connector

@@ -1106,7 +1106,7 @@ export class VendorConnector {
 
     /**
      * To get the Contacts for this workItem's transfer/other channel operation
-     * @param {Object} filter It has fields like the search term  and contact Type
+     * @param {ContactsFilter} filter It has fields like the search term  and contact Type
      * @param {String} workItemId
      * @returns {Promise<PhoneContactsResult>} 
      */
