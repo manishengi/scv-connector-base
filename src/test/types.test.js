@@ -9,7 +9,7 @@ import { ActiveCallsResult, AgentConfigResult, CapabilitiesResult, RecordingTogg
     PhoneContactsResult, CallResult, HoldToggleResult, InitResult, GenericResult, MuteToggleResult, SignedRecordingUrlResult,
     Contact, PhoneCall, PhoneCallAttributes, CallInfo, VendorConnector, TelephonyConnector, Phone, AgentStatusInfo, HangupResult, AgentConfig, 
     StatsInfo, AudioStats, AudioStatsElement, Constants, SupervisorHangupResult, SupervisedCallInfo, AgentVendorStatusInfo, 
-    StateChangeResult, CustomError, AgentWork, ShowStorageAccessResult } from '../main/index';
+    StateChangeResult, CustomError, AgentWork, ShowStorageAccessResult, ContactsFilter } from '../main/index';
 
 
 import { downloadLogs } from '../main/logger';
@@ -1372,6 +1372,33 @@ describe('Types validation tests', () => {
             }).not.toThrowError();
             expect(storageAccessResult.showLogin).toEqual(true);
             expect(storageAccessResult.loginFrameHeight).toEqual(450);
+        });
+    });
+
+    describe('ContactsFilter tests', () => {
+        it('should create a ContactsFilter object', () => {
+            const contains = 'filterText';
+            const limit = 10;
+            const offset = 20;
+            const types = [Constants.CONTACTS_FILTER_TYPES.AGENT, Constants.CONTACTS_FILTER_TYPES.QUEUE];
+            let contactsFilter;
+            expect(() => {
+                contactsFilter = new ContactsFilter({contains, limit, offset, types});
+            }).not.toThrowError();
+            expect(contactsFilter.contains).toEqual(contains);
+            expect(contactsFilter.limit).toEqual(limit);
+            expect(contactsFilter.offset).toEqual(offset);
+            expect(contactsFilter.types).toEqual(types);
+        });
+        it('should create a ContactsFilter object with null input', () => {
+            expect(() => {
+                new ContactsFilter();
+            }).not.toThrowError();
+        });
+        it('should create a ContactsFilter object with empty object input', () => {
+            expect(() => {
+                new ContactsFilter({});
+            }).not.toThrowError();
         });
     });
 });
