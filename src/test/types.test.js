@@ -6,7 +6,7 @@
  */
 
 import { ActiveCallsResult, AgentConfigResult, CapabilitiesResult, RecordingToggleResult, ParticipantResult, LogoutResult,
-    PhoneContactsResult, CallResult, HoldToggleResult, InitResult, GenericResult, MuteToggleResult, SignedRecordingUrlResult,
+    ContactsResult, PhoneContactsResult, CallResult, HoldToggleResult, InitResult, GenericResult, MuteToggleResult, SignedRecordingUrlResult,
     Contact, PhoneCall, PhoneCallAttributes, CallInfo, VendorConnector, TelephonyConnector, Phone, AgentStatusInfo, HangupResult, AgentConfig, 
     StatsInfo, AudioStats, AudioStatsElement, Constants, SupervisorHangupResult, SupervisedCallInfo, AgentVendorStatusInfo, 
     StateChangeResult, CustomError, AgentWork, ShowStorageAccessResult, ContactsFilter } from '../main/index';
@@ -295,6 +295,30 @@ describe('Types validation tests', () => {
             }).not.toThrowError();
             expect(phoneContactsResult.contacts).toEqual(contacts);
             expect(phoneContactsResult.contactTypes).toEqual(contactTypes);
+        });
+    });
+
+    describe('ContactsResult tests', () => {
+        it('Should create ContactsResult object - default', () => {
+            let contactsResult;
+            expect(() => {
+                contactsResult = new ContactsResult({ });
+            }).not.toThrowError();
+            expect(contactsResult.contacts).toEqual([]);
+            expect(contactsResult.contactTypes).toEqual([]);
+        });
+
+        it('Should create ContactsResult object', () => {
+            const contacts = [
+                new Contact({})
+            ];
+            const contactTypes = [];
+            let contactsResult;
+            expect(() => {
+                contactsResult = new ContactsResult({ contacts, contactTypes });
+            }).not.toThrowError();
+            expect(contactsResult.contacts).toEqual(contacts);
+            expect(contactsResult.contactTypes).toEqual(contactTypes);
         });
     });
 
