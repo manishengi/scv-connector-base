@@ -451,7 +451,7 @@ async function channelMessageHandler(message) {
         break;
         case constants.MESSAGE_TYPE.GET_CONTACTS:
             try  {
-                const payload = await vendorConnector.getContacts(message.data.filter);
+                const payload = await vendorConnector.getContacts(message.data.filter, message.data.workItemId);
                 Validator.validateClassObject(payload, ContactsResult);
                 const contacts = payload.contacts.map((contact) => {
                     return {
