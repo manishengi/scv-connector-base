@@ -358,9 +358,9 @@ export class ContactsResult {
 
 /**
  * Class representing result type for getPhoneContacts()
- * NOTE: TO BE DEPRECATED
+ * NOTE: TO BE DEPRECATED, Use ContactsResult instead
  */
-export class PhoneContactsResult extends ContactsResult{
+export class PhoneContactsResult extends ContactsResult {
     /**
      * Create PhoneContactsResult
      * @param {object} param
