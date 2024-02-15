@@ -6,7 +6,7 @@
  */
 
 import { initializeConnector, Constants, publishEvent, publishError, publishLog, AgentStatusInfo, AgentVendorStatusInfo, StateChangeResult, CustomError } from '../main/index';
-import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, PhoneContactsResult, MuteToggleResult, 
+import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult, 
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, CapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement, 
     SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult } from '../main/index';
@@ -97,6 +97,7 @@ const customErrorResult = new CustomError({ labelName: dummyLabelName, namespace
 const contacts = [ new Contact({}) ];
 const contactTypes = [ Constants.CONTACT_TYPE.AGENT, Constants.CONTACT_TYPE.QUEUE ]
 const phoneContactsResult = new PhoneContactsResult({ contacts, contactTypes });
+const contactsResult = new ContactsResult({ contacts, contactTypes });
 const participantResult = new ParticipantResult({ initialCallHasEnded: true, callInfo: dummyCallInfo, phoneNumber: dummyPhoneNumber, callId: dummyCallId });
 const isRecordingPaused = true;
 const contactId = 'contactId';
@@ -217,6 +218,7 @@ describe('SCVConnectorBase tests', () => {
     DemoAdapter.prototype.downloadLogs = jest.fn();
     DemoAdapter.prototype.logMessageToVendor = jest.fn();
     DemoAdapter.prototype.onAgentWorkEvent = jest.fn();
+    DemoAdapter.prototype.getContacts = jest.fn().mockResolvedValue(contactsResult);
     // TelephonyConnector overrides
     DemoTelephonyAdapter.prototype.acceptCall = jest.fn().mockResolvedValue(callResult);
     DemoTelephonyAdapter.prototype.declineCall = jest.fn().mockResolvedValue(callResult);
@@ -1488,10 +1490,9 @@ describe('SCVConnectorBase tests', () => {
 
         describe('getContacts()', () => {
             it('Should dispatch custom error on a rejected getContacts() invocation', async () => {
-                telephonyAdapter.getPhoneContacts = jest.fn().mockRejectedValue(customErrorResult);
+                adapter.getContacts = jest.fn().mockRejectedValue(customErrorResult);
                 fireMessage(constants.MESSAGE_TYPE.GET_CONTACTS);
-                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
-                await expect(telephonyAdapter.getPhoneContacts()).rejects.toBe(customErrorResult);
+                await expect(adapter.getContacts()).rejects.toBe(customErrorResult);
                 assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: dummyCustomErrorPayload });
                 assertChannelPortPayloadEventLog({
                     eventType: constants.MESSAGE_TYPE.GET_CONTACTS,
@@ -1504,11 +1505,10 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch GET_CONTACTS_RESULT on a successful getContacts() invocation', async () => {
-                telephonyAdapter.getPhoneContacts = jest.fn().mockResolvedValue(phoneContactsResult);
+                adapter.getContacts = jest.fn().mockResolvedValue(contactsResult);
                 fireMessage(constants.MESSAGE_TYPE.GET_CONTACTS);
-                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
-                await expect(telephonyAdapter.getPhoneContacts()).resolves.toBe(phoneContactsResult);
-                const contacts = phoneContactsResult.contacts.map((contact) => {
+                await expect(adapter.getContacts()).resolves.toBe(contactsResult);
+                const contacts = contactsResult.contacts.map((contact) => {
                     return {
                         id: contact.id,
                         endpointARN: contact.endpointARN,

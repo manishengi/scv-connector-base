@@ -8,7 +8,7 @@
 /* eslint-disable no-unused-vars */
 import constants from './constants.js';
 import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTSWITH, CONNECTOR_CONFIG_EXCEPTION_FIELDS } from './constants.js';
-import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, PhoneContactsResult, MuteToggleResult,
+import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
     VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
     CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult } from './types';
@@ -451,10 +451,8 @@ async function channelMessageHandler(message) {
         break;
         case constants.MESSAGE_TYPE.GET_CONTACTS:
             try  {
-                // TODO: Update this to vendorConnetor getContacts() when demo connector story is done.
-                const telephonyConnector = await vendorConnector.getTelephonyConnector();
-                const payload = await telephonyConnector.getPhoneContacts(message.data.filter);
-                Validator.validateClassObject(payload, PhoneContactsResult);
+                const payload = await vendorConnector.getContacts(message.data.filter, message.data.workItemId);
+                Validator.validateClassObject(payload, ContactsResult);
                 const contacts = payload.contacts.map((contact) => {
                     return {
                         id: contact.id,

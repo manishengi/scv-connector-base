@@ -331,11 +331,11 @@ export class ParticipantResult {
 }
 
 /**
- * Class representing result type for getPhoneContacts()
+ * Class representing result type for getContacts()
  */
-export class PhoneContactsResult {
-    /**
-     * Create PhoneContactsResult
+export class ContactsResult {
+     /**
+     * Create ContactsResult
      * @param {object} param
      * @param {Contact[]} [param.contacts]
      * @param {Array} [param.contactTypes]
@@ -355,6 +355,24 @@ export class PhoneContactsResult {
         this.contactTypes = contactTypes;
     }
 }
+
+/**
+ * Class representing result type for getPhoneContacts()
+ * NOTE: TO BE DEPRECATED, Use ContactsResult instead
+ */
+export class PhoneContactsResult extends ContactsResult {
+    /**
+     * Create PhoneContactsResult
+     * @param {object} param
+     * @param {Contact[]} [param.contacts]
+     * @param {Array} [param.contactTypes]
+     */
+    constructor({ contacts = [], contactTypes = [] }) {
+        super({ contacts, contactTypes });
+    }
+}
+
+
 
 /**
  * Class representing result type for accept(), decline(), dial()
