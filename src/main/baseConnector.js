@@ -178,7 +178,11 @@ async function setConnectorReady() {
                 [constants.CAPABILITIES_TYPE.BLIND_TRANSFER] : capabilitiesResult.hasBlindTransfer,
                 [constants.CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : capabilitiesResult.hasTransferToOmniFlow,
                 [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange,
-                [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBook
+                [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBook,
+                [constants.CAPABILITIES_TYPE.GET_SPEAKER] : capabilitiesResult.hasGetSpeakerDeviceSetting,
+                [constants.CAPABILITIES_TYPE.SET_SPEAKER] : capabilitiesResult.hasSetSpeakerDeviceSetting,
+                [constants.CAPABILITIES_TYPE.GET_MICROPHONE] : capabilitiesResult.hasGetMicrophoneDeviceSetting,
+                [constants.CAPABILITIES_TYPE.SET_MICROPHONE] : capabilitiesResult.hasSetMicrophoneDeviceSetting
             },
             callInProgress: activeCalls.length > 0 ? activeCalls[0] : null
         }

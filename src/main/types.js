@@ -216,7 +216,13 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
      */
-     constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true, hasSignedRecordingUrl = false, debugEnabled = true, hasContactSearch = false, hasAgentAvailability = false, hasQueueWaitTime = false, supportsMos = false, hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false, hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false }) {
+     constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true,
+                     hasSignedRecordingUrl = false, debugEnabled = true, hasContactSearch = false,
+                     hasAgentAvailability = false, hasQueueWaitTime = false, supportsMos = false,
+                     hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false,
+                     hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false,
+                     hasGetSpeakerDeviceSetting = false, hasSetSpeakerDeviceSetting = false,
+                     hasGetMicrophoneDeviceSetting = false, hasSetMicrophoneDeviceSetting = false }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
         Validator.validateBoolean(hasMerge);
@@ -233,6 +239,10 @@ export class CapabilitiesResult {
         Validator.validateBoolean(hasTransferToOmniFlow);
         Validator.validateBoolean(hasPendingStatusChange);
         Validator.validateBoolean(hasPhoneBook);
+        Validator.validateBoolean(hasGetSpeakerDeviceSetting);
+        Validator.validateBoolean(hasSetSpeakerDeviceSetting);
+        Validator.validateBoolean(hasGetMicrophoneDeviceSetting);
+        Validator.validateBoolean(hasSetMicrophoneDeviceSetting);
 
         this.hasMute = hasMute;
         this.hasRecord = hasRecord;
@@ -250,6 +260,10 @@ export class CapabilitiesResult {
         this.hasTransferToOmniFlow = hasTransferToOmniFlow;
         this.hasPendingStatusChange = hasPendingStatusChange;
         this.hasPhoneBook = hasPhoneBook;
+        this.hasGetSpeakerDeviceSetting = hasGetSpeakerDeviceSetting;
+        this.hasSetSpeakerDeviceSetting = hasSetSpeakerDeviceSetting;
+        this.hasGetMicrophoneDeviceSetting = hasGetMicrophoneDeviceSetting;
+        this.hasSetMicrophoneDeviceSetting = hasSetMicrophoneDeviceSetting;
     }
 }
 
@@ -263,12 +277,17 @@ export class AgentConfigResult {
      * @param {Phone[]} [param.phones]
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ phones = [constants.PHONE_TYPE.SOFT_PHONE], selectedPhone = new Phone({type: constants.PHONE_TYPE.SOFT_PHONE}) }) {
+    constructor({ phones = [constants.PHONE_TYPE.SOFT_PHONE], selectedPhone = new Phone({type: constants.PHONE_TYPE.SOFT_PHONE}),
+                    speakerDeviceId = '', microphoneDeviceId = '' }) {
         Validator.validateClassObject(phones, Array);
         Validator.validateClassObject(selectedPhone, Phone);
+        Validator.validateString(speakerDeviceId);
+        Validator.validateString(microphoneDeviceId);
 
         this.phones = phones;
         this.selectedPhone = selectedPhone;
+        this.speakerDeviceId = speakerDeviceId;
+        this.microphoneDeviceId = microphoneDeviceId;
     }
 }
 
