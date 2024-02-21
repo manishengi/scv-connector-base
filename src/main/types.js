@@ -212,9 +212,13 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasSupervisorListenIn] True if vendor supports supervisor listening  to a ongoing call
      * @param {boolean} [param.hasSupervisorBargeIn] True if vendor supports Supervisor  barging into a ongoing call
      * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
-     * @param {boolean} [param.hasBlindTransfer] True if vendor supports transfer to omni flows
+     * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
+     * @param {boolean} [param.hasGetSpeakerDeviceSetting] True if vendor supports retrieving the speaker device ID
+     * @param {boolean} [param.hasSetSpeakerDeviceSetting] True if vendor supports setting the speaker device ID
+     * @param {boolean} [param.hasGetMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
+     * @param {boolean} [param.hasSetMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
      */
      constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true,
                      hasSignedRecordingUrl = false, debugEnabled = true, hasContactSearch = false,
