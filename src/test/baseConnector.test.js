@@ -145,10 +145,10 @@ const capabilitiesPayload = {
     [constants.CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : capabilitiesResult.hasTransferToOmniFlow,
     [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange,
     [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBook,
-    [constants.CAPABILITIES_TYPE.GET_SPEAKER] : capabilitiesResult.hasGetSpeakerDeviceSetting,
-    [constants.CAPABILITIES_TYPE.SET_SPEAKER] : capabilitiesResult.hasSetSpeakerDeviceSetting,
-    [constants.CAPABILITIES_TYPE.GET_MICROPHONE] : capabilitiesResult.hasGetMicrophoneDeviceSetting,
-    [constants.CAPABILITIES_TYPE.SET_MICROPHONE] : capabilitiesResult.hasSetMicrophoneDeviceSetting
+    [constants.CAPABILITIES_TYPE.HAS_EXTERNAL_SPEAKER] : capabilitiesResult.hasExternalSpeakerDeviceSetting,
+    [constants.CAPABILITIES_TYPE.CAN_SET_EXTERNAL_SPEAKER] : capabilitiesResult.hasSetExternalSpeakerDeviceSetting,
+    [constants.CAPABILITIES_TYPE.HAS_EXTERNAL_MICROPHONE] : capabilitiesResult.hasExternalMicrophoneDeviceSetting,
+    [constants.CAPABILITIES_TYPE.CAN_SET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasSetExternalMicrophoneDeviceSetting
 };
 const capabilitiesResultWithMos = new CapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
 const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
