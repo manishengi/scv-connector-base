@@ -215,7 +215,7 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
-     * @param {boolean} [param.hasExternalSpeakerDeviceSetting] True if vendor supports retrieving the speaker device ID
+     * @param {boolean} [param.hasGetExternalSpeakerDeviceSetting] True if vendor supports retrieving the speaker device ID
      * @param {boolean} [param.hasSetExternalSpeakerDeviceSetting] True if vendor supports setting the speaker device ID
      * @param {boolean} [param.hasExternalMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
      * @param {boolean} [param.hasSetExternalMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
@@ -225,7 +225,7 @@ export class CapabilitiesResult {
                      hasAgentAvailability = false, hasQueueWaitTime = false, supportsMos = false,
                      hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false,
                      hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false,
-                     hasExternalSpeakerDeviceSetting = false, hasSetExternalSpeakerDeviceSetting = false,
+                     hasGetExternalSpeakerDeviceSetting = false, hasSetExternalSpeakerDeviceSetting = false,
                      hasExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
@@ -243,7 +243,7 @@ export class CapabilitiesResult {
         Validator.validateBoolean(hasTransferToOmniFlow);
         Validator.validateBoolean(hasPendingStatusChange);
         Validator.validateBoolean(hasPhoneBook);
-        Validator.validateBoolean(hasExternalSpeakerDeviceSetting);
+        Validator.validateBoolean(hasGetExternalSpeakerDeviceSetting);
         Validator.validateBoolean(hasSetExternalSpeakerDeviceSetting);
         Validator.validateBoolean(hasExternalMicrophoneDeviceSetting);
         Validator.validateBoolean(hasSetExternalMicrophoneDeviceSetting);
@@ -264,7 +264,7 @@ export class CapabilitiesResult {
         this.hasTransferToOmniFlow = hasTransferToOmniFlow;
         this.hasPendingStatusChange = hasPendingStatusChange;
         this.hasPhoneBook = hasPhoneBook;
-        this.hasExternalSpeakerDeviceSetting = hasExternalSpeakerDeviceSetting;
+        this.hasGetExternalSpeakerDeviceSetting = hasGetExternalSpeakerDeviceSetting;
         this.hasSetExternalSpeakerDeviceSetting = hasSetExternalSpeakerDeviceSetting;
         this.hasExternalMicrophoneDeviceSetting = hasExternalMicrophoneDeviceSetting;
         this.hasSetExternalMicrophoneDeviceSetting = hasSetExternalMicrophoneDeviceSetting;

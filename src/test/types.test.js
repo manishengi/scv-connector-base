@@ -114,7 +114,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.debugEnabled).toEqual(true);
             expect(capabilitiesResult.hasAgentAvailability).toEqual(false);
             expect(capabilitiesResult.supportsMos).toEqual(false);
-            expect(capabilitiesResult.hasExternalSpeakerDeviceSetting).toEqual(false);
+            expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasExternalMicrophoneDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(false);
@@ -129,7 +129,7 @@ describe('Types validation tests', () => {
             const hasSignedRecordingUrl = true;
             const debugEnabled = false;
             const supportsMos = true;
-            const hasExternalSpeakerDeviceSetting = true;
+            const hasGetExternalSpeakerDeviceSetting = true;
             const hasSetExternalSpeakerDeviceSetting = true;
             const hasExternalMicrophoneDeviceSetting = true;
             const hasSetExternalMicrophoneDeviceSetting = true;
@@ -142,7 +142,7 @@ describe('Types validation tests', () => {
                     hasSignedRecordingUrl,
                     debugEnabled,
                     supportsMos,
-                    hasExternalSpeakerDeviceSetting,
+                    hasGetExternalSpeakerDeviceSetting,
                     hasSetExternalSpeakerDeviceSetting,
                     hasExternalMicrophoneDeviceSetting,
                     hasSetExternalMicrophoneDeviceSetting
@@ -155,7 +155,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasSignedRecordingUrl).toEqual(hasSignedRecordingUrl);
             expect(capabilitiesResult.debugEnabled).toEqual(false);
             expect(capabilitiesResult.supportsMos).toEqual(true);
-            expect(capabilitiesResult.hasExternalSpeakerDeviceSetting).toEqual(true);
+            expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(true);
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(true);
             expect(capabilitiesResult.hasExternalMicrophoneDeviceSetting).toEqual(true);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(true);
