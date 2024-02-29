@@ -116,7 +116,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.supportsMos).toEqual(false);
             expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(false);
-            expect(capabilitiesResult.hasExternalMicrophoneDeviceSetting).toEqual(false);
+            expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(false);
         });
 
@@ -131,7 +131,7 @@ describe('Types validation tests', () => {
             const supportsMos = true;
             const hasGetExternalSpeakerDeviceSetting = true;
             const hasSetExternalSpeakerDeviceSetting = true;
-            const hasExternalMicrophoneDeviceSetting = true;
+            const hasGetExternalMicrophoneDeviceSetting = true;
             const hasSetExternalMicrophoneDeviceSetting = true;
             expect(() => {
                 capabilitiesResult = new CapabilitiesResult({
@@ -144,7 +144,7 @@ describe('Types validation tests', () => {
                     supportsMos,
                     hasGetExternalSpeakerDeviceSetting,
                     hasSetExternalSpeakerDeviceSetting,
-                    hasExternalMicrophoneDeviceSetting,
+                    hasGetExternalMicrophoneDeviceSetting,
                     hasSetExternalMicrophoneDeviceSetting
                 });
             }).not.toThrowError();
@@ -157,7 +157,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.supportsMos).toEqual(true);
             expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(true);
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(true);
-            expect(capabilitiesResult.hasExternalMicrophoneDeviceSetting).toEqual(true);
+            expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(true);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(true);
         });
     });

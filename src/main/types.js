@@ -217,7 +217,7 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
      * @param {boolean} [param.hasGetExternalSpeakerDeviceSetting] True if vendor supports retrieving the speaker device ID
      * @param {boolean} [param.hasSetExternalSpeakerDeviceSetting] True if vendor supports setting the speaker device ID
-     * @param {boolean} [param.hasExternalMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
+     * @param {boolean} [param.hasGetExternalMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
      * @param {boolean} [param.hasSetExternalMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
      */
      constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true,
@@ -226,7 +226,7 @@ export class CapabilitiesResult {
                      hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false,
                      hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false,
                      hasGetExternalSpeakerDeviceSetting = false, hasSetExternalSpeakerDeviceSetting = false,
-                     hasExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false }) {
+                     hasGetExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
         Validator.validateBoolean(hasMerge);
@@ -245,7 +245,7 @@ export class CapabilitiesResult {
         Validator.validateBoolean(hasPhoneBook);
         Validator.validateBoolean(hasGetExternalSpeakerDeviceSetting);
         Validator.validateBoolean(hasSetExternalSpeakerDeviceSetting);
-        Validator.validateBoolean(hasExternalMicrophoneDeviceSetting);
+        Validator.validateBoolean(hasGetExternalMicrophoneDeviceSetting);
         Validator.validateBoolean(hasSetExternalMicrophoneDeviceSetting);
 
         this.hasMute = hasMute;
@@ -266,7 +266,7 @@ export class CapabilitiesResult {
         this.hasPhoneBook = hasPhoneBook;
         this.hasGetExternalSpeakerDeviceSetting = hasGetExternalSpeakerDeviceSetting;
         this.hasSetExternalSpeakerDeviceSetting = hasSetExternalSpeakerDeviceSetting;
-        this.hasExternalMicrophoneDeviceSetting = hasExternalMicrophoneDeviceSetting;
+        this.hasGetExternalMicrophoneDeviceSetting = hasGetExternalMicrophoneDeviceSetting;
         this.hasSetExternalMicrophoneDeviceSetting = hasSetExternalMicrophoneDeviceSetting;
     }
 }
