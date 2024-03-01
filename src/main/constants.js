@@ -178,6 +178,7 @@ export default {
         QUEUE: 'Queue',
         PHONENUMBER: 'PhoneNumber',
         AGENT: 'Agent',
+        EXTERNAL_AGENT: 'ExternalAgent',
         FLOW: 'Flow'
     },
     AGENT_CONFIG_TYPE: {
