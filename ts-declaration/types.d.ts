@@ -69,6 +69,7 @@ export namespace Constants {
         QUEUE = constants.CONTACT_TYPE.QUEUE,
         PHONENUMBER = constants.CONTACT_TYPE.PHONENUMBER,
         AGENT = constants.CONTACT_TYPE.AGENT,
+        EXTERNAL_AGENT = constants.CONTACT_TYPE.EXTERNAL_AGENT,
         FLOW = constants.CONTACT_TYPE.FLOW,
     }
     enum CALL_STATE {
