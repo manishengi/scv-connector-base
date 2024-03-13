@@ -219,6 +219,7 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasSetExternalSpeakerDeviceSetting] True if vendor supports setting the speaker device ID
      * @param {boolean} [param.hasGetExternalMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
      * @param {boolean} [param.hasSetExternalMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
+     * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      */
      constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true,
                      hasSignedRecordingUrl = false, debugEnabled = true, hasContactSearch = false,
@@ -226,7 +227,8 @@ export class CapabilitiesResult {
                      hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false,
                      hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false,
                      hasGetExternalSpeakerDeviceSetting = false, hasSetExternalSpeakerDeviceSetting = false,
-                     hasGetExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false }) {
+                     hasGetExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false,
+                     hasSFDCPendingState = false }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
         Validator.validateBoolean(hasMerge);
@@ -247,6 +249,7 @@ export class CapabilitiesResult {
         Validator.validateBoolean(hasSetExternalSpeakerDeviceSetting);
         Validator.validateBoolean(hasGetExternalMicrophoneDeviceSetting);
         Validator.validateBoolean(hasSetExternalMicrophoneDeviceSetting);
+        Validator.validateBoolean(hasSFDCPendingState);
 
         this.hasMute = hasMute;
         this.hasRecord = hasRecord;
@@ -268,6 +271,7 @@ export class CapabilitiesResult {
         this.hasSetExternalSpeakerDeviceSetting = hasSetExternalSpeakerDeviceSetting;
         this.hasGetExternalMicrophoneDeviceSetting = hasGetExternalMicrophoneDeviceSetting;
         this.hasSetExternalMicrophoneDeviceSetting = hasSetExternalMicrophoneDeviceSetting;
+        this.hasSFDCPendingState = hasSFDCPendingState;
     }
 }
 
