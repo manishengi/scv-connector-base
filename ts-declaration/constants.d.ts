@@ -196,6 +196,7 @@ declare namespace _default {
         const TRANSFER_TO_OMNI_FLOW: string;
         const PENDING_STATUS_CHANGE: string;
         const PHONEBOOK: string;
+        const SFDC_PENDING_STATE: string;
     }
     namespace CALL_STATE {
         const RINGING: string;

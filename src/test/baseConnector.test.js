@@ -148,7 +148,8 @@ const capabilitiesPayload = {
     [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_SPEAKER] : capabilitiesResult.hasGetExternalSpeakerDeviceSetting,
     [constants.CAPABILITIES_TYPE.CAN_SET_EXTERNAL_SPEAKER] : capabilitiesResult.hasSetExternalSpeakerDeviceSetting,
     [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
-    [constants.CAPABILITIES_TYPE.CAN_SET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasSetExternalMicrophoneDeviceSetting
+    [constants.CAPABILITIES_TYPE.CAN_SET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasSetExternalMicrophoneDeviceSetting,
+    [constants.CAPABILITIES_TYPE.SFDC_PENDING_STATE]: capabilitiesResult.hasSFDCPendingState
 };
 const capabilitiesResultWithMos = new CapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
 const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
