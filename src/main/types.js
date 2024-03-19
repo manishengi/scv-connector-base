@@ -212,7 +212,7 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasSupervisorListenIn] True if vendor supports supervisor listening  to a ongoing call
      * @param {boolean} [param.hasSupervisorBargeIn] True if vendor supports Supervisor  barging into a ongoing call
      * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
-     * @param {boolean} [param.hasBlindTransfer] True if vendor supports transfer to omni flows
+     * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
