@@ -672,23 +672,23 @@ export class PhoneCall {
         callId?: string;
         callType?: Constants.CALL_TYPE;
         contact?: Contact;
-        state?: string;
+        state?: Constants.CALL_STATE;
         callAttributes?: PhoneCallAttributes;
         phoneNumber?: string;
         callInfo?: CallInfo;
-        reason?: string;
+        reason?: Constants.HANGUP_REASON;
         closeCallOnError?: boolean;
-        agentStatus?: string;
+        agentStatus?: Constants.AGENT_STATUS;
     });
     callId: string;
     callType: Constants.CALL_TYPE;
     phoneNumber: string;
     callInfo: CallInfo;
     contact: Contact;
-    reason: string;
+    reason: Constants.HANGUP_REASON;
     closeCallOnError: true;
-    agentStatus: string;
-    state: string;
+    agentStatus: Constants.AGENT_STATUS;
+    state: Constants.CALL_STATE;
     callAttributes: PhoneCallAttributes;
 }
 
