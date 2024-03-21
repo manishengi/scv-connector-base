@@ -235,7 +235,7 @@ export class AgentConfig {
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      */
-    constructor({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, debugEnabled, hasContactSearch, hasAgentAvailability, supportsMos, hasSupervisorListenIn, hasSupervisorBargeIn, hasPendingStatusChange, hasSFDCPendingState }: {
+    constructor({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, debugEnabled, hasContactSearch, hasAgentAvailability, supportsMos, hasSupervisorListenIn, hasSupervisorBargeIn, hasBlindTransfer, hasPendingStatusChange, hasSFDCPendingState }: {
         hasMute?: boolean;
         hasRecord?: boolean;
         hasMerge?: boolean;
@@ -247,6 +247,7 @@ export class AgentConfig {
         supportsMos?: boolean;
         hasSupervisorListenIn?: boolean;
         hasSupervisorBargeIn?: boolean;
+        hasBlindTransfer?: boolean;
         hasPendingStatusChange?: boolean;
         hasSFDCPendingState?: boolean;
     });
@@ -261,6 +262,7 @@ export class AgentConfig {
     supportsMos: boolean;
     hasSupervisorListenIn: boolean;
     hasSupervisorBargeIn: boolean;
+    hasBlindTransfer: boolean;
     hasPendingStatusChange: boolean;
     hasSFDCPendingState: boolean;
 }
