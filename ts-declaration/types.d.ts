@@ -181,6 +181,21 @@ export class ActiveCallsResult {
 }
 
 /**
+ * Class representing result type for getAudioDeviceIds()
+ */
+export class AudioDeviceIdsResult {
+    /**
+     * Create AudioDeviceIdsResult
+     * @param {object} param
+     * @param {Promise} [param.deviceIdsPromise]
+     */
+    constructor({ deviceIdsPromise }: {
+        deviceIdsPromise?: Promise;
+    });
+    deviceIdsPromise: Promise;
+}
+
+/**
  * Class representing result type for getAgentConfig()
  */
 export class AgentConfigResult {
@@ -772,6 +787,12 @@ export class TelephonyConnector {
      *
      */
     getActiveCalls(): Promise<ActiveCallsResult>;
+    /**
+     * Get the currently valid device IDs that can be used to set the speaker and microphone.
+     * @returns {Promise<AudioDeviceIdsResult>}
+     *
+     */
+    getAudioDeviceIds(): Promise<AudioDeviceIdsResult>;
     /**
      * Accept call
      * @param {PhoneCall} call - The call to be accepted

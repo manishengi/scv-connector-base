@@ -9,7 +9,7 @@ import { initializeConnector, Constants, publishEvent, publishError, publishLog,
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult, 
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, CapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement, 
-    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult } from '../main/index';
+    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDeviceIdsResult } from '../main/index';
 import baseConstants from '../main/constants';
 
 import { log } from '../main/logger';
@@ -86,6 +86,7 @@ const callHangUpResult = new HangupResult({ calls: [new PhoneCall({ reason: dumm
 const muteToggleResult = new MuteToggleResult({ isMuted: true });
 const unmuteToggleResult = new MuteToggleResult({ isMuted: false });
 const signedRecordingUrlResult = new SignedRecordingUrlResult({ success: true, url: 'recordingUrl', duration: 10, callId: 'callId' });
+const audioDeviceIdsResult = new AudioDeviceIdsResult({ deviceIdsPromise: Promise.resolve() });
 const calls = [dummyPhoneCall];
 const isThirdPartyOnHold = false;
 const isCustomerOnHold = true;
@@ -224,6 +225,7 @@ describe('SCVConnectorBase tests', () => {
     DemoAdapter.prototype.logMessageToVendor = jest.fn();
     DemoAdapter.prototype.onAgentWorkEvent = jest.fn();
     DemoAdapter.prototype.getContacts = jest.fn().mockResolvedValue(contactsResult);
+    DemoAdapter.prototype.getAudioDeviceIds = jest.fn().mockResolvedValue(audioDeviceIdsResult);
     // TelephonyConnector overrides
     DemoTelephonyAdapter.prototype.acceptCall = jest.fn().mockResolvedValue(callResult);
     DemoTelephonyAdapter.prototype.declineCall = jest.fn().mockResolvedValue(callResult);
@@ -2096,6 +2098,34 @@ describe('SCVConnectorBase tests', () => {
                 fireMessage(constants.MESSAGE_TYPE.VOICE.WRAP_UP_CALL, { call: dummyPhoneCall });
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 expect(telephonyAdapter.wrapUpCall).toBeCalledWith(dummyPhoneCall);
+            });
+        });
+
+        describe('getAudioDeviceIds()', () => {
+            it('Successfully invoke getAudioDeviceIds()', async () => {
+                // telephonyAdapter.getAudioDeviceIds = jest.fn().mockRejectedValue(invalidResult);
+                telephonyAdapter.getAudioDeviceIds = jest.fn().mockResolvedValue(audioDeviceIdsResult);
+                fireMessage(constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS, { call: dummyPhoneCall });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                expect(telephonyAdapter.getAudioDeviceIds).toBeCalled();
+            });
+
+            it('Fail to invoke getAudioDeviceIds()', async () => {
+                telephonyAdapter.getAudioDeviceIds = jest.fn().mockRejectedValue(invalidResult);
+                fireMessage(constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.getAudioDeviceIds()).rejects.toBe(invalidResult);
+                assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
+                    message: constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICE_IDS
+                }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS,
+                    payload: {
+                        errorType: constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICE_IDS,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
             });
         });
 

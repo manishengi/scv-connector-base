@@ -11,7 +11,7 @@ import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTS
 import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
     VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
-    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult } from './types';
+    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult, AudioDeviceIdsResult } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
@@ -656,6 +656,16 @@ async function channelMessageHandler(message) {
                 }
             }
         break;
+        case constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS:
+            try {
+                const telephonyConnector = await vendorConnector.getTelephonyConnector();
+                const result = await telephonyConnector.getAudioDeviceIds();
+                Validator.validateClassObject(result, AudioDeviceIdsResult);
+                dispatchEvent(constants.EVENT_TYPE.VOICE.GET_AUDIO_DEVICE_IDS, result);
+            } catch (e) {
+                dispatchError(constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICE_IDS, getErrorMessage(e), constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS);
+            }
+            break;
         case constants.MESSAGE_TYPE.VOICE.GET_SIGNED_RECORDING_URL:
             try {
                 const { recordingUrl, vendorCallKey, callId } = message.data;

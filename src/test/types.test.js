@@ -5,11 +5,45 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { ActiveCallsResult, AgentConfigResult, CapabilitiesResult, RecordingToggleResult, ParticipantResult, LogoutResult,
-    ContactsResult, PhoneContactsResult, CallResult, HoldToggleResult, InitResult, GenericResult, MuteToggleResult, SignedRecordingUrlResult,
-    Contact, PhoneCall, PhoneCallAttributes, CallInfo, VendorConnector, TelephonyConnector, Phone, AgentStatusInfo, HangupResult, AgentConfig, 
-    StatsInfo, AudioStats, AudioStatsElement, Constants, SupervisorHangupResult, SupervisedCallInfo, AgentVendorStatusInfo, 
-    StateChangeResult, CustomError, AgentWork, ShowStorageAccessResult, ContactsFilter } from '../main/index';
+import {
+    ActiveCallsResult,
+    AgentConfigResult,
+    CapabilitiesResult,
+    RecordingToggleResult,
+    ParticipantResult,
+    LogoutResult,
+    ContactsResult,
+    PhoneContactsResult,
+    CallResult,
+    HoldToggleResult,
+    InitResult,
+    GenericResult,
+    MuteToggleResult,
+    SignedRecordingUrlResult,
+    Contact,
+    PhoneCall,
+    PhoneCallAttributes,
+    CallInfo,
+    VendorConnector,
+    TelephonyConnector,
+    Phone,
+    AgentStatusInfo,
+    HangupResult,
+    AgentConfig,
+    StatsInfo,
+    AudioStats,
+    AudioStatsElement,
+    Constants,
+    SupervisorHangupResult,
+    SupervisedCallInfo,
+    AgentVendorStatusInfo,
+    StateChangeResult,
+    CustomError,
+    AgentWork,
+    ShowStorageAccessResult,
+    ContactsFilter,
+    AudioDeviceIdsResult
+} from '../main/index';
 
 
 import { downloadLogs } from '../main/logger';
@@ -61,6 +95,29 @@ describe('Types validation tests', () => {
                 activeCallsResult = new ActiveCallsResult({ activeCalls });
             }).not.toThrowError();
             expect(activeCallsResult.activeCalls).toEqual(activeCalls);
+        });
+    });
+
+    describe('AudioDeviceIdsResult tests', () => {
+        it('Should create AudioDeviceIdsResult object - default', () => {
+            let audioDeviceIdsResult;
+            expect(() => {
+                audioDeviceIdsResult = new AudioDeviceIdsResult({});
+            }).not.toThrowError();
+            expect(audioDeviceIdsResult.deviceIdsPromise).toBeInstanceOf(Promise);
+        });
+
+        it('Should create AudioDeviceIdsResult object', () => {
+            const deviceIds = ['deviceId1', 'deviceId2'];
+            const deviceIdsPromise = Promise.resolve(deviceIds);
+            let audioDeviceIdsResult;
+            expect(() => {
+                audioDeviceIdsResult = new AudioDeviceIdsResult({ deviceIdsPromise });
+            }).not.toThrowError();
+            expect(audioDeviceIdsResult.deviceIdsPromise).toEqual(deviceIdsPromise);
+            audioDeviceIdsResult.deviceIdsPromise.then((returnedDeviceIds) => {
+                expect(returnedDeviceIds).toEqual(deviceIds);
+            });
         });
     });
 
@@ -1027,6 +1084,10 @@ describe('Types validation tests', () => {
 
         it('Should implement getContacts', () => {
             expect(() => vendorConnector.getContacts()).toThrowError('Not implemented');
+        });
+
+        it('Should implement getAudioDeviceIds', () => {
+            expect(() => vendorConnector.getAudioDeviceIds()).toThrowError('Not implemented');
         });
     });
 

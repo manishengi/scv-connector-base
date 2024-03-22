@@ -193,6 +193,20 @@ export class ActiveCallsResult {
 }
 
 /**
+ * Class representing result type for getAudioDeviceIds()
+ */
+export class AudioDeviceIdsResult {
+    /**
+     * Create AudioDeviceIdsResult
+     * @param {object} param
+     * @param {Promise} param.deviceIdsPromise
+     */
+    constructor({ deviceIdsPromise = Promise.resolve() }) {
+        this.deviceIdsPromise = deviceIdsPromise;
+    }
+}
+
+/**
  * Class representing result type for getCapabilities()
  */
 export class CapabilitiesResult {
@@ -1156,6 +1170,13 @@ export class VendorConnector {
      * @returns {Promise<PhoneContactsResult>} 
      */
     getContacts(filter, workItemId) {
+        throw new Error('Not implemented');
+    }
+
+    /**
+     * Returns a list of valid device IDs that can be used for the speaker and microphone devices.
+     */
+    getAudioDeviceIds() {
         throw new Error('Not implemented');
     }
 }
