@@ -263,6 +263,10 @@ export class AgentConfig {
         hasSupervisorListenIn?: boolean;
         hasSupervisorBargeIn?: boolean;
         hasPendingStatusChange?: boolean;
+        hasGetExternalSpeakerDeviceSetting?: boolean;
+        hasSetExternalSpeakerDeviceSetting?: boolean;
+        hasGetExternalMicrophoneDeviceSetting?: boolean;
+        hasSetExternalMicrophoneDeviceSetting?: boolean;
         hasSFDCPendingState?: boolean;
     });
     hasMute: boolean;
@@ -277,6 +281,10 @@ export class AgentConfig {
     hasSupervisorListenIn: boolean;
     hasSupervisorBargeIn: boolean;
     hasPendingStatusChange: boolean;
+    hasGetExternalSpeakerDeviceSetting?: boolean;
+    hasSetExternalSpeakerDeviceSetting?: boolean;
+    hasGetExternalMicrophoneDeviceSetting?: boolean;
+    hasSetExternalMicrophoneDeviceSetting?: boolean;
     hasSFDCPendingState: boolean;
 }
 
