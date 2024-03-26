@@ -11,4 +11,4 @@ export { Constants, ActiveCallsResult, AgentConfigResult, AgentConfig, Capabilit
     ContactsResult, PhoneContactsResult, CallResult, HangupResult, HoldToggleResult, InitResult, GenericResult, MuteToggleResult, LogoutResult,
     CallInfo, PhoneCall, PhoneCallAttributes, Contact, Phone, AgentStatusInfo, AudioStatsElement, AudioStats, StatsInfo, VendorConnector, TelephonyConnector, SuperviseCallResult,
     SupervisorHangupResult, SupervisedCallInfo, AgentVendorStatusInfo, StateChangeResult, CustomError, AgentWork,
-    ShowStorageAccessResult, DialOptions, ContactsFilter, AudioDeviceIdsResult } from './types.js';
+    ShowStorageAccessResult, DialOptions, ContactsFilter, AudioDevicesResult } from './types.js';

@@ -11,7 +11,7 @@ import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTS
 import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
     VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
-    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult, AudioDeviceIdsResult } from './types';
+    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult, AudioDevicesResult } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
@@ -656,14 +656,14 @@ async function channelMessageHandler(message) {
                 }
             }
         break;
-        case constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS:
+        case constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES:
             try {
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
-                const result = await telephonyConnector.getAudioDeviceIds();
-                Validator.validateClassObject(result, AudioDeviceIdsResult);
-                dispatchEvent(constants.EVENT_TYPE.VOICE.GET_AUDIO_DEVICE_IDS, result);
+                const result = await telephonyConnector.getAudioDevices();
+                Validator.validateClassObject(result, AudioDevicesResult);
+                dispatchEvent(constants.EVENT_TYPE.VOICE.GET_AUDIO_DEVICES, result);
             } catch (e) {
-                dispatchError(constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICE_IDS, getErrorMessage(e), constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICE_IDS);
+                dispatchError(constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICES, getErrorMessage(e), constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES);
             }
             break;
         case constants.MESSAGE_TYPE.VOICE.GET_SIGNED_RECORDING_URL:

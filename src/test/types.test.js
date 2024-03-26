@@ -42,7 +42,7 @@ import {
     AgentWork,
     ShowStorageAccessResult,
     ContactsFilter,
-    AudioDeviceIdsResult
+    AudioDevicesResult
 } from '../main/index';
 
 
@@ -98,24 +98,24 @@ describe('Types validation tests', () => {
         });
     });
 
-    describe('AudioDeviceIdsResult tests', () => {
-        it('Should create AudioDeviceIdsResult object - default', () => {
-            let audioDeviceIdsResult;
+    describe('AudioDevicesResult tests', () => {
+        it('Should create AudioDevicesResult object - default', () => {
+            let audioDevicesResult;
             expect(() => {
-                audioDeviceIdsResult = new AudioDeviceIdsResult({});
+                audioDevicesResult = new AudioDevicesResult({});
             }).not.toThrowError();
-            expect(audioDeviceIdsResult.deviceIdsPromise).toBeInstanceOf(Promise);
+            expect(audioDevicesResult.deviceIdsPromise).toBeInstanceOf(Promise);
         });
 
-        it('Should create AudioDeviceIdsResult object', () => {
+        it('Should create AudioDevicesResult object', () => {
             const deviceIds = ['deviceId1', 'deviceId2'];
             const deviceIdsPromise = Promise.resolve(deviceIds);
-            let audioDeviceIdsResult;
+            let audioDevicesResult;
             expect(() => {
-                audioDeviceIdsResult = new AudioDeviceIdsResult({ deviceIdsPromise });
+                audioDevicesResult = new AudioDevicesResult({ deviceIdsPromise });
             }).not.toThrowError();
-            expect(audioDeviceIdsResult.deviceIdsPromise).toEqual(deviceIdsPromise);
-            audioDeviceIdsResult.deviceIdsPromise.then((returnedDeviceIds) => {
+            expect(audioDevicesResult.deviceIdsPromise).toEqual(deviceIdsPromise);
+            audioDevicesResult.deviceIdsPromise.then((returnedDeviceIds) => {
                 expect(returnedDeviceIds).toEqual(deviceIds);
             });
         });
@@ -1086,8 +1086,8 @@ describe('Types validation tests', () => {
             expect(() => vendorConnector.getContacts()).toThrowError('Not implemented');
         });
 
-        it('Should implement getAudioDeviceIds', () => {
-            expect(() => vendorConnector.getAudioDeviceIds()).toThrowError('Not implemented');
+        it('Should implement getAudioDevices', () => {
+            expect(() => vendorConnector.getAudioDevices()).toThrowError('Not implemented');
         });
     });
 

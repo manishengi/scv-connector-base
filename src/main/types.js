@@ -193,11 +193,11 @@ export class ActiveCallsResult {
 }
 
 /**
- * Class representing result type for getAudioDeviceIds()
+ * Class representing result type for getAudioDevices()
  */
-export class AudioDeviceIdsResult {
+export class AudioDevicesResult {
     /**
-     * Create AudioDeviceIdsResult
+     * Create AudioDevicesResult
      * @param {object} param
      * @param {Promise} param.deviceIdsPromise
      */
@@ -1176,7 +1176,7 @@ export class VendorConnector {
     /**
      * Returns a list of valid device IDs that can be used for the speaker and microphone devices.
      */
-    getAudioDeviceIds() {
+    getAudioDevices() {
         throw new Error('Not implemented');
     }
 }
