@@ -104,20 +104,26 @@ describe('Types validation tests', () => {
             expect(() => {
                 audioDevicesResult = new AudioDevicesResult({});
             }).not.toThrowError();
-            expect(audioDevicesResult.deviceIdsPromise).toBeInstanceOf(Promise);
+            expect(audioDevicesResult.audioDevices).toBeInstanceOf(Array);
         });
 
         it('Should create AudioDevicesResult object', () => {
-            const deviceIds = ['deviceId1', 'deviceId2'];
-            const deviceIdsPromise = Promise.resolve(deviceIds);
+            const audioDevices = [{
+                "deviceId": "default",
+                "kind": "audioinput",
+                "label": "Default - MyHeadphones (Bluetooth)",
+                "groupId": "080523bb442ecd8c19e9e70dc0fc0f9c9d808f4cb071c65cf81e8e790117aa28"
+            }, {
+                "deviceId": "437c20a0dg2d20b44c2af5e619d8f0eb85e0fa1a877e0e45665bca3da42a9673",
+                "kind": "audioinput",
+                "label": "MacBook Pro Microphone (Built-in)",
+                "groupId": "16131a5ab07c4234be110a0b7dede980a1ef7239255785bbb91f99acdb82ee80"
+            }];
             let audioDevicesResult;
             expect(() => {
-                audioDevicesResult = new AudioDevicesResult({ deviceIdsPromise });
+                audioDevicesResult = new AudioDevicesResult({ audioDevices });
             }).not.toThrowError();
-            expect(audioDevicesResult.deviceIdsPromise).toEqual(deviceIdsPromise);
-            audioDevicesResult.deviceIdsPromise.then((returnedDeviceIds) => {
-                expect(returnedDeviceIds).toEqual(deviceIds);
-            });
+            expect(audioDevicesResult.audioDevices).toEqual(audioDevices);
         });
     });
 

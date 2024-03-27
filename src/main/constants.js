@@ -93,7 +93,8 @@ export default {
             AGENT_ERROR: 'AGENT_ERROR',
             HANGUP: 'HANGUP',
             SOFTPHONE_ERROR: 'SOFTPHONE_ERROR',
-            SHOW_TRANSFER_VIEW: 'SHOW_TRANSFER_VIEW'
+            SHOW_TRANSFER_VIEW: 'SHOW_TRANSFER_VIEW',
+            GET_AUDIO_DEVICES: 'GET_AUDIO_DEVICES'
         }
     },
     INFO_TYPE: {

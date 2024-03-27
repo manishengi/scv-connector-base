@@ -201,8 +201,8 @@ export class AudioDevicesResult {
      * @param {object} param
      * @param {Promise} param.deviceIdsPromise
      */
-    constructor({ deviceIdsPromise = Promise.resolve() }) {
-        this.deviceIdsPromise = deviceIdsPromise;
+    constructor({ audioDevices = [] }) {
+        this.audioDevices = audioDevices;
     }
 }
 

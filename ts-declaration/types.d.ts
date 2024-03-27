@@ -152,6 +152,24 @@ export class Phone {
     number: string;
 }
 /**
+ * Class representing an AudioDevice type
+ */
+export class AudioDevice {
+    /**
+     * Create AudioDevice
+     */
+    constructor({ deviceId, kind, label, groupId }: {
+        deviceId: Constants.PHONE_TYPE;
+        kind: string;
+        label?: string;
+        groupId?: string;
+    });
+    deviceId: string;
+    kind: string;
+    label: string;
+    groupId: string;
+}
+/**
  * Class representing result type for mute() & unmute()
  */
 export class MuteToggleResult {
@@ -181,18 +199,18 @@ export class ActiveCallsResult {
 }
 
 /**
- * Class representing result type for getAudioDeviceIds()
+ * Class representing result type for getAudioDevices()
  */
-export class AudioDeviceIdsResult {
+export class AudioDevicesResult {
     /**
-     * Create AudioDeviceIdsResult
+     * Create AudioDevicesResult
      * @param {object} param
-     * @param {Promise} [param.deviceIdsPromise]
+     * @param {audioDevices[]}
      */
-    constructor({ deviceIdsPromise }: {
-        deviceIdsPromise?: Promise;
+    constructor({ audioDevices }: {
+        audioDevices?: AudioDevice[];
     });
-    deviceIdsPromise: Promise;
+    audioDevices: AudioDevice[];
 }
 
 /**
@@ -796,11 +814,11 @@ export class TelephonyConnector {
      */
     getActiveCalls(): Promise<ActiveCallsResult>;
     /**
-     * Get the currently valid device IDs that can be used to set the speaker and microphone.
-     * @returns {Promise<AudioDeviceIdsResult>}
+     * Get the currently valid devices that can be used to set the speaker and microphone.
+     * @returns {Promise<AudioDevicesResult>}
      *
      */
-    getAudioDeviceIds(): Promise<AudioDeviceIdsResult>;
+    getAudioDevices(): Promise<AudioDevicesResult>;
     /**
      * Accept call
      * @param {PhoneCall} call - The call to be accepted
