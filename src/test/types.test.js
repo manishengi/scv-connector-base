@@ -135,20 +135,28 @@ describe('Types validation tests', () => {
             }).not.toThrowError();
             expect(agentConfigResult.phones).toEqual([Constants.PHONE_TYPE.SOFT_PHONE]);
             expect(agentConfigResult.selectedPhone).toEqual(new Phone({type: Constants.PHONE_TYPE.SOFT_PHONE}));
+            expect(agentConfigResult.speakerDeviceId).toEqual('');
+            expect(agentConfigResult.microphoneDeviceId).toEqual('');
         });
 
         it('Should create AgentConfigResult object', () => {
             let agentConfigResult;
             const phones = ["DESK_PHONE", "SOFT_PHONE"];
             const selectedPhone = new Phone({type: "SOFT_PHONE"});
+            const speakerDeviceId = 'testSpeakerDeviceId';
+            const microphoneDeviceId = 'testMicrophoneDeviceId';
             expect(() => {
                 agentConfigResult = new AgentConfigResult({
                     phones,
-                    selectedPhone
+                    selectedPhone,
+                    speakerDeviceId,
+                    microphoneDeviceId
                 });
             }).not.toThrowError();
             expect(agentConfigResult.phones).toEqual(phones);
             expect(agentConfigResult.selectedPhone).toEqual(selectedPhone);
+            expect(agentConfigResult.speakerDeviceId).toEqual(speakerDeviceId);
+            expect(agentConfigResult.microphoneDeviceId).toEqual(microphoneDeviceId);
         });
     });
 

@@ -322,9 +322,11 @@ export class AgentConfig {
      * @param {object} param
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ selectedPhone }) {
+    constructor({ selectedPhone,speakerDeviceId ,microphoneDeviceId }) {
         Validator.validateClassObject(selectedPhone, Phone);
         this.selectedPhone = selectedPhone;
+        this.speakerDeviceId = speakerDeviceId;
+        this.microphoneDeviceId = microphoneDeviceId;
     }
 }
 

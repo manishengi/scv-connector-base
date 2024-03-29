@@ -223,13 +223,17 @@ export class AgentConfigResult {
      * @param {Phone[]} [param.phones]
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ phones, selectedPhone }: {
+    constructor({ phones, selectedPhone, speakerDeviceId, microphoneDeviceId }: {
         phones?: Phone[];
         selectedPhone?: Phone;
+        speakerDeviceId?: string;
+        microphoneDeviceId?: string;
     });
 
     phones: Phone[];
     selectedPhone: Phone;
+    speakerDeviceId: string;
+    microphoneDeviceId: string;
 }
 /**
  * Class representing AgentConfig type for setAgentConfig()
@@ -240,10 +244,14 @@ export class AgentConfig {
      * @param {object} param
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ selectedPhone }: {
+    constructor({ selectedPhone, speakerDeviceId, microphoneDeviceId }: {
         selectedPhone?: Phone;
+        speakerDeviceId?: string;
+        microphoneDeviceId?: string;
     });
     selectedPhone: Phone;
+    speakerDeviceId: string;
+    microphoneDeviceId: string;
 }
 
 /**
