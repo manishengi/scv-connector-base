@@ -159,7 +159,7 @@ export class AudioDevice {
      * Create AudioDevice
      */
     constructor({ deviceId, kind, label, groupId }: {
-        deviceId: Constants.PHONE_TYPE;
+        deviceId: string;
         kind: string;
         label?: string;
         groupId?: string;
