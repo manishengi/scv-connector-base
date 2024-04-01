@@ -276,7 +276,7 @@ export class AgentConfig {
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      */
-    constructor({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, debugEnabled, hasContactSearch, hasAgentAvailability, supportsMos, hasSupervisorListenIn, hasSupervisorBargeIn, hasPendingStatusChange, hasSFDCPendingState }: {
+    constructor({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, debugEnabled, hasContactSearch, hasAgentAvailability, supportsMos, hasSupervisorListenIn, hasSupervisorBargeIn, hasBlindTransfer, hasPendingStatusChange, hasSFDCPendingState }: {
         hasMute?: boolean;
         hasRecord?: boolean;
         hasMerge?: boolean;
@@ -288,6 +288,7 @@ export class AgentConfig {
         supportsMos?: boolean;
         hasSupervisorListenIn?: boolean;
         hasSupervisorBargeIn?: boolean;
+        hasBlindTransfer?: boolean;
         hasPendingStatusChange?: boolean;
         hasGetExternalSpeakerDeviceSetting?: boolean;
         hasSetExternalSpeakerDeviceSetting?: boolean;
@@ -306,6 +307,7 @@ export class AgentConfig {
     supportsMos: boolean;
     hasSupervisorListenIn: boolean;
     hasSupervisorBargeIn: boolean;
+    hasBlindTransfer: boolean;
     hasPendingStatusChange: boolean;
     hasGetExternalSpeakerDeviceSetting?: boolean;
     hasSetExternalSpeakerDeviceSetting?: boolean;
@@ -721,23 +723,23 @@ export class PhoneCall {
         callId?: string;
         callType?: Constants.CALL_TYPE;
         contact?: Contact;
-        state?: string;
+        state?: Constants.CALL_STATE;
         callAttributes?: PhoneCallAttributes;
         phoneNumber?: string;
         callInfo?: CallInfo;
-        reason?: string;
+        reason?: Constants.HANGUP_REASON;
         closeCallOnError?: boolean;
-        agentStatus?: string;
+        agentStatus?: Constants.AGENT_STATUS;
     });
     callId: string;
     callType: Constants.CALL_TYPE;
     phoneNumber: string;
     callInfo: CallInfo;
     contact: Contact;
-    reason: string;
+    reason: Constants.HANGUP_REASON;
     closeCallOnError: true;
-    agentStatus: string;
-    state: string;
+    agentStatus: Constants.AGENT_STATUS;
+    state: Constants.CALL_STATE;
     callAttributes: PhoneCallAttributes;
 }
 
