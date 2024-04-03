@@ -11,7 +11,7 @@ import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTS
 import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
     VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
-    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult } from './types';
+    CapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult, AudioDevicesResult } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
@@ -179,6 +179,10 @@ async function setConnectorReady() {
                 [constants.CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : capabilitiesResult.hasTransferToOmniFlow,
                 [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange,
                 [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBook,
+                [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_SPEAKER] : capabilitiesResult.hasGetExternalSpeakerDeviceSetting,
+                [constants.CAPABILITIES_TYPE.HAS_SET_EXTERNAL_SPEAKER] : capabilitiesResult.hasSetExternalSpeakerDeviceSetting,
+                [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
+                [constants.CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasSetExternalMicrophoneDeviceSetting,
                 [constants.CAPABILITIES_TYPE.SFDC_PENDING_STATE]: capabilitiesResult.hasSFDCPendingState
             },
             callInProgress: activeCalls.length > 0 ? activeCalls[0] : null
@@ -652,6 +656,16 @@ async function channelMessageHandler(message) {
                 }
             }
         break;
+        case constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES:
+            try {
+                const telephonyConnector = await vendorConnector.getTelephonyConnector();
+                const result = await telephonyConnector.getAudioDevices();
+                Validator.validateClassObject(result, AudioDevicesResult);
+                dispatchEvent(constants.EVENT_TYPE.VOICE.GET_AUDIO_DEVICES, result);
+            } catch (e) {
+                dispatchError(constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICES, getErrorMessage(e), constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES);
+            }
+            break;
         case constants.MESSAGE_TYPE.VOICE.GET_SIGNED_RECORDING_URL:
             try {
                 const { recordingUrl, vendorCallKey, callId } = message.data;

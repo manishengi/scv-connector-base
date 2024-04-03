@@ -193,6 +193,20 @@ export class ActiveCallsResult {
 }
 
 /**
+ * Class representing result type for getAudioDevices()
+ */
+export class AudioDevicesResult {
+    /**
+     * Create AudioDevicesResult
+     * @param {object} param
+     * @param {Promise} param.deviceIdsPromise
+     */
+    constructor({ audioDevices = [] }) {
+        this.audioDevices = audioDevices;
+    }
+}
+
+/**
  * Class representing result type for getCapabilities()
  */
 export class CapabilitiesResult {
@@ -215,6 +229,10 @@ export class CapabilitiesResult {
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
+     * @param {boolean} [param.hasGetExternalSpeakerDeviceSetting] True if vendor supports retrieving the speaker device ID
+     * @param {boolean} [param.hasSetExternalSpeakerDeviceSetting] True if vendor supports setting the speaker device ID
+     * @param {boolean} [param.hasGetExternalMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
+     * @param {boolean} [param.hasSetExternalMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      */
      constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true,
@@ -222,6 +240,8 @@ export class CapabilitiesResult {
                      hasAgentAvailability = false, hasQueueWaitTime = false, supportsMos = false,
                      hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false,
                      hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false,
+                     hasGetExternalSpeakerDeviceSetting = false, hasSetExternalSpeakerDeviceSetting = false,
+                     hasGetExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false,
                      hasSFDCPendingState = false }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
@@ -239,6 +259,10 @@ export class CapabilitiesResult {
         Validator.validateBoolean(hasTransferToOmniFlow);
         Validator.validateBoolean(hasPendingStatusChange);
         Validator.validateBoolean(hasPhoneBook);
+        Validator.validateBoolean(hasGetExternalSpeakerDeviceSetting);
+        Validator.validateBoolean(hasSetExternalSpeakerDeviceSetting);
+        Validator.validateBoolean(hasGetExternalMicrophoneDeviceSetting);
+        Validator.validateBoolean(hasSetExternalMicrophoneDeviceSetting);
         Validator.validateBoolean(hasSFDCPendingState);
 
         this.hasMute = hasMute;
@@ -257,6 +281,10 @@ export class CapabilitiesResult {
         this.hasTransferToOmniFlow = hasTransferToOmniFlow;
         this.hasPendingStatusChange = hasPendingStatusChange;
         this.hasPhoneBook = hasPhoneBook;
+        this.hasGetExternalSpeakerDeviceSetting = hasGetExternalSpeakerDeviceSetting;
+        this.hasSetExternalSpeakerDeviceSetting = hasSetExternalSpeakerDeviceSetting;
+        this.hasGetExternalMicrophoneDeviceSetting = hasGetExternalMicrophoneDeviceSetting;
+        this.hasSetExternalMicrophoneDeviceSetting = hasSetExternalMicrophoneDeviceSetting;
         this.hasSFDCPendingState = hasSFDCPendingState;
     }
 }
@@ -271,12 +299,17 @@ export class AgentConfigResult {
      * @param {Phone[]} [param.phones]
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ phones = [constants.PHONE_TYPE.SOFT_PHONE], selectedPhone = new Phone({type: constants.PHONE_TYPE.SOFT_PHONE}) }) {
+    constructor({ phones = [constants.PHONE_TYPE.SOFT_PHONE], selectedPhone = new Phone({type: constants.PHONE_TYPE.SOFT_PHONE}),
+                    speakerDeviceId = '', microphoneDeviceId = '' }) {
         Validator.validateClassObject(phones, Array);
         Validator.validateClassObject(selectedPhone, Phone);
+        Validator.validateString(speakerDeviceId);
+        Validator.validateString(microphoneDeviceId);
 
         this.phones = phones;
         this.selectedPhone = selectedPhone;
+        this.speakerDeviceId = speakerDeviceId;
+        this.microphoneDeviceId = microphoneDeviceId;
     }
 }
 
@@ -289,9 +322,11 @@ export class AgentConfig {
      * @param {object} param
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ selectedPhone }) {
+    constructor({ selectedPhone,speakerDeviceId ,microphoneDeviceId }) {
         Validator.validateClassObject(selectedPhone, Phone);
         this.selectedPhone = selectedPhone;
+        this.speakerDeviceId = speakerDeviceId;
+        this.microphoneDeviceId = microphoneDeviceId;
     }
 }
 
@@ -1137,6 +1172,13 @@ export class VendorConnector {
      * @returns {Promise<PhoneContactsResult>} 
      */
     getContacts(filter, workItemId) {
+        throw new Error('Not implemented');
+    }
+
+    /**
+     * Returns a list of valid device IDs that can be used for the speaker and microphone devices.
+     */
+    getAudioDevices() {
         throw new Error('Not implemented');
     }
 }

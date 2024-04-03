@@ -152,6 +152,24 @@ export class Phone {
     number: string;
 }
 /**
+ * Class representing an AudioDevice type
+ */
+export class AudioDevice {
+    /**
+     * Create AudioDevice
+     */
+    constructor({ deviceId, kind, label, groupId }: {
+        deviceId: string;
+        kind: string;
+        label?: string;
+        groupId?: string;
+    });
+    deviceId: string;
+    kind: string;
+    label: string;
+    groupId: string;
+}
+/**
  * Class representing result type for mute() & unmute()
  */
 export class MuteToggleResult {
@@ -181,6 +199,21 @@ export class ActiveCallsResult {
 }
 
 /**
+ * Class representing result type for getAudioDevices()
+ */
+export class AudioDevicesResult {
+    /**
+     * Create AudioDevicesResult
+     * @param {object} param
+     * @param {audioDevices[]}
+     */
+    constructor({ audioDevices }: {
+        audioDevices?: AudioDevice[];
+    });
+    audioDevices: AudioDevice[];
+}
+
+/**
  * Class representing result type for getAgentConfig()
  */
 export class AgentConfigResult {
@@ -190,13 +223,17 @@ export class AgentConfigResult {
      * @param {Phone[]} [param.phones]
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ phones, selectedPhone }: {
+    constructor({ phones, selectedPhone, speakerDeviceId, microphoneDeviceId }: {
         phones?: Phone[];
         selectedPhone?: Phone;
+        speakerDeviceId?: string;
+        microphoneDeviceId?: string;
     });
 
     phones: Phone[];
     selectedPhone: Phone;
+    speakerDeviceId: string;
+    microphoneDeviceId: string;
 }
 /**
  * Class representing AgentConfig type for setAgentConfig()
@@ -207,10 +244,14 @@ export class AgentConfig {
      * @param {object} param
      * @param {Phone} [param.selectedPhone]
      */
-    constructor({ selectedPhone }: {
+    constructor({ selectedPhone, speakerDeviceId, microphoneDeviceId }: {
         selectedPhone?: Phone;
+        speakerDeviceId?: string;
+        microphoneDeviceId?: string;
     });
     selectedPhone: Phone;
+    speakerDeviceId: string;
+    microphoneDeviceId: string;
 }
 
 /**
@@ -249,6 +290,10 @@ export class AgentConfig {
         hasSupervisorBargeIn?: boolean;
         hasBlindTransfer?: boolean;
         hasPendingStatusChange?: boolean;
+        hasGetExternalSpeakerDeviceSetting?: boolean;
+        hasSetExternalSpeakerDeviceSetting?: boolean;
+        hasGetExternalMicrophoneDeviceSetting?: boolean;
+        hasSetExternalMicrophoneDeviceSetting?: boolean;
         hasSFDCPendingState?: boolean;
     });
     hasMute: boolean;
@@ -264,6 +309,10 @@ export class AgentConfig {
     hasSupervisorBargeIn: boolean;
     hasBlindTransfer: boolean;
     hasPendingStatusChange: boolean;
+    hasGetExternalSpeakerDeviceSetting?: boolean;
+    hasSetExternalSpeakerDeviceSetting?: boolean;
+    hasGetExternalMicrophoneDeviceSetting?: boolean;
+    hasSetExternalMicrophoneDeviceSetting?: boolean;
     hasSFDCPendingState: boolean;
 }
 
@@ -774,6 +823,12 @@ export class TelephonyConnector {
      *
      */
     getActiveCalls(): Promise<ActiveCallsResult>;
+    /**
+     * Get the currently valid devices that can be used to set the speaker and microphone.
+     * @returns {Promise<AudioDevicesResult>}
+     *
+     */
+    getAudioDevices(): Promise<AudioDevicesResult>;
     /**
      * Accept call
      * @param {PhoneCall} call - The call to be accepted

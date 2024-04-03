@@ -9,7 +9,7 @@ import { initializeConnector, Constants, publishEvent, publishError, publishLog,
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult, 
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, CapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement, 
-    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult } from '../main/index';
+    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult } from '../main/index';
 import baseConstants from '../main/constants';
 
 import { log } from '../main/logger';
@@ -86,6 +86,7 @@ const callHangUpResult = new HangupResult({ calls: [new PhoneCall({ reason: dumm
 const muteToggleResult = new MuteToggleResult({ isMuted: true });
 const unmuteToggleResult = new MuteToggleResult({ isMuted: false });
 const signedRecordingUrlResult = new SignedRecordingUrlResult({ success: true, url: 'recordingUrl', duration: 10, callId: 'callId' });
+const audioDevicesResult = new AudioDevicesResult({ deviceIdsPromise: Promise.resolve() });
 const calls = [dummyPhoneCall];
 const isThirdPartyOnHold = false;
 const isCustomerOnHold = true;
@@ -145,6 +146,10 @@ const capabilitiesPayload = {
     [constants.CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : capabilitiesResult.hasTransferToOmniFlow,
     [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange,
     [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBook,
+    [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_SPEAKER] : capabilitiesResult.hasGetExternalSpeakerDeviceSetting,
+    [constants.CAPABILITIES_TYPE.HAS_SET_EXTERNAL_SPEAKER] : capabilitiesResult.hasSetExternalSpeakerDeviceSetting,
+    [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
+    [constants.CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasSetExternalMicrophoneDeviceSetting,
     [constants.CAPABILITIES_TYPE.SFDC_PENDING_STATE]: capabilitiesResult.hasSFDCPendingState
 };
 const capabilitiesResultWithMos = new CapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
@@ -220,6 +225,7 @@ describe('SCVConnectorBase tests', () => {
     DemoAdapter.prototype.logMessageToVendor = jest.fn();
     DemoAdapter.prototype.onAgentWorkEvent = jest.fn();
     DemoAdapter.prototype.getContacts = jest.fn().mockResolvedValue(contactsResult);
+    DemoAdapter.prototype.getAudioDevices = jest.fn().mockResolvedValue(audioDevicesResult);
     // TelephonyConnector overrides
     DemoTelephonyAdapter.prototype.acceptCall = jest.fn().mockResolvedValue(callResult);
     DemoTelephonyAdapter.prototype.declineCall = jest.fn().mockResolvedValue(callResult);
@@ -2092,6 +2098,33 @@ describe('SCVConnectorBase tests', () => {
                 fireMessage(constants.MESSAGE_TYPE.VOICE.WRAP_UP_CALL, { call: dummyPhoneCall });
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 expect(telephonyAdapter.wrapUpCall).toBeCalledWith(dummyPhoneCall);
+            });
+        });
+
+        describe('getAudioDevices()', () => {
+            it('Successfully invoke getAudioDevices()', async () => {
+                telephonyAdapter.getAudioDevices = jest.fn().mockResolvedValue(audioDevicesResult);
+                fireMessage(constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES, { call: dummyPhoneCall });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                expect(telephonyAdapter.getAudioDevices).toBeCalled();
+            });
+
+            it('Fail to invoke getAudioDevices()', async () => {
+                telephonyAdapter.getAudioDevices = jest.fn().mockRejectedValue(invalidResult);
+                fireMessage(constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.getAudioDevices()).rejects.toBe(invalidResult);
+                assertChannelPortPayload({ eventType: constants.EVENT_TYPE.ERROR, payload: {
+                    message: constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICES
+                }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.MESSAGE_TYPE.VOICE.GET_AUDIO_DEVICES,
+                    payload: {
+                        errorType: constants.ERROR_TYPE.VOICE.CAN_NOT_GET_AUDIO_DEVICES,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
             });
         });
 
