@@ -26,7 +26,7 @@ def releaseParameters = {
     ])
 }
 
-def buildImage = "331455399823.dkr.ecr.us-east-2.amazonaws.com/sfci/sfci/centos-sfci-nodejs:latest"
+def buildImage = "331455399823.dkr.ecr.us-east-2.amazonaws.com/sfci/sfci/sfci-unmanaged-nodejs/sfci-unmanaged-rhel9-nodejs"
 
 def envDef = [releaseParameters: releaseParameters, compliance: complianceFlags, buildImage: buildImage, maxDaysToKeepBuild: 10 , maxNumToKeepBuild: 100]
 
