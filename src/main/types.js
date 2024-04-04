@@ -994,19 +994,17 @@ export class TelephonyConnector {
 
     /**
      * Pause recording
-     * @param {PhoneCall} call
      * @returns {Promise<RecordingToggleResult>} 
      */
-    pauseRecording(call) {
+    pauseRecording() {
         throw new Error('Not implemented');
     }
 
     /**
      * Resume recording
-     * @param {PhoneCall} call
      * @returns {Promise<RecordingToggleResult>} 
      */
-    resumeRecording(call) {
+    resumeRecording() {
         throw new Error('Not implemented');
     }
 
