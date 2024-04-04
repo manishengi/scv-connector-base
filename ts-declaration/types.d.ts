@@ -918,16 +918,14 @@ export class TelephonyConnector {
     addParticipant(contact: Contact, call: PhoneCall, isBlindTransfer: boolean): Promise<ParticipantResult>;
     /**
      * Pause recording
-     * @param {PhoneCall} call
      * @returns {Promise<RecordingToggleResult>}
      */
-    pauseRecording(call: PhoneCall): Promise<RecordingToggleResult>;
+    pauseRecording(): Promise<RecordingToggleResult>;
     /**
      * Resume recording
-     * @param {PhoneCall} call
      * @returns {Promise<RecordingToggleResult>}
      */
-    resumeRecording(call: PhoneCall): Promise<RecordingToggleResult>;
+    resumeRecording(): Promise<RecordingToggleResult>;
     /**
      * Get agentConfig
      * @returns {Promise<AgentConfigResult>}
