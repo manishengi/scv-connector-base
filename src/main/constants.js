@@ -261,6 +261,13 @@ export default {
     },
     DIAL_OPTIONS: {
         CALLBACK: "isCallback=true"
+    },
+    HANGUP_STATUS: {
+        MISSED_AGENT: "MissedCallAgent",
+        DECLINED: "DeclinedByAgent",
+        FAILED_CONNECT_AGENT: "FailedConnectAgent",
+        FAILED_CONNECT_CUSTOMER: "FailedConnectCustomer",
+        MISSED_CUSTOMER: "MissedCallStatus"
     }
 };
 

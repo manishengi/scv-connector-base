@@ -115,6 +115,13 @@ export namespace Constants {
         COMPLETED = constants.WORK_EVENT.COMPLETED,
         CLOSED = constants.WORK_EVENT.CLOSED,
     }
+    enum HANGUP_STATUS {
+        MISSED_AGENT = constants.HANGUP_STATUS.MISSED_AGENT,
+        DECLINED = constants.HANGUP_STATUS.DECLINED,
+        FAILED_CONNECT_AGENT = constants.HANGUP_STATUS.FAILED_CONNECT_AGENT,
+        FAILED_CONNECT_CUSTOMER = constants.HANGUP_STATUS.FAILED_CONNECT_CUSTOMER,
+        MISSED_CUSTOMER = constants.HANGUP_STATUS.MISSED_CUSTOMER,
+    }
 }
 
 export class CustomError extends Error {
@@ -717,7 +724,7 @@ export class PhoneCall {
      * @param {CallInfo} [param.callInfo]
      * @param {string} [param.reason]
      * @param {boolean} [param.closeCallOnError]
-     * @param {string} [param.agentStatus]
+     * @param {Constants.HANGUP_STATUS} [param.agentStatus]
      */
     constructor({ callId, callType, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus }: {
         callId?: string;
@@ -729,7 +736,7 @@ export class PhoneCall {
         callInfo?: CallInfo;
         reason?: Constants.HANGUP_REASON;
         closeCallOnError?: boolean;
-        agentStatus?: Constants.AGENT_STATUS;
+        agentStatus?: Constants.HANGUP_STATUS;
     });
     callId: string;
     callType: Constants.CALL_TYPE;
@@ -768,13 +775,13 @@ export class VendorConnector {
     onAgentWorkEvent(agentWork: AgentWork): void;
     /**
      * Set agent status
-     * @param {string} agentStatus
+     * @param {Constants.AGENT_AVAILABILITY} agentStatus
      * @param {StatusInfo} statusInfo
      * @param {boolean} enqueueNextState
      * @returns {Promise<GenericResult>}
      *
      */
-    setAgentStatus(agentStatus: string, statusInfo: StatusInfo, enqueueNextState: boolean): Promise<GenericResult>;
+    setAgentStatus(agentStatus: Constants.AGENT_AVAILABILITY, statusInfo: StatusInfo, enqueueNextState: boolean): Promise<GenericResult>;
     /**
      * Get agent status
      * @returns {Promise<AgentStatusInfo>}
@@ -957,19 +964,19 @@ export class TelephonyConnector {
     getSignedRecordingUrl(recordingUrl: string, vendorCallKey: string, callId: string): Promise<SignedRecordingUrlResult>;
     /**
      * Supervise a call
-     * @param {PhoneCall} call Call to be supervised
+     * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the call to be supervised
      */
-    superviseCall(call: PhoneCall): void;
+    superviseCall(supervisedCallInfo: SupervisedCallInfo): Promise<SuperviseCallResult>;
     /**
      * Supervisor disconnects from a call
-     * @param {PhoneCall} call Call to be disconnected
+     * @param {SupervisedCallInfo} call CallInfo of the supervised call to be disconnected
      */
-    supervisorDisconnect(call: PhoneCall): void;
+    supervisorDisconnect(supervisedCallInfo: SupervisedCallInfo): Promise<SupervisorHangupResult>;
     /**
      * Supervisor Barges into a ongoing call
-     * @param {PhoneCall} call Call which supervisor barges in
+     * @param {SupervisedCallInfo} call CallInfo of the supervised call which supervisor barges in
      */
-    supervisorBargeIn(call: PhoneCall): void;
+    supervisorBargeIn(supervisedCallInfo: SupervisedCallInfo): Promise<SuperviseCallResult>;
 }
 export class Validator {
     static validateString(value: any): typeof Validator;
