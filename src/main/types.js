@@ -1060,6 +1060,7 @@ export class TelephonyConnector {
     /**
      * Supervise a call
      * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the call to be supervised
+     * @returns {Promise <SuperviseCallResult>}
      */
     superviseCall(supervisedCallInfo) {
         throw new Error('Not implemented');
@@ -1068,6 +1069,7 @@ export class TelephonyConnector {
     /**
      * Supervisor disconnects from a call
      * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the supervised call to be disconnected
+     * @returns {Promise <SupervisorHangupResult>}
      */
     supervisorDisconnect(supervisedCallInfo) {
         throw new Error('Not implemented');
@@ -1076,6 +1078,7 @@ export class TelephonyConnector {
     /**
      * Supervisor Barges into a ongoing call
      * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the supervised call which supervisor barges in
+     * @returns {Promise <SuperviseCallResult>}
      */
     supervisorBargeIn(supervisedCallInfo) {
         throw new Error('Not implemented');
