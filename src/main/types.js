@@ -13,52 +13,59 @@ export const Constants = {
     /**
     * @enum {string}
     */
-    EVENT_TYPE: {
-        VOICE: {
-            CALL_STARTED: constants.EVENT_TYPE.VOICE.CALL_STARTED,
-            QUEUED_CALL_STARTED: constants.EVENT_TYPE.VOICE.QUEUED_CALL_STARTED,
-            CALL_CONNECTED: constants.EVENT_TYPE.VOICE.CALL_CONNECTED,
-            HANGUP: constants.EVENT_TYPE.VOICE.HANGUP,
-            MUTE_TOGGLE: constants.EVENT_TYPE.VOICE.MUTE_TOGGLE,
-            HOLD_TOGGLE: constants.EVENT_TYPE.VOICE.HOLD_TOGGLE,
-            RECORDING_TOGGLE: constants.EVENT_TYPE.VOICE.RECORDING_TOGGLE,
-            PARTICIPANTS_SWAPPED: constants.EVENT_TYPE.VOICE.PARTICIPANTS_SWAPPED,
-            PARTICIPANTS_CONFERENCED: constants.EVENT_TYPE.VOICE.PARTICIPANTS_CONFERENCED,
-            PARTICIPANT_ADDED: constants.EVENT_TYPE.VOICE.PARTICIPANT_ADDED, 
-            PARTICIPANT_CONNECTED: constants.EVENT_TYPE.VOICE.PARTICIPANT_CONNECTED,
-            PARTICIPANT_REMOVED: constants.EVENT_TYPE.VOICE.PARTICIPANT_REMOVED,
-            AFTER_CALL_WORK_STARTED: constants.EVENT_TYPE.VOICE.AFTER_CALL_WORK_STARTED,
-            WRAP_UP_ENDED: constants.EVENT_TYPE.VOICE.WRAP_UP_ENDED,
-            AGENT_ERROR: constants.EVENT_TYPE.VOICE.AGENT_ERROR,
-            SOFTPHONE_ERROR: constants.EVENT_TYPE.VOICE.SOFTPHONE_ERROR,
-            UPDATE_AUDIO_STATS: constants.EVENT_TYPE.VOICE.UPDATE_AUDIO_STATS,
-            SUPERVISOR_BARGED_IN: constants.EVENT_TYPE.VOICE.SUPERVISOR_BARGED_IN,
-            SUPERVISOR_CALL_STARTED : constants.EVENT_TYPE.VOICE.SUPERVISOR_CALL_STARTED,
-            SUPERVISOR_CALL_CONNECTED: constants.EVENT_TYPE.VOICE.SUPERVISOR_CALL_CONNECTED,
-            SUPERVISOR_HANGUP : constants.EVENT_TYPE.VOICE.SUPERVISOR_HANGUP,
-            SHOW_TRANSFER_VIEW: constants.EVENT_TYPE.VOICE.SHOW_TRANSFER_VIEW
-        },
-        LOGIN_RESULT: constants.EVENT_TYPE.LOGIN_RESULT,
-        LOGOUT_RESULT: constants.EVENT_TYPE.LOGOUT_RESULT,
-        MESSAGE: constants.EVENT_TYPE.MESSAGE,
-        SET_AGENT_STATUS: constants.EVENT_TYPE.SET_AGENT_STATUS,
-        GET_AGENT_STATUS: constants.EVENT_TYPE.GET_AGENT_STATUS,
-        STATE_CHANGE: constants.EVENT_TYPE.STATE_CHANGE,
-        STORAGE_ACCESS_RESULT: constants.EVENT_TYPE.STORAGE_ACCESS_RESULT,
-        GET_CONTACTS_RESULT: constants.EVENT_TYPE.GET_CONTACTS_RESULT
+    SHARED_EVENT_TYPE: {
+        LOGIN_RESULT: constants.SHARED_EVENT_TYPE.LOGIN_RESULT,
+        LOGOUT_RESULT: constants.SHARED_EVENT_TYPE.LOGOUT_RESULT,
+        MESSAGE: constants.SHARED_EVENT_TYPE.MESSAGE,
+        SET_AGENT_STATUS: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS,
+        GET_AGENT_STATUS: constants.SHARED_EVENT_TYPE.GET_AGENT_STATUS,
+        STATE_CHANGE: constants.SHARED_EVENT_TYPE.STATE_CHANGE,
+        STORAGE_ACCESS_RESULT: constants.SHARED_EVENT_TYPE.STORAGE_ACCESS_RESULT,
+        GET_CONTACTS_RESULT: constants.SHARED_EVENT_TYPE.GET_CONTACTS_RESULT
     },
     /**
     * @enum {string}
     */
-    ERROR_TYPE: {
-        VOICE: {
-            INVALID_PARTICIPANT: constants.ERROR_TYPE.VOICE.INVALID_PARTICIPANT,
-            INVALID_DESTINATION: constants.ERROR_TYPE.VOICE.INVALID_DESTINATION,
-            CAN_NOT_UPDATE_PHONE_NUMBER: constants.ERROR_TYPE.VOICE.CAN_NOT_UPDATE_PHONE_NUMBER,
-            INVALID_PARAMS: constants.ERROR_TYPE.VOICE.INVALID_PARAMS
-        },
-        GENERIC_ERROR: constants.ERROR_TYPE.GENERIC_ERROR,
-        INVALID_AGENT_STATUS: constants.ERROR_TYPE.INVALID_AGENT_STATUS
+    VOICE_EVENT_TYPE: {
+        CALL_STARTED: constants.VOICE_EVENT_TYPE.CALL_STARTED,
+        QUEUED_CALL_STARTED: constants.VOICE_EVENT_TYPE.QUEUED_CALL_STARTED,
+        CALL_CONNECTED: constants.VOICE_EVENT_TYPE.CALL_CONNECTED,
+        HANGUP: constants.VOICE_EVENT_TYPE.HANGUP,
+        MUTE_TOGGLE: constants.VOICE_EVENT_TYPE.MUTE_TOGGLE,
+        HOLD_TOGGLE: constants.VOICE_EVENT_TYPE.HOLD_TOGGLE,
+        RECORDING_TOGGLE: constants.VOICE_EVENT_TYPE.RECORDING_TOGGLE,
+        PARTICIPANTS_SWAPPED: constants.VOICE_EVENT_TYPE.PARTICIPANTS_SWAPPED,
+        PARTICIPANTS_CONFERENCED: constants.VOICE_EVENT_TYPE.PARTICIPANTS_CONFERENCED,
+        PARTICIPANT_ADDED: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, 
+        PARTICIPANT_CONNECTED: constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED,
+        PARTICIPANT_REMOVED: constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED,
+        AFTER_CALL_WORK_STARTED: constants.VOICE_EVENT_TYPE.AFTER_CALL_WORK_STARTED,
+        WRAP_UP_ENDED: constants.VOICE_EVENT_TYPE.WRAP_UP_ENDED,
+        AGENT_ERROR: constants.VOICE_EVENT_TYPE.AGENT_ERROR,
+        SOFTPHONE_ERROR: constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR,
+        UPDATE_AUDIO_STATS: constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS,
+        CALL_BARGED_IN: constants.VOICE_EVENT_TYPE.CALL_BARGED_IN,
+        SUPERVISOR_BARGED_IN: constants.VOICE_EVENT_TYPE.SUPERVISOR_BARGED_IN,
+        SUPERVISOR_CALL_STARTED : constants.VOICE_EVENT_TYPE.SUPERVISOR_CALL_STARTED,
+        SUPERVISOR_CALL_CONNECTED: constants.VOICE_EVENT_TYPE.SUPERVISOR_CALL_CONNECTED,
+        SUPERVISOR_HANGUP : constants.VOICE_EVENT_TYPE.SUPERVISOR_HANGUP,
+        SHOW_TRANSFER_VIEW: constants.VOICE_EVENT_TYPE.SHOW_TRANSFER_VIEW
+    },
+    /**
+    * @enum {string}
+    */
+    SHARED_ERROR_TYPE: {
+        GENERIC_ERROR: constants.SHARED_ERROR_TYPE.GENERIC_ERROR,
+        INVALID_AGENT_STATUS: constants.SHARED_ERROR_TYPE.INVALID_AGENT_STATUS
+    },
+    /**
+    * @enum {string}
+    */
+    VOICE_ERROR_TYPE: {
+        INVALID_PARTICIPANT: constants.VOICE_ERROR_TYPE.INVALID_PARTICIPANT,
+        INVALID_DESTINATION: constants.VOICE_ERROR_TYPE.INVALID_DESTINATION,
+        CAN_NOT_UPDATE_PHONE_NUMBER: constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_PHONE_NUMBER,
+        INVALID_PARAMS: constants.VOICE_ERROR_TYPE.INVALID_PARAMS
     },
     /**
     * @enum {string}
@@ -111,7 +118,11 @@ export const Constants = {
     /**
      * @enum {String}
      */
-    WORK_EVENT: { ...constants.WORK_EVENT }
+    WORK_EVENT: { ...constants.WORK_EVENT },
+    /**
+     * @enum {String}
+     */
+    HANGUP_STATUS: { ...constants.HANGUP_STATUS }
 };
 
 /**
@@ -1054,25 +1065,28 @@ export class TelephonyConnector {
 
     /**
      * Supervise a call
-     * @param {PhoneCall} call Call to be supervised
+     * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the call to be supervised
+     * @returns {Promise <SuperviseCallResult>}
      */
-    superviseCall(call) {
+    superviseCall(supervisedCallInfo) {
         throw new Error('Not implemented');
     }
 
     /**
      * Supervisor disconnects from a call
-     * @param {PhoneCall} call Call to be disconnected
+     * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the supervised call to be disconnected
+     * @returns {Promise <SupervisorHangupResult>}
      */
-    supervisorDisconnect(call) {
+    supervisorDisconnect(supervisedCallInfo) {
         throw new Error('Not implemented');
     }
 
     /**
      * Supervisor Barges into a ongoing call
-     * @param {PhoneCall} call Call which supervisor barges in
+     * @param {SupervisedCallInfo} supervisedCallInfo CallInfo of the supervised call which supervisor barges in
+     * @returns {Promise <SuperviseCallResult>}
      */
-    supervisorBargeIn(call) {
+    supervisorBargeIn(supervisedCallInfo) {
         throw new Error('Not implemented');
     }
 }
@@ -1111,7 +1125,7 @@ export class VendorConnector {
 
     /**
      * Set agent status
-     * @param {string} agentStatus
+     * @param {Constants.AGENT_STATUS} agentStatus
      * @param {StatusInfo} statusInfo
      * @param {Boolean} enqueueNextState - flag to determine if this status change request should be enqueued if neccessary
      * @returns {Promise<GenericResult>} 
