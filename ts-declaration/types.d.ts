@@ -269,11 +269,55 @@ export class AgentConfig {
 }
 
 /**
- * Class representing result type for getCapabilities()
+ * Class representing result type for getSharedCapabilities()
  */
- export class CapabilitiesResult {
+export class SharedCapabilitiesResult {
     /**
-     * Create CapabilitiesResult
+     * Create SharedCapabilitiesResult
+     * @param {object} param
+     * @param {boolean} [param.debugEnabled]
+     * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
+     * @param {boolean} [param.hasAgentAvailability] True if getPhoneContacts also provides agent availability, false if Salesforce provides it.
+     * @param {boolean} [param.hasQueueWaitTime] True if getPhoneContacts also provides estimated queue wait time, false if Salesforce provides it.
+     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
+     * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
+     * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
+     * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
+     */
+    constructor({
+        debugEnabled,
+        hasContactSearch,
+        hasAgentAvailability,
+        hasQueueWaitTime,
+        hasBlindTransfer,
+        hasTransferToOmniFlow,
+        hasPendingStatusChange,
+        hasSFDCPendingState
+    }: {
+        debugEnabled?: boolean;
+        hasContactSearch?: boolean;
+        hasAgentAvailability?: boolean;
+        hasQueueWaitTime?: boolean;
+        hasBlindTransfer?: boolean;
+        hasTransferToOmniFlow?: boolean;
+        hasPendingStatusChange?: boolean;
+        hasSFDCPendingState?: boolean;
+    });
+    debugEnabled: boolean;
+    hasContactSearch: boolean;
+    hasAgentAvailability: boolean;
+    hasQueueWaitTime: boolean;
+    hasBlindTransfer: boolean;
+    hasTransferToOmniFlow: boolean;
+    hasPendingStatusChange: boolean;
+    hasSFDCPendingState: boolean;
+}
+/**
+ * Class representing result type for getVoiceCapabilities()
+ */
+ export class VoiceCapabilitiesResult {
+    /**
+     * Create VoiceCapabilitiesResult
      * @param {object} param
      * @param {boolean} [param.hasMute]
      * @param {boolean} [param.hasRecord]
@@ -290,44 +334,47 @@ export class AgentConfig {
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      */
-    constructor({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, debugEnabled, hasContactSearch, hasAgentAvailability, supportsMos, hasSupervisorListenIn, hasSupervisorBargeIn, hasBlindTransfer, hasPendingStatusChange, hasSFDCPendingState }: {
+    constructor({
+        hasMute,
+        hasRecord,
+        hasMerge,
+        hasSwap,
+        hasSignedRecordingUrl,
+        supportsMos,
+        hasSupervisorListenIn,
+        hasSupervisorBargeIn,
+        hasPhoneBook,
+        hasGetExternalSpeakerDeviceSetting,
+        hasSetExternalSpeakerDeviceSetting,
+        hasGetExternalMicrophoneDeviceSetting,
+        hasSetExternalMicrophoneDeviceSetting
+    }: {
         hasMute?: boolean;
         hasRecord?: boolean;
         hasMerge?: boolean;
         hasSwap?: boolean;
         hasSignedRecordingUrl?: boolean;
-        debugEnabled?: boolean;
-        hasContactSearch?: boolean;
-        hasAgentAvailability?: boolean;
         supportsMos?: boolean;
         hasSupervisorListenIn?: boolean;
         hasSupervisorBargeIn?: boolean;
-        hasBlindTransfer?: boolean;
-        hasPendingStatusChange?: boolean;
+        hasPhoneBook?: boolean;
         hasGetExternalSpeakerDeviceSetting?: boolean;
         hasSetExternalSpeakerDeviceSetting?: boolean;
         hasGetExternalMicrophoneDeviceSetting?: boolean;
         hasSetExternalMicrophoneDeviceSetting?: boolean;
-        hasSFDCPendingState?: boolean;
     });
     hasMute: boolean;
     hasRecord: boolean;
     hasMerge: boolean;
     hasSwap: boolean;
     hasSignedRecordingUrl: boolean;
-    debugEnabled: boolean;
-    hasContactSearch: boolean;
-    hasAgentAvailability: boolean;
     supportsMos: boolean;
     hasSupervisorListenIn: boolean;
     hasSupervisorBargeIn: boolean;
-    hasBlindTransfer: boolean;
-    hasPendingStatusChange: boolean;
     hasGetExternalSpeakerDeviceSetting?: boolean;
     hasSetExternalSpeakerDeviceSetting?: boolean;
     hasGetExternalMicrophoneDeviceSetting?: boolean;
     hasSetExternalMicrophoneDeviceSetting?: boolean;
-    hasSFDCPendingState: boolean;
 }
 
 
@@ -826,6 +873,12 @@ export class VendorConnector {
      * @returns {Promise<PhoneContactsResult>} 
      */
     getContacts(filter: ContactsFilter, workItemId: string): Promise<PhoneContactsResult>;
+
+    /**
+     * Get shared capabilities
+     * @returns {Promise<SharedCapabilitiesResult>}
+     */
+    getSharedCapabilities(): Promise<SharedCapabilitiesResult>;
 }
 /**
 * Class representing a telephony connector
@@ -952,10 +1005,10 @@ export class TelephonyConnector {
      */
     setAgentConfig(config: AgentConfig): Promise<GenericResult>;
     /**
-     * Get capabilities
-     * @returns {Promise<CapabilitiesResult>}
+     * Get voice capabilities
+     * @returns {Promise<VoiceCapabilitiesResult>}
      */
-    getCapabilities(): Promise<CapabilitiesResult>;
+    getVoiceCapabilities(): Promise<VoiceCapabilitiesResult>;
     /**
      * Wrap up call
      * @param {PhoneCall} call

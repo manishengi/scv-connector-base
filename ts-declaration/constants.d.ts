@@ -177,24 +177,30 @@ declare namespace _default {
         const PHONES: string;
         const SELECTED_PHONE: string;
     }
-    namespace CAPABILITIES_TYPE {
+    namespace SHARED_CAPABILITIES_TYPE {
+        const DEBUG_ENABLED: string;
+        const CONTACT_SEARCH: string;
+        const VENDOR_PROVIDED_AVAILABILITY: string;
+        const VENDOR_PROVIDED_QUEUE_WAIT_TIME: string;
+        const BLIND_TRANSFER: string;
+        const TRANSFER_TO_OMNI_FLOW: string;
+        const PENDING_STATUS_CHANGE: string;
+        const SFDC_PENDING_STATE: string;
+    }
+    namespace VOICE_CAPABILITIES_TYPE {
         const MUTE: string;
         const RECORD: string;
         const MERGE: string;
         const SWAP: string;
         const SIGNED_RECORDING_URL: string;
-        const DEBUG_ENABLED: string;
-        const CONTACT_SEARCH: string;
-        const VENDOR_PROVIDED_AVAILABILITY: string;
-        const VENDOR_PROVIDED_QUEUE_WAIT_TIME: string;
         const SUPERVISOR_LISTEN_IN: string;
         const SUPERVISOR_BARGE_IN: string;
         const MOS: string;
-        const BLIND_TRANSFER: string;
-        const TRANSFER_TO_OMNI_FLOW: string;
-        const PENDING_STATUS_CHANGE: string;
         const PHONEBOOK: string;
-        const SFDC_PENDING_STATE: string;
+        const HAS_GET_EXTERNAL_SPEAKER: string;
+        const HAS_SET_EXTERNAL_SPEAKER: string;
+        const HAS_GET_EXTERNAL_MICROPHONE: string;
+        const HAS_SET_EXTERNAL_MICROPHONE: string;
     }
     namespace CALL_STATE {
         const RINGING: string;

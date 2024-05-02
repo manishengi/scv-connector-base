@@ -218,85 +218,114 @@ export class AudioDevicesResult {
 }
 
 /**
- * Class representing result type for getCapabilities()
+ * Class representing result type for getSharedCapabilities()
  */
-export class CapabilitiesResult {
+export class SharedCapabilitiesResult {
     /**
-     * Create CapabilitiesResult
+     * Create SharedCapabilitiesResult
+     * @param {object} param
+     * @param {boolean} [param.debugEnabled]
+     * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
+     * @param {boolean} [param.hasAgentAvailability] True if getPhoneContacts also provides agent availability, false if Salesforce provides it.
+     * @param {boolean} [param.hasQueueWaitTime] True if getPhoneContacts also provides estimated queue wait time, false if Salesforce provides it.
+     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
+     * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
+     * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
+     * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
+     */
+    constructor({
+        debugEnabled = true,
+        hasContactSearch = false,
+        hasAgentAvailability = false,
+        hasQueueWaitTime = false,
+        hasBlindTransfer = false,
+        hasTransferToOmniFlow = false,
+        hasPendingStatusChange = false,
+        hasSFDCPendingState = false
+    }){
+        Validator.validateBoolean(debugEnabled);
+        Validator.validateBoolean(hasContactSearch);
+        Validator.validateBoolean(hasAgentAvailability);
+        Validator.validateBoolean(hasQueueWaitTime);
+        Validator.validateBoolean(hasBlindTransfer);
+        Validator.validateBoolean(hasTransferToOmniFlow);
+        Validator.validateBoolean(hasPendingStatusChange);
+        Validator.validateBoolean(hasSFDCPendingState);
+
+        this.debugEnabled = debugEnabled;
+        this.hasContactSearch = hasContactSearch;
+        this.hasAgentAvailability = hasAgentAvailability;
+        this.hasQueueWaitTime = hasQueueWaitTime;
+        this.hasBlindTransfer = hasBlindTransfer;
+        this.hasTransferToOmniFlow = hasTransferToOmniFlow;
+        this.hasPendingStatusChange = hasPendingStatusChange;
+        this.hasSFDCPendingState = hasSFDCPendingState;
+    }
+}
+
+/**
+ * Class representing result type for getVoiceCapabilities()
+ */
+export class VoiceCapabilitiesResult {
+    /**
+     * Create VoiceCapabilitiesResult
      * @param {object} param
      * @param {boolean} [param.hasMute]
      * @param {boolean} [param.hasRecord]
      * @param {boolean} [param.hasMerge]
      * @param {boolean} [param.hasSwap]
      * @param {boolean} [param.hasSignedRecordingUrl]
-     * @param {boolean} [param.debugEnabled]
-     * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
-     * @param {boolean} [param.hasAgentAvailability] True if getPhoneContacts also provides agent availability, false if Salesforce provides it.
-     * @param {boolean} [param.hasQueueWaitTime] True if getPhoneContacts also provides estimated queue wait time, false if Salesforce provides it.
      * @param {boolean} [param.supportsMos] True if vendor support MOS
      * @param {boolean} [param.hasSupervisorListenIn] True if vendor supports supervisor listening  to a ongoing call
      * @param {boolean} [param.hasSupervisorBargeIn] True if vendor supports Supervisor  barging into a ongoing call
-     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
-     * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
-     * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasPhoneBook] True if vendor supports the phoneBook UI
      * @param {boolean} [param.hasGetExternalSpeakerDeviceSetting] True if vendor supports retrieving the speaker device ID
      * @param {boolean} [param.hasSetExternalSpeakerDeviceSetting] True if vendor supports setting the speaker device ID
      * @param {boolean} [param.hasGetExternalMicrophoneDeviceSetting] True if vendor supports retrieving the microphone device ID
      * @param {boolean} [param.hasSetExternalMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
-     * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      */
-     constructor({ hasMute = true, hasRecord = true, hasMerge = true, hasSwap = true,
-                     hasSignedRecordingUrl = false, debugEnabled = true, hasContactSearch = false,
-                     hasAgentAvailability = false, hasQueueWaitTime = false, supportsMos = false,
-                     hasSupervisorListenIn = false, hasSupervisorBargeIn = false, hasBlindTransfer = false,
-                     hasTransferToOmniFlow = false, hasPendingStatusChange=false, hasPhoneBook=false,
-                     hasGetExternalSpeakerDeviceSetting = false, hasSetExternalSpeakerDeviceSetting = false,
-                     hasGetExternalMicrophoneDeviceSetting = false, hasSetExternalMicrophoneDeviceSetting = false,
-                     hasSFDCPendingState = false }) {
+    constructor({
+        hasMute = true,
+        hasRecord = true,
+        hasMerge = true,
+        hasSwap = true,
+        hasSignedRecordingUrl = false,
+        supportsMos = false,
+        hasSupervisorListenIn = false,
+        hasSupervisorBargeIn = false,
+        hasPhoneBook = false,
+        hasGetExternalSpeakerDeviceSetting = false,
+        hasSetExternalSpeakerDeviceSetting = false,
+        hasGetExternalMicrophoneDeviceSetting = false,
+        hasSetExternalMicrophoneDeviceSetting = false
+    }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
         Validator.validateBoolean(hasMerge);
         Validator.validateBoolean(hasSwap);
         Validator.validateBoolean(hasSignedRecordingUrl);
-        Validator.validateBoolean(debugEnabled);
-        Validator.validateBoolean(hasContactSearch);
-        Validator.validateBoolean(hasAgentAvailability);
-        Validator.validateBoolean(hasQueueWaitTime);
         Validator.validateBoolean(supportsMos);
         Validator.validateBoolean(hasSupervisorListenIn);
         Validator.validateBoolean(hasSupervisorBargeIn);
-        Validator.validateBoolean(hasBlindTransfer);
-        Validator.validateBoolean(hasTransferToOmniFlow);
-        Validator.validateBoolean(hasPendingStatusChange);
         Validator.validateBoolean(hasPhoneBook);
         Validator.validateBoolean(hasGetExternalSpeakerDeviceSetting);
         Validator.validateBoolean(hasSetExternalSpeakerDeviceSetting);
         Validator.validateBoolean(hasGetExternalMicrophoneDeviceSetting);
         Validator.validateBoolean(hasSetExternalMicrophoneDeviceSetting);
-        Validator.validateBoolean(hasSFDCPendingState);
 
         this.hasMute = hasMute;
         this.hasRecord = hasRecord;
         this.hasMerge = hasMerge;
         this.hasSwap = hasSwap;
         this.hasSignedRecordingUrl = hasSignedRecordingUrl;
-        this.debugEnabled = debugEnabled;
-        this.hasContactSearch = hasContactSearch;
-        this.hasAgentAvailability = hasAgentAvailability;
-        this.hasQueueWaitTime = hasQueueWaitTime;
         this.supportsMos = supportsMos;
         this.hasSupervisorListenIn = hasSupervisorListenIn;
         this.hasSupervisorBargeIn = hasSupervisorBargeIn;
-        this.hasBlindTransfer = hasBlindTransfer;
-        this.hasTransferToOmniFlow = hasTransferToOmniFlow;
-        this.hasPendingStatusChange = hasPendingStatusChange;
         this.hasPhoneBook = hasPhoneBook;
         this.hasGetExternalSpeakerDeviceSetting = hasGetExternalSpeakerDeviceSetting;
         this.hasSetExternalSpeakerDeviceSetting = hasSetExternalSpeakerDeviceSetting;
         this.hasGetExternalMicrophoneDeviceSetting = hasGetExternalMicrophoneDeviceSetting;
         this.hasSetExternalMicrophoneDeviceSetting = hasSetExternalMicrophoneDeviceSetting;
-        this.hasSFDCPendingState = hasSFDCPendingState;
     }
 }
 
@@ -1037,10 +1066,10 @@ export class TelephonyConnector {
     }
 
     /**
-     * Get Capabilities
-     * @returns {Promise<CapabilitiesResult>}
+     * Get voice capabilities
+     * @returns {Promise<VoiceCapabilitiesResult>}
      */
-    getCapabilities() {
+    getVoiceCapabilities() {
         throw new Error('Not implemented');
     }
 
@@ -1191,6 +1220,14 @@ export class VendorConnector {
      * Returns a list of valid device IDs that can be used for the speaker and microphone devices.
      */
     getAudioDevices() {
+        throw new Error('Not implemented');
+    }
+
+    /**
+     * Get shared capabilities
+     * @returns {Promise<SharedCapabilitiesResult>}
+     */
+    getSharedCapabilities() {
         throw new Error('Not implemented');
     }
 }

@@ -8,7 +8,8 @@
 import {
     ActiveCallsResult,
     AgentConfigResult,
-    CapabilitiesResult,
+    SharedCapabilitiesResult,
+    VoiceCapabilitiesResult,
     RecordingToggleResult,
     ParticipantResult,
     LogoutResult,
@@ -172,54 +173,103 @@ describe('Types validation tests', () => {
     });
 
     describe('CapabilitiesResult tests', () => {
-        it('Should create CapabilitiesResult object - default', () => {
+        it('Should create SharedCapabilitiesResult object - default', () => {
             let capabilitiesResult;
             expect(() => {
-                capabilitiesResult = new CapabilitiesResult({});
+                capabilitiesResult = new SharedCapabilitiesResult({});
+            }).not.toThrowError();
+            expect(capabilitiesResult.debugEnabled).toEqual(true);
+            expect(capabilitiesResult.hasContactSearch).toEqual(false);
+            expect(capabilitiesResult.hasAgentAvailability).toEqual(false);
+            expect(capabilitiesResult.hasQueueWaitTime).toEqual(false);
+            expect(capabilitiesResult.hasBlindTransfer).toEqual(false);
+            expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(false);
+            expect(capabilitiesResult.hasPendingStatusChange).toEqual(false);
+            expect(capabilitiesResult.hasSFDCPendingState).toEqual(false);
+        });
+
+        it('Should create VoiceCapabilitiesResult object - default', () => {
+            let capabilitiesResult;
+            expect(() => {
+                capabilitiesResult = new VoiceCapabilitiesResult({});
             }).not.toThrowError();
             expect(capabilitiesResult.hasMute).toEqual(true);
             expect(capabilitiesResult.hasRecord).toEqual(true);
             expect(capabilitiesResult.hasMerge).toEqual(true);
             expect(capabilitiesResult.hasSwap).toEqual(true);
             expect(capabilitiesResult.hasSignedRecordingUrl).toEqual(false);
-            expect(capabilitiesResult.debugEnabled).toEqual(true);
-            expect(capabilitiesResult.hasAgentAvailability).toEqual(false);
             expect(capabilitiesResult.supportsMos).toEqual(false);
+            expect(capabilitiesResult.hasSupervisorListenIn).toEqual(false);
+            expect(capabilitiesResult.hasSupervisorBargeIn).toEqual(false);
+            expect(capabilitiesResult.hasPhoneBook).toEqual(false);
             expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(false);
-            expect(capabilitiesResult.hasSFDCPendingState).toEqual(false);
         });
 
-        it('Should create CapabilitiesResult object', () => {
+        it('Should create SharedCapabilitiesResult object', () => {
+            let capabilitiesResult;
+            const debugEnabled = false;
+            const hasContactSearch = true;
+            const hasAgentAvailability = true;
+            const hasQueueWaitTime = true;
+            const hasBlindTransfer = true;
+            const hasTransferToOmniFlow = true;
+            const hasPendingStatusChange = true;
+            const hasSFDCPendingState = true;
+            expect(() => {
+                capabilitiesResult = new SharedCapabilitiesResult({
+                    debugEnabled,
+                    hasContactSearch,
+                    hasAgentAvailability,
+                    hasQueueWaitTime,
+                    hasBlindTransfer,
+                    hasTransferToOmniFlow,
+                    hasPendingStatusChange,
+                    hasSFDCPendingState
+                });
+            }).not.toThrowError();
+            expect(capabilitiesResult.debugEnabled).toEqual(debugEnabled);
+            expect(capabilitiesResult.hasContactSearch).toEqual(hasContactSearch);
+            expect(capabilitiesResult.hasAgentAvailability).toEqual(hasAgentAvailability);
+            expect(capabilitiesResult.hasQueueWaitTime).toEqual(hasQueueWaitTime);
+            expect(capabilitiesResult.hasBlindTransfer).toEqual(hasBlindTransfer);
+            expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(hasTransferToOmniFlow);
+            expect(capabilitiesResult.hasPendingStatusChange).toEqual(hasPendingStatusChange);
+            expect(capabilitiesResult.hasSFDCPendingState).toEqual(hasSFDCPendingState);
+        });
+
+        it('Should create VoiceCapabilitiesResult object', () => {
             let capabilitiesResult;
             const hasMute = false;
             const hasRecord = false;
-            const hasMerge = true;
-            const hasSwap = true;
+            const hasMerge = false;
+            const hasSwap = false;
             const hasSignedRecordingUrl = true;
-            const debugEnabled = false;
             const supportsMos = true;
+            const hasSupervisorListenIn = true;
+            const hasSupervisorBargeIn = true;
+            const hasPhoneBook = true;
             const hasGetExternalSpeakerDeviceSetting = true;
             const hasSetExternalSpeakerDeviceSetting = true;
             const hasGetExternalMicrophoneDeviceSetting = true;
             const hasSetExternalMicrophoneDeviceSetting = true;
-            const hasSFDCPendingState = true;
             expect(() => {
-                capabilitiesResult = new CapabilitiesResult({
+                capabilitiesResult = new VoiceCapabilitiesResult({
                     hasMute,
                     hasRecord,
                     hasMerge,
                     hasSwap,
                     hasSignedRecordingUrl,
-                    debugEnabled,
                     supportsMos,
+                    hasSupervisorListenIn,
+                    hasSupervisorBargeIn,
+                    hasPhoneBook,
                     hasGetExternalSpeakerDeviceSetting,
                     hasSetExternalSpeakerDeviceSetting,
                     hasGetExternalMicrophoneDeviceSetting,
-                    hasSetExternalMicrophoneDeviceSetting,
-                    hasSFDCPendingState
+                    hasSetExternalMicrophoneDeviceSetting
                 });
             }).not.toThrowError();
             expect(capabilitiesResult.hasMute).toEqual(hasMute);
@@ -227,13 +277,14 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasMerge).toEqual(hasMerge);
             expect(capabilitiesResult.hasSwap).toEqual(hasSwap);
             expect(capabilitiesResult.hasSignedRecordingUrl).toEqual(hasSignedRecordingUrl);
-            expect(capabilitiesResult.debugEnabled).toEqual(false);
-            expect(capabilitiesResult.supportsMos).toEqual(true);
-            expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(true);
-            expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(true);
-            expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(true);
-            expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(true);
-            expect(capabilitiesResult.hasSFDCPendingState).toEqual(true);
+            expect(capabilitiesResult.supportsMos).toEqual(supportsMos);
+            expect(capabilitiesResult.hasSupervisorListenIn).toEqual(hasSupervisorListenIn);
+            expect(capabilitiesResult.hasSupervisorBargeIn).toEqual(hasSupervisorBargeIn);
+            expect(capabilitiesResult.hasPhoneBook).toEqual(hasPhoneBook);
+            expect(capabilitiesResult.hasGetExternalSpeakerDeviceSetting).toEqual(hasGetExternalSpeakerDeviceSetting);
+            expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(hasSetExternalSpeakerDeviceSetting);
+            expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(hasGetExternalMicrophoneDeviceSetting);
+            expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(hasSetExternalMicrophoneDeviceSetting);
         });
     });
     
@@ -1103,6 +1154,10 @@ describe('Types validation tests', () => {
         it('Should implement getAudioDevices', () => {
             expect(() => vendorConnector.getAudioDevices()).toThrowError('Not implemented');
         });
+
+        it('Should implement getSharedCapabilities', () => {
+            expect(() => vendorConnector.getSharedCapabilities()).toThrowError('Not implemented');
+        });
     });
 
     describe('Telephony connector tests', () => {
@@ -1201,7 +1256,7 @@ describe('Types validation tests', () => {
             expect(() => telephonyConnector.setAgentConfig()).toThrowError('Not implemented');
         });
         it('Should implement getCapabilities', () => {
-            expect(() => telephonyConnector.getCapabilities()).toThrowError('Not implemented');
+            expect(() => telephonyConnector.getVoiceCapabilities()).toThrowError('Not implemented');
         });
     });
 
