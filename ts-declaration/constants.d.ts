@@ -182,7 +182,6 @@ declare namespace _default {
         const CONTACT_SEARCH: string;
         const VENDOR_PROVIDED_AVAILABILITY: string;
         const VENDOR_PROVIDED_QUEUE_WAIT_TIME: string;
-        const BLIND_TRANSFER: string;
         const TRANSFER_TO_OMNI_FLOW: string;
         const PENDING_STATUS_CHANGE: string;
         const SFDC_PENDING_STATE: string;
@@ -192,6 +191,7 @@ declare namespace _default {
         const RECORD: string;
         const MERGE: string;
         const SWAP: string;
+        const BLIND_TRANSFER: string;
         const SIGNED_RECORDING_URL: string;
         const SUPERVISOR_LISTEN_IN: string;
         const SUPERVISOR_BARGE_IN: string;

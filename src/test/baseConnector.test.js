@@ -135,7 +135,6 @@ const capabilitiesPayload = {
     [constants.SHARED_CAPABILITIES_TYPE.CONTACT_SEARCH] : sharedCapabilitiesResult.hasContactSearch,
     [constants.SHARED_CAPABILITIES_TYPE.VENDOR_PROVIDED_AVAILABILITY] : sharedCapabilitiesResult.hasAgentAvailability,
     [constants.SHARED_CAPABILITIES_TYPE.VENDOR_PROVIDED_QUEUE_WAIT_TIME] : sharedCapabilitiesResult.hasQueueWaitTime,
-    [constants.SHARED_CAPABILITIES_TYPE.BLIND_TRANSFER] : sharedCapabilitiesResult.hasBlindTransfer,
     [constants.SHARED_CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : sharedCapabilitiesResult.hasTransferToOmniFlow,
     [constants.SHARED_CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : sharedCapabilitiesResult.hasPendingStatusChange,
     [constants.SHARED_CAPABILITIES_TYPE.SFDC_PENDING_STATE]: sharedCapabilitiesResult.hasSFDCPendingState,
@@ -143,6 +142,7 @@ const capabilitiesPayload = {
     [constants.VOICE_CAPABILITIES_TYPE.RECORD] : voiceCapabilitiesResult.hasRecord,
     [constants.VOICE_CAPABILITIES_TYPE.MERGE] : voiceCapabilitiesResult.hasMerge,
     [constants.VOICE_CAPABILITIES_TYPE.SWAP] : voiceCapabilitiesResult.hasSwap,
+    [constants.VOICE_CAPABILITIES_TYPE.BLIND_TRANSFER] : voiceCapabilitiesResult.hasBlindTransfer,
     [constants.VOICE_CAPABILITIES_TYPE.SIGNED_RECORDING_URL] : voiceCapabilitiesResult.hasSignedRecordingUrl,
     [constants.VOICE_CAPABILITIES_TYPE.SUPERVISOR_LISTEN_IN] : voiceCapabilitiesResult.hasSupervisorListenIn,
     [constants.VOICE_CAPABILITIES_TYPE.SUPERVISOR_BARGE_IN] : voiceCapabilitiesResult.hasSupervisorBargeIn,
@@ -689,7 +689,7 @@ describe('SCVConnectorBase tests', () => {
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
-            await new Promise((r) => setTimeout(r, 100)); // wait a tenth of a second for the event to have been fired
+            await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                 payload: {
@@ -2242,7 +2242,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
                 await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
-                await new Promise((r) => setTimeout(r, 100)); // wait a tenth of a second for the event to have been fired
+                await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
 
                 expect(channelPort.postMessage).toHaveBeenCalledWith({
                     type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
@@ -2277,7 +2277,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
                 await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
-                await new Promise((r) => setTimeout(r, 100)); // wait a tenth of a second for the event to have been fired
+                await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
                 expect(channelPort.postMessage).toHaveBeenCalledWith({
                     type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                     payload: {
@@ -3240,7 +3240,7 @@ describe('SCVConnectorBase tests', () => {
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
             await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(capabilitiesResultWithMos);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
-            await new Promise((r) => setTimeout(r, 100)); // wait a tenth of a second for the event to have been fired
+            await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                 payload: {

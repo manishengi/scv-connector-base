@@ -182,7 +182,6 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasContactSearch).toEqual(false);
             expect(capabilitiesResult.hasAgentAvailability).toEqual(false);
             expect(capabilitiesResult.hasQueueWaitTime).toEqual(false);
-            expect(capabilitiesResult.hasBlindTransfer).toEqual(false);
             expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(false);
             expect(capabilitiesResult.hasPendingStatusChange).toEqual(false);
             expect(capabilitiesResult.hasSFDCPendingState).toEqual(false);
@@ -197,6 +196,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasRecord).toEqual(true);
             expect(capabilitiesResult.hasMerge).toEqual(true);
             expect(capabilitiesResult.hasSwap).toEqual(true);
+            expect(capabilitiesResult.hasBlindTransfer).toEqual(false);
             expect(capabilitiesResult.hasSignedRecordingUrl).toEqual(false);
             expect(capabilitiesResult.supportsMos).toEqual(false);
             expect(capabilitiesResult.hasSupervisorListenIn).toEqual(false);
@@ -214,7 +214,6 @@ describe('Types validation tests', () => {
             const hasContactSearch = true;
             const hasAgentAvailability = true;
             const hasQueueWaitTime = true;
-            const hasBlindTransfer = true;
             const hasTransferToOmniFlow = true;
             const hasPendingStatusChange = true;
             const hasSFDCPendingState = true;
@@ -224,7 +223,6 @@ describe('Types validation tests', () => {
                     hasContactSearch,
                     hasAgentAvailability,
                     hasQueueWaitTime,
-                    hasBlindTransfer,
                     hasTransferToOmniFlow,
                     hasPendingStatusChange,
                     hasSFDCPendingState
@@ -234,7 +232,6 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasContactSearch).toEqual(hasContactSearch);
             expect(capabilitiesResult.hasAgentAvailability).toEqual(hasAgentAvailability);
             expect(capabilitiesResult.hasQueueWaitTime).toEqual(hasQueueWaitTime);
-            expect(capabilitiesResult.hasBlindTransfer).toEqual(hasBlindTransfer);
             expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(hasTransferToOmniFlow);
             expect(capabilitiesResult.hasPendingStatusChange).toEqual(hasPendingStatusChange);
             expect(capabilitiesResult.hasSFDCPendingState).toEqual(hasSFDCPendingState);
@@ -246,6 +243,7 @@ describe('Types validation tests', () => {
             const hasRecord = false;
             const hasMerge = false;
             const hasSwap = false;
+            const hasBlindTransfer = true;
             const hasSignedRecordingUrl = true;
             const supportsMos = true;
             const hasSupervisorListenIn = true;
@@ -261,6 +259,7 @@ describe('Types validation tests', () => {
                     hasRecord,
                     hasMerge,
                     hasSwap,
+                    hasBlindTransfer,
                     hasSignedRecordingUrl,
                     supportsMos,
                     hasSupervisorListenIn,
@@ -276,6 +275,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasRecord).toEqual(hasRecord);
             expect(capabilitiesResult.hasMerge).toEqual(hasMerge);
             expect(capabilitiesResult.hasSwap).toEqual(hasSwap);
+            expect(capabilitiesResult.hasBlindTransfer).toEqual(hasBlindTransfer);
             expect(capabilitiesResult.hasSignedRecordingUrl).toEqual(hasSignedRecordingUrl);
             expect(capabilitiesResult.supportsMos).toEqual(supportsMos);
             expect(capabilitiesResult.hasSupervisorListenIn).toEqual(hasSupervisorListenIn);

@@ -228,7 +228,6 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
      * @param {boolean} [param.hasAgentAvailability] True if getPhoneContacts also provides agent availability, false if Salesforce provides it.
      * @param {boolean} [param.hasQueueWaitTime] True if getPhoneContacts also provides estimated queue wait time, false if Salesforce provides it.
-     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
@@ -238,7 +237,6 @@ export class SharedCapabilitiesResult {
         hasContactSearch = false,
         hasAgentAvailability = false,
         hasQueueWaitTime = false,
-        hasBlindTransfer = false,
         hasTransferToOmniFlow = false,
         hasPendingStatusChange = false,
         hasSFDCPendingState = false
@@ -247,7 +245,6 @@ export class SharedCapabilitiesResult {
         Validator.validateBoolean(hasContactSearch);
         Validator.validateBoolean(hasAgentAvailability);
         Validator.validateBoolean(hasQueueWaitTime);
-        Validator.validateBoolean(hasBlindTransfer);
         Validator.validateBoolean(hasTransferToOmniFlow);
         Validator.validateBoolean(hasPendingStatusChange);
         Validator.validateBoolean(hasSFDCPendingState);
@@ -256,7 +253,6 @@ export class SharedCapabilitiesResult {
         this.hasContactSearch = hasContactSearch;
         this.hasAgentAvailability = hasAgentAvailability;
         this.hasQueueWaitTime = hasQueueWaitTime;
-        this.hasBlindTransfer = hasBlindTransfer;
         this.hasTransferToOmniFlow = hasTransferToOmniFlow;
         this.hasPendingStatusChange = hasPendingStatusChange;
         this.hasSFDCPendingState = hasSFDCPendingState;
@@ -274,6 +270,7 @@ export class VoiceCapabilitiesResult {
      * @param {boolean} [param.hasRecord]
      * @param {boolean} [param.hasMerge]
      * @param {boolean} [param.hasSwap]
+     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
      * @param {boolean} [param.hasSignedRecordingUrl]
      * @param {boolean} [param.supportsMos] True if vendor support MOS
      * @param {boolean} [param.hasSupervisorListenIn] True if vendor supports supervisor listening  to a ongoing call
@@ -289,6 +286,7 @@ export class VoiceCapabilitiesResult {
         hasRecord = true,
         hasMerge = true,
         hasSwap = true,
+        hasBlindTransfer = false,
         hasSignedRecordingUrl = false,
         supportsMos = false,
         hasSupervisorListenIn = false,
@@ -303,6 +301,7 @@ export class VoiceCapabilitiesResult {
         Validator.validateBoolean(hasRecord);
         Validator.validateBoolean(hasMerge);
         Validator.validateBoolean(hasSwap);
+        Validator.validateBoolean(hasBlindTransfer);
         Validator.validateBoolean(hasSignedRecordingUrl);
         Validator.validateBoolean(supportsMos);
         Validator.validateBoolean(hasSupervisorListenIn);
@@ -317,6 +316,7 @@ export class VoiceCapabilitiesResult {
         this.hasRecord = hasRecord;
         this.hasMerge = hasMerge;
         this.hasSwap = hasSwap;
+        this.hasBlindTransfer = hasBlindTransfer;
         this.hasSignedRecordingUrl = hasSignedRecordingUrl;
         this.supportsMos = supportsMos;
         this.hasSupervisorListenIn = hasSupervisorListenIn;

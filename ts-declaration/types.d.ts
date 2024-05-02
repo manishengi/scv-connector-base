@@ -279,7 +279,6 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
      * @param {boolean} [param.hasAgentAvailability] True if getPhoneContacts also provides agent availability, false if Salesforce provides it.
      * @param {boolean} [param.hasQueueWaitTime] True if getPhoneContacts also provides estimated queue wait time, false if Salesforce provides it.
-     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
@@ -289,7 +288,6 @@ export class SharedCapabilitiesResult {
         hasContactSearch,
         hasAgentAvailability,
         hasQueueWaitTime,
-        hasBlindTransfer,
         hasTransferToOmniFlow,
         hasPendingStatusChange,
         hasSFDCPendingState
@@ -298,7 +296,6 @@ export class SharedCapabilitiesResult {
         hasContactSearch?: boolean;
         hasAgentAvailability?: boolean;
         hasQueueWaitTime?: boolean;
-        hasBlindTransfer?: boolean;
         hasTransferToOmniFlow?: boolean;
         hasPendingStatusChange?: boolean;
         hasSFDCPendingState?: boolean;
@@ -307,7 +304,6 @@ export class SharedCapabilitiesResult {
     hasContactSearch: boolean;
     hasAgentAvailability: boolean;
     hasQueueWaitTime: boolean;
-    hasBlindTransfer: boolean;
     hasTransferToOmniFlow: boolean;
     hasPendingStatusChange: boolean;
     hasSFDCPendingState: boolean;
@@ -323,6 +319,7 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasRecord]
      * @param {boolean} [param.hasMerge]
      * @param {boolean} [param.hasSwap]
+     * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
      * @param {boolean} [param.hasSignedRecordingUrl]
      * @param {boolean} [param.debugEnabled]
      * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
@@ -339,6 +336,7 @@ export class SharedCapabilitiesResult {
         hasRecord,
         hasMerge,
         hasSwap,
+        hasBlindTransfer,
         hasSignedRecordingUrl,
         supportsMos,
         hasSupervisorListenIn,
@@ -353,6 +351,7 @@ export class SharedCapabilitiesResult {
         hasRecord?: boolean;
         hasMerge?: boolean;
         hasSwap?: boolean;
+        hasBlindTransfer?: boolean;
         hasSignedRecordingUrl?: boolean;
         supportsMos?: boolean;
         hasSupervisorListenIn?: boolean;
@@ -367,6 +366,7 @@ export class SharedCapabilitiesResult {
     hasRecord: boolean;
     hasMerge: boolean;
     hasSwap: boolean;
+    hasBlindTransfer: boolean;
     hasSignedRecordingUrl: boolean;
     supportsMos: boolean;
     hasSupervisorListenIn: boolean;
