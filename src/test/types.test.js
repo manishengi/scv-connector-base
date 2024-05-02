@@ -180,8 +180,8 @@ describe('Types validation tests', () => {
             }).not.toThrowError();
             expect(capabilitiesResult.debugEnabled).toEqual(true);
             expect(capabilitiesResult.hasContactSearch).toEqual(false);
-            expect(capabilitiesResult.hasAgentAvailability).toEqual(false);
-            expect(capabilitiesResult.hasQueueWaitTime).toEqual(false);
+            expect(capabilitiesResult.hasAgentAvailability).toEqual(true);
+            expect(capabilitiesResult.hasQueueWaitTime).toEqual(true);
             expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(false);
             expect(capabilitiesResult.hasPendingStatusChange).toEqual(false);
             expect(capabilitiesResult.hasSFDCPendingState).toEqual(false);
@@ -212,8 +212,8 @@ describe('Types validation tests', () => {
             let capabilitiesResult;
             const debugEnabled = false;
             const hasContactSearch = true;
-            const hasAgentAvailability = true;
-            const hasQueueWaitTime = true;
+            const hasAgentAvailability = false;
+            const hasQueueWaitTime = false;
             const hasTransferToOmniFlow = true;
             const hasPendingStatusChange = true;
             const hasSFDCPendingState = true;

@@ -235,8 +235,8 @@ export class SharedCapabilitiesResult {
     constructor({
         debugEnabled = true,
         hasContactSearch = false,
-        hasAgentAvailability = false,
-        hasQueueWaitTime = false,
+        hasAgentAvailability = true,
+        hasQueueWaitTime = true,
         hasTransferToOmniFlow = false,
         hasPendingStatusChange = false,
         hasSFDCPendingState = false
