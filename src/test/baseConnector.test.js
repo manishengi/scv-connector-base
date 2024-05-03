@@ -7,7 +7,7 @@
 
 import { initializeConnector, Constants, publishEvent, publishError, publishLog, AgentStatusInfo, AgentVendorStatusInfo, StateChangeResult, CustomError } from '../main/index';
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult, 
-    ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, CapabilitiesResult,
+    ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, SharedCapabilitiesResult, VoiceCapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement, 
     SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult } from '../main/index';
 import baseConstants from '../main/constants';
@@ -128,32 +128,33 @@ const agentConfigPayload = {
     [constants.AGENT_CONFIG_TYPE.PHONES] : agentConfigResult.phones,
     [constants.AGENT_CONFIG_TYPE.SELECTED_PHONE] : agentConfigResult.selectedPhone
 };
-const capabilitiesResult = new CapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl });
+const sharedCapabilitiesResult = new SharedCapabilitiesResult({});
+const voiceCapabilitiesResult = new VoiceCapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl });
 const capabilitiesPayload = {
-    [constants.CAPABILITIES_TYPE.MUTE] : capabilitiesResult.hasMute,
-    [constants.CAPABILITIES_TYPE.RECORD] : capabilitiesResult.hasRecord,
-    [constants.CAPABILITIES_TYPE.MERGE] : capabilitiesResult.hasMerge,
-    [constants.CAPABILITIES_TYPE.SWAP] : capabilitiesResult.hasSwap,
-    [constants.CAPABILITIES_TYPE.SIGNED_RECORDING_URL] : capabilitiesResult.hasSignedRecordingUrl,
-    [constants.CAPABILITIES_TYPE.DEBUG_ENABLED] : capabilitiesResult.debugEnabled,
-    [constants.CAPABILITIES_TYPE.CONTACT_SEARCH] : capabilitiesResult.hasContactSearch,
-    [constants.CAPABILITIES_TYPE.VENDOR_PROVIDED_AVAILABILITY] : capabilitiesResult.hasAgentAvailability,
-    [constants.CAPABILITIES_TYPE.VENDOR_PROVIDED_QUEUE_WAIT_TIME] : capabilitiesResult.hasQueueWaitTime,
-    [constants.CAPABILITIES_TYPE.SUPERVISOR_LISTEN_IN] : capabilitiesResult.hasSupervisorListenIn,
-    [constants.CAPABILITIES_TYPE.SUPERVISOR_BARGE_IN] : capabilitiesResult.hasSupervisorBargeIn,
-    [constants.CAPABILITIES_TYPE.MOS] : capabilitiesResult.supportsMos,
-    [constants.CAPABILITIES_TYPE.BLIND_TRANSFER] : capabilitiesResult.hasBlindTransfer,
-    [constants.CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : capabilitiesResult.hasTransferToOmniFlow,
-    [constants.CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : capabilitiesResult.hasPendingStatusChange,
-    [constants.CAPABILITIES_TYPE.PHONEBOOK] : capabilitiesResult.hasPhoneBook,
-    [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_SPEAKER] : capabilitiesResult.hasGetExternalSpeakerDeviceSetting,
-    [constants.CAPABILITIES_TYPE.HAS_SET_EXTERNAL_SPEAKER] : capabilitiesResult.hasSetExternalSpeakerDeviceSetting,
-    [constants.CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
-    [constants.CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : capabilitiesResult.hasSetExternalMicrophoneDeviceSetting,
-    [constants.CAPABILITIES_TYPE.SFDC_PENDING_STATE]: capabilitiesResult.hasSFDCPendingState
+    [constants.SHARED_CAPABILITIES_TYPE.DEBUG_ENABLED] : sharedCapabilitiesResult.debugEnabled,
+    [constants.SHARED_CAPABILITIES_TYPE.CONTACT_SEARCH] : sharedCapabilitiesResult.hasContactSearch,
+    [constants.SHARED_CAPABILITIES_TYPE.VENDOR_PROVIDED_AVAILABILITY] : sharedCapabilitiesResult.hasAgentAvailability,
+    [constants.SHARED_CAPABILITIES_TYPE.VENDOR_PROVIDED_QUEUE_WAIT_TIME] : sharedCapabilitiesResult.hasQueueWaitTime,
+    [constants.SHARED_CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : sharedCapabilitiesResult.hasTransferToOmniFlow,
+    [constants.SHARED_CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : sharedCapabilitiesResult.hasPendingStatusChange,
+    [constants.SHARED_CAPABILITIES_TYPE.SFDC_PENDING_STATE]: sharedCapabilitiesResult.hasSFDCPendingState,
+    [constants.VOICE_CAPABILITIES_TYPE.MUTE] : voiceCapabilitiesResult.hasMute,
+    [constants.VOICE_CAPABILITIES_TYPE.RECORD] : voiceCapabilitiesResult.hasRecord,
+    [constants.VOICE_CAPABILITIES_TYPE.MERGE] : voiceCapabilitiesResult.hasMerge,
+    [constants.VOICE_CAPABILITIES_TYPE.SWAP] : voiceCapabilitiesResult.hasSwap,
+    [constants.VOICE_CAPABILITIES_TYPE.BLIND_TRANSFER] : voiceCapabilitiesResult.hasBlindTransfer,
+    [constants.VOICE_CAPABILITIES_TYPE.SIGNED_RECORDING_URL] : voiceCapabilitiesResult.hasSignedRecordingUrl,
+    [constants.VOICE_CAPABILITIES_TYPE.SUPERVISOR_LISTEN_IN] : voiceCapabilitiesResult.hasSupervisorListenIn,
+    [constants.VOICE_CAPABILITIES_TYPE.SUPERVISOR_BARGE_IN] : voiceCapabilitiesResult.hasSupervisorBargeIn,
+    [constants.VOICE_CAPABILITIES_TYPE.MOS] : voiceCapabilitiesResult.supportsMos,
+    [constants.VOICE_CAPABILITIES_TYPE.PHONEBOOK] : voiceCapabilitiesResult.hasPhoneBook,
+    [constants.VOICE_CAPABILITIES_TYPE.HAS_GET_EXTERNAL_SPEAKER] : voiceCapabilitiesResult.hasGetExternalSpeakerDeviceSetting,
+    [constants.VOICE_CAPABILITIES_TYPE.HAS_SET_EXTERNAL_SPEAKER] : voiceCapabilitiesResult.hasSetExternalSpeakerDeviceSetting,
+    [constants.VOICE_CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
+    [constants.VOICE_CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasSetExternalMicrophoneDeviceSetting
 };
-const capabilitiesResultWithMos = new CapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
-const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
+const capabilitiesResultWithMos = new VoiceCapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
+const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.VOICE_CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
 
 const dummyActiveTransferredallResult = new ActiveCallsResult({ activeCalls: [dummyTransferredCall] });
 const config = { selectedPhone };
@@ -226,6 +227,7 @@ describe('SCVConnectorBase tests', () => {
     DemoAdapter.prototype.onAgentWorkEvent = jest.fn();
     DemoAdapter.prototype.getContacts = jest.fn().mockResolvedValue(contactsResult);
     DemoAdapter.prototype.getAudioDevices = jest.fn().mockResolvedValue(audioDevicesResult);
+    DemoAdapter.prototype.getSharedCapabilities = jest.fn().mockResolvedValue(sharedCapabilitiesResult);
     // TelephonyConnector overrides
     DemoTelephonyAdapter.prototype.acceptCall = jest.fn().mockResolvedValue(callResult);
     DemoTelephonyAdapter.prototype.declineCall = jest.fn().mockResolvedValue(callResult);
@@ -243,7 +245,7 @@ describe('SCVConnectorBase tests', () => {
     DemoTelephonyAdapter.prototype.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
     DemoTelephonyAdapter.prototype.pauseRecording = jest.fn().mockResolvedValue(recordingToggleResult);
     DemoTelephonyAdapter.prototype.resumeRecording = jest.fn().mockResolvedValue(recordingToggleResult);
-    DemoTelephonyAdapter.prototype.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+    DemoTelephonyAdapter.prototype.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
     DemoTelephonyAdapter.prototype.getSignedRecordingUrl = jest.fn().mockResolvedValue(signedRecordingUrlResult);
     DemoTelephonyAdapter.prototype.wrapUpCall = jest.fn();
     DemoTelephonyAdapter.prototype.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
@@ -512,9 +514,10 @@ describe('SCVConnectorBase tests', () => {
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
+            await expect(adapter.getSharedCapabilities()).resolves.toBe(sharedCapabilitiesResult);
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
@@ -542,8 +545,9 @@ describe('SCVConnectorBase tests', () => {
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(emptyActiveCallsResult);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+            await expect(adapter.getSharedCapabilities()).resolves.toBe(sharedCapabilitiesResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(emptyActiveCallsResult);
             //expect(channelPort.postMessage).toHaveBeenCalledTimes(3);
             expect(channelPort.postMessage).toHaveBeenNthCalledWith(1, {
@@ -577,13 +581,14 @@ describe('SCVConnectorBase tests', () => {
             adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(invalidResult);
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
+            await expect(adapter.getSharedCapabilities()).resolves.toBe(sharedCapabilitiesResult);
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(invalidResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
@@ -604,7 +609,7 @@ describe('SCVConnectorBase tests', () => {
         afterAll(() => {
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
         });
     });
 
@@ -682,8 +687,9 @@ describe('SCVConnectorBase tests', () => {
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
+            await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                 payload: {
@@ -2226,7 +2232,7 @@ describe('SCVConnectorBase tests', () => {
     
             it('Should dispatch CONNECTOR_READY on a valid payload', async () => {
                 telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-                telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+                telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
                 publishEvent({ eventType: Constants.SHARED_EVENT_TYPE.LOGIN_RESULT, payload: genericResult });
                 assertChannelPortPayload({ eventType: Constants.SHARED_EVENT_TYPE.LOGIN_RESULT, payload: {
@@ -2234,8 +2240,10 @@ describe('SCVConnectorBase tests', () => {
                 }});
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-                await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+                await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
+                await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
+
                 expect(channelPort.postMessage).toHaveBeenCalledWith({
                     type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                     payload: {
@@ -2257,7 +2265,7 @@ describe('SCVConnectorBase tests', () => {
 
             it('Should dispatch CONNECTOR_READY on a successful LOGIN_RESULT payload', async () => {
                 telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-                telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+                telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
                 telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
                 publishEvent({ eventType: Constants.SHARED_EVENT_TYPE.LOGIN_RESULT, payload: genericResult });
                 assertChannelPortPayloadEventLog({
@@ -2267,8 +2275,9 @@ describe('SCVConnectorBase tests', () => {
                 });
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-                await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+                await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
+                await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
                 expect(channelPort.postMessage).toHaveBeenCalledWith({
                     type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                     payload: {
@@ -3222,15 +3231,16 @@ describe('SCVConnectorBase tests', () => {
         beforeEach(async () => {
             adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResultWithMos);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(capabilitiesResultWithMos);
             telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
             eventMap['message'](message);
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(adapter.init()).resolves.toBe(initResult_connectorReady);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResultWithMos);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(capabilitiesResultWithMos);
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult);
+            await new Promise((r) => setTimeout(r, 10)); // wait a hundredth of a second for the event to have been fired
             expect(channelPort.postMessage).toHaveBeenCalledWith({
                 type: constants.SHARED_MESSAGE_TYPE.CONNECTOR_READY,
                 payload: {
@@ -3302,14 +3312,14 @@ describe('SCVConnectorBase tests', () => {
         it('Should invoke supervise Call successfully', async () => {
             telephonyAdapter.superviseCall = jest.fn().mockResolvedValue(superviseCallResult);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResultWithSoftphone);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
             fireMessage(constants.VOICE_MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResultWithSoftphone);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.SUPERVISOR_CALL_CONNECTED,
                 payload: superviseCallResult.call});
             assertChannelPortPayloadEventLog({
@@ -3324,14 +3334,14 @@ describe('SCVConnectorBase tests', () => {
             telephonyAdapter.supervisorDisconnect = jest.fn().mockResolvedValue(supervisorHangupResult);
             telephonyAdapter.superviseCall = jest.fn().mockResolvedValue(superviseDeskphoneCallResult);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
             fireMessage(constants.VOICE_MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseDeskphoneCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             fireMessage(constants.VOICE_MESSAGE_TYPE.ACCEPT_CALL);
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(supervisorHangupResult);
@@ -3348,14 +3358,14 @@ describe('SCVConnectorBase tests', () => {
             telephonyAdapter.supervisorDisconnect = jest.fn().mockResolvedValue(supervisorHangupResult);
             telephonyAdapter.superviseCall = jest.fn().mockResolvedValue(superviseDeskphoneCallResult);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
             fireMessage(constants.VOICE_MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseDeskphoneCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.CALL_CONNECTED, payload: callResult });
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.supervisorDisconnect()).resolves.toBe(supervisorHangupResult);
@@ -3370,14 +3380,14 @@ describe('SCVConnectorBase tests', () => {
         it('Should invoke supervise Call successfully for Deskphone', async () => {
             telephonyAdapter.superviseCall = jest.fn().mockResolvedValue(superviseDeskphoneCallResult);
             telephonyAdapter.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-            telephonyAdapter.getCapabilities = jest.fn().mockResolvedValue(capabilitiesResult);
+            telephonyAdapter.getVoiceCapabilities = jest.fn().mockResolvedValue(voiceCapabilitiesResult);
             fireMessage(constants.VOICE_MESSAGE_TYPE.SUPERVISE_CALL, {
                 call: {}
             });
             await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
             await expect(telephonyAdapter.superviseCall()).resolves.toBe(superviseDeskphoneCallResult);
             await expect(telephonyAdapter.getAgentConfig()).resolves.toBe(agentConfigResult);
-            await expect(telephonyAdapter.getCapabilities()).resolves.toBe(capabilitiesResult);
+            await expect(telephonyAdapter.getVoiceCapabilities()).resolves.toBe(voiceCapabilitiesResult);
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.SUPERVISOR_CALL_STARTED,
                 payload: superviseDeskphoneCallResult.call});
             assertChannelPortPayloadEventLog({
