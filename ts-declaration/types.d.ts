@@ -1282,3 +1282,15 @@ export class ContactsFilter {
 }
 
 export class PhoneContactsResult extends ContactsResult {}
+
+/**
+ * Class used as a parameter to AFTER_CONVERSATION_WORK_STARTED and AFTER_CONVERSATION_WORK_ENDED
+ */
+export class ACWInfo {
+    constructor({agentWorkId, workItemId}:{
+        agentWorkId?: string;
+        workItemId?: string;
+    });
+    agentWorkId: string;
+    workItemId: string;
+}

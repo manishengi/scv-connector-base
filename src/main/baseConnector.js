@@ -11,7 +11,8 @@ import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTS
 import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
     VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
-    SharedCapabilitiesResult, VoiceCapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult, AudioDevicesResult } from './types';
+    SharedCapabilitiesResult, VoiceCapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult,
+    AudioDevicesResult, ACWInfo } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
@@ -1206,6 +1207,18 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                         setConnectorReady();
                     }   
                 }
+            }
+            break;
+        }
+        case constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED: {
+            if (validatePayload(payload, ACWInfo, constants.SHARED_ERROR_TYPE.INVALID_ACW_INFO, constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED)){
+                dispatchEvent(constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED, payload, registerLog);
+            }
+            break;
+        }
+        case constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED: {
+            if (validatePayload(payload, ACWInfo, constants.SHARED_ERROR_TYPE.INVALID_ACW_INFO, constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED)){
+                dispatchEvent(constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED, payload, registerLog);
             }
             break;
         }

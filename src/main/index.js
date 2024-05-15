@@ -47,5 +47,6 @@ export {
     ShowStorageAccessResult,
     DialOptions,
     ContactsFilter,
-    AudioDevicesResult
+    AudioDevicesResult,
+    ACWInfo
 } from './types.js';
