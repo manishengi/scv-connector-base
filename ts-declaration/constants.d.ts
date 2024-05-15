@@ -59,6 +59,8 @@ declare namespace _default {
         const SHOW_STORAGE_ACCESS: string;
         const STORAGE_ACCESS_RESULT: string;
         const GET_CONTACTS_RESULT: string;
+        const AFTER_CONVERSATION_WORK_STARTED: string;
+        const AFTER_CONVERSATION_WORK_ENDED: string;
     }
     namespace VOICE_EVENT_TYPE {
         const QUEUED_CALL_STARTED: string;
@@ -105,6 +107,7 @@ declare namespace _default {
         const CAN_NOT_LOG_IN: string;
         const CAN_NOT_LOG_OUT: string;
         const INVALID_STORAGE_ACCESS_RESULT: string;
+        const INVALID_ACW_INFO: string;
     }
     namespace VOICE_ERROR_TYPE {
         const AGENT_ERROR: string;

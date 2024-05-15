@@ -9,7 +9,7 @@ import { initializeConnector, Constants, publishEvent, publishError, publishLog,
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult, 
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, SharedCapabilitiesResult, VoiceCapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement, 
-    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult } from '../main/index';
+    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult, ACWInfo } from '../main/index';
 import baseConstants from '../main/constants';
 
 import { log } from '../main/logger';
@@ -3222,6 +3222,56 @@ describe('SCVConnectorBase tests', () => {
                         payload: expectedPayload,
                         isError
                     }
+                });
+            });
+        });
+        describe('Shared ACW events', () => {
+            it('Should dispatch AFTER_CONVERSATION_WORK_STARTED on a payload', async () => {
+                const payload = new ACWInfo({agentWorkId: 'mockAgentWorkId'}); 
+                publishEvent({ eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED, payload });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED, payload });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED,
+                    payload,
+                    isError: false
+                });
+            });
+            it('Should dispatch AFTER_CONVERSATION_WORK_ENDED on a payload', async () => {
+                const payload = new ACWInfo({agentWorkId: 'mockAgentWorkId'}); 
+                publishEvent({ eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED, payload });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED, payload });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED,
+                    payload,
+                    isError: false
+                });
+            });
+            it('Should dispatch an error on an invalid AFTER_CONVERSATION_WORK_STARTED payload', async () => {
+                publishEvent({ eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED, payload: invalidResult });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                    message: constants.SHARED_ERROR_TYPE.INVALID_ACW_INFO
+                }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_STARTED,
+                    payload: {
+                        errorType: constants.SHARED_ERROR_TYPE.INVALID_ACW_INFO,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+            it('Should dispatch an error on an invalid AFTER_CONVERSATION_WORK_ENDED payload', async () => {
+                publishEvent({ eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED, payload: invalidResult });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                    message: constants.SHARED_ERROR_TYPE.INVALID_ACW_INFO
+                }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.SHARED_EVENT_TYPE.AFTER_CONVERSATION_WORK_ENDED,
+                    payload: {
+                        errorType: constants.SHARED_ERROR_TYPE.INVALID_ACW_INFO,
+                        error: expect.anything()
+                    },
+                    isError: true
                 });
             });
         });

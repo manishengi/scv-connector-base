@@ -43,7 +43,8 @@ import {
     AgentWork,
     ShowStorageAccessResult,
     ContactsFilter,
-    AudioDevicesResult
+    AudioDevicesResult,
+    ACWInfo
 } from '../main/index';
 
 
@@ -1573,6 +1574,18 @@ describe('Types validation tests', () => {
             expect(() => {
                 new ContactsFilter({});
             }).not.toThrowError();
+        });
+    });
+    describe('ACWInfo tests', () => {
+        it('should create an ACWInfo with valid input', () => {
+            expect(() => {
+                new ACWInfo({agentWorkId: 'mockAgentWorkId', workItemId: 'mockWorkItemId'});
+            }).not.toThrowError();
+        });
+        it('should not create an ACWInfo with invalid input', () => {
+            expect(() => {
+                new ACWInfo({});
+            }).toThrowError();
         });
     });
 });

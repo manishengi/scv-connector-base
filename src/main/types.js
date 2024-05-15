@@ -1556,3 +1556,27 @@ export class ContactsFilter {
         }
     }
 }
+
+/**
+ * Class used as a parameter to AFTER_CONVERSATION_WORK_STARTED and AFTER_CONVERSATION_WORK_ENDED
+ */
+export class ACWInfo {
+    /**
+     * @param {object} param
+     * @param {string} param.agentWorkId the id of the AgentWork
+     * @param {string} param.workItemId the id of the work item (voice call or messaging session)
+     */
+    constructor({agentWorkId, workItemId}) {
+        if (agentWorkId) {
+            Validator.validateString(agentWorkId);
+            this.agentWorkId = agentWorkId;
+        }
+        if (workItemId) {
+            Validator.validateString(workItemId);
+            this.workItemId = workItemId;
+        }
+        if (!agentWorkId && !workItemId) {
+            throw new Error('You must pass at least one of agent work id or work item (voice call or messaging session) id');
+        }
+    }
+}
