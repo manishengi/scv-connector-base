@@ -1561,6 +1561,11 @@ export class ContactsFilter {
  * Class used as a parameter to AFTER_CONVERSATION_WORK_STARTED and AFTER_CONVERSATION_WORK_ENDED
  */
 export class ACWInfo {
+    /**
+     * @param {object} param
+     * @param {string} param.agentWorkId the id of the AgentWork
+     * @param {string} param.workItemId the id of the work item (voice call or messaging session)
+     */
     constructor({agentWorkId, workItemId}) {
         if (agentWorkId) {
             Validator.validateString(agentWorkId);
