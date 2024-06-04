@@ -247,13 +247,13 @@ declare namespace _default {
         const AVAILABLE: string;
     }
     namespace WORK_EVENT {
-        const ASSIGNED: string,
-        const ACCEPTED: string,
-        const DECLINED: string,
-        const COMPLETED: string,
-        const CLOSED: string,
-        const PAUSED: string,
-        const UNPAUSED: string
+        const ASSIGNED: string;
+        const ACCEPTED: string;
+        const DECLINED: string;
+        const COMPLETED: string;
+        const CLOSED: string;
+        const PAUSED: string;
+        const UNPAUSED: string;
     }
 }
 export default _default;
