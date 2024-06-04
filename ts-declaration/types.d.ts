@@ -121,6 +121,8 @@ export namespace Constants {
         DECLINED = constants.WORK_EVENT.DECLINED,
         COMPLETED = constants.WORK_EVENT.COMPLETED,
         CLOSED = constants.WORK_EVENT.CLOSED,
+        PAUSED = constants.WORK_EVENT.PAUSED,
+        UNPAUSED = constants.WORK_EVENT.UNPAUSED,
     }
     enum HANGUP_STATUS {
         MISSED_AGENT = constants.HANGUP_STATUS.MISSED_AGENT,
