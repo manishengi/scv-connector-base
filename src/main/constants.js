@@ -259,7 +259,9 @@ export default {
         ACCEPTED: 'ACCEPTED',
         DECLINED: 'DECLINED',
         COMPLETED: 'COMPLETED',
-        CLOSED: 'CLOSED'
+        CLOSED: 'CLOSED',
+        PAUSED: 'PAUSED',
+        UNPAUSED: 'UNPAUSED'
     },
     DIAL_OPTIONS: {
         CALLBACK: "isCallback=true"
