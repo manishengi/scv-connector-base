@@ -148,7 +148,6 @@ declare namespace _default {
         const ONLINE: string;
         const OFFLINE: string;
         const ACW: string;
-        const CALLBACK_MISSED_OR_REJECTED: string;
     }
     namespace PARTICIPANT_TYPE {
         const AGENT: string;
@@ -254,6 +253,13 @@ declare namespace _default {
         const CLOSED: string;
         const PAUSED: string;
         const UNPAUSED: string;
+    }
+    namespace HANGUP_STATUS {
+        const MISSED_AGENT: string;
+        const DECLINED: string;
+        const FAILED_CONNECT_AGENT: string;
+        const FAILED_CONNECT_CUSTOMER: string;
+        const CALLBACK_MISSED_OR_REJECTED: string;
     }
 }
 export default _default;

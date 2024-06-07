@@ -154,8 +154,7 @@ export default {
     AGENT_STATUS: {
         ONLINE: 'Online',
         OFFLINE: 'Offline',
-        ACW : 'AfterCallWork',
-        CALLBACK_MISSED_OR_REJECTED: 'CallbackMissedOrRejected' // Used only for Amazon; workaround for https://github.com/amazon-connect/amazon-connect-streams/issues/344
+        ACW : 'AfterCallWork'
     },
     PARTICIPANT_TYPE: {
         AGENT: 'Agent',
@@ -271,7 +270,7 @@ export default {
         DECLINED: "DeclinedByAgent",
         FAILED_CONNECT_AGENT: "FailedConnectAgent",
         FAILED_CONNECT_CUSTOMER: "FailedConnectCustomer",
-        MISSED_CUSTOMER: "MissedCallStatus"
+        CALLBACK_MISSED_OR_REJECTED: 'CallbackMissedOrRejected' // Used only for Amazon; workaround for https://github.com/amazon-connect/amazon-connect-streams/issues/344
     }
 };
 

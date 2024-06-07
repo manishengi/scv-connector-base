@@ -8,6 +8,7 @@ export namespace Constants {
         GET_AGENT_STATUS = constants.SHARED_EVENT_TYPE.GET_AGENT_STATUS,
         STATE_CHANGE = constants.SHARED_EVENT_TYPE.STATE_CHANGE,
         STORAGE_ACCESS_RESULT = constants.SHARED_EVENT_TYPE.STORAGE_ACCESS_RESULT,
+        GET_CONTACTS_RESULT = constants.SHARED_EVENT_TYPE.GET_CONTACTS_RESULT
     }
     enum VOICE_EVENT_TYPE {
         CALL_STARTED = constants.VOICE_EVENT_TYPE.CALL_STARTED,
@@ -50,7 +51,6 @@ export namespace Constants {
         ONLINE = constants.AGENT_STATUS.ONLINE,
         OFFLINE = constants.AGENT_STATUS.OFFLINE,
         ACW = constants.AGENT_STATUS.ACW,
-        CALLBACK_MISSED_OR_REJECTED = constants.AGENT_STATUS.CALLBACK_MISSED_OR_REJECTED,
     }
     enum PARTICIPANT_TYPE {
         AGENT = constants.PARTICIPANT_TYPE.AGENT,
@@ -129,7 +129,7 @@ export namespace Constants {
         DECLINED = constants.HANGUP_STATUS.DECLINED,
         FAILED_CONNECT_AGENT = constants.HANGUP_STATUS.FAILED_CONNECT_AGENT,
         FAILED_CONNECT_CUSTOMER = constants.HANGUP_STATUS.FAILED_CONNECT_CUSTOMER,
-        MISSED_CUSTOMER = constants.HANGUP_STATUS.MISSED_CUSTOMER,
+        CALLBACK_MISSED_OR_REJECTED = constants.AGENT_STATUS.CALLBACK_MISSED_OR_REJECTED,
     }
 }
 
@@ -190,7 +190,7 @@ export class AudioDevice {
  */
 export class MuteToggleResult {
     /**
-     * Create ActiveCallsResult
+     * Create MuteToggleResult
      * @param {object} param
      * @param {boolean} param.isMuted
      */
@@ -221,7 +221,7 @@ export class AudioDevicesResult {
     /**
      * Create AudioDevicesResult
      * @param {object} param
-     * @param {audioDevices[]}
+     * @param {AudioDevice[]} [param.audioDevices]
      */
     constructor({ audioDevices }: {
         audioDevices?: AudioDevice[];
@@ -236,8 +236,10 @@ export class AgentConfigResult {
     /**
      * Create AgentConfigResult
      * @param {object} param
-     * @param {Phone[]} [param.phones]
-     * @param {Phone} [param.selectedPhone]
+     * @param {Phone[]} param.phones
+     * @param {Phone} param.selectedPhone
+     * @param {string} param.speakerDeviceId
+     * @param {string} param.microphoneDeviceId
      */
     constructor({ phones, selectedPhone, speakerDeviceId, microphoneDeviceId }: {
         phones?: Phone[];
@@ -258,7 +260,9 @@ export class AgentConfig {
     /**
      * Create AgentConfig
      * @param {object} param
-     * @param {Phone} [param.selectedPhone]
+     * @param {Phone} param.selectedPhone
+     * @param {string} [param.speakerDeviceId]
+     * @param {string} [param.microphoneDeviceId]
      */
     constructor({ selectedPhone, speakerDeviceId, microphoneDeviceId }: {
         selectedPhone?: Phone;
@@ -323,7 +327,6 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasSwap]
      * @param {boolean} [param.hasBlindTransfer] True if vendor supports blind transfers
      * @param {boolean} [param.hasSignedRecordingUrl]
-     * @param {boolean} [param.debugEnabled]
      * @param {boolean} [param.hasContactSearch] True if getPhoneContacts uses the 'contain' filter
      * @param {boolean} [param.hasAgentAvailability] True if getPhoneContacts also provides agent availability
      * @param {boolean} [param.supportsMos] True if vendor support MOS
@@ -373,10 +376,11 @@ export class SharedCapabilitiesResult {
     supportsMos: boolean;
     hasSupervisorListenIn: boolean;
     hasSupervisorBargeIn: boolean;
-    hasGetExternalSpeakerDeviceSetting?: boolean;
-    hasSetExternalSpeakerDeviceSetting?: boolean;
-    hasGetExternalMicrophoneDeviceSetting?: boolean;
-    hasSetExternalMicrophoneDeviceSetting?: boolean;
+    hasPhoneBook: boolean;
+    hasGetExternalSpeakerDeviceSetting: boolean;
+    hasSetExternalSpeakerDeviceSetting: boolean;
+    hasGetExternalMicrophoneDeviceSetting: boolean;
+    hasSetExternalMicrophoneDeviceSetting: boolean;
 }
 
 
@@ -683,7 +687,7 @@ export class CallInfo {
         showAddBlindTransferButton: boolean;
         showMergeButton: boolean;
         showSwapButton: boolean;
-        removeParticipantVariant: string;
+        removeParticipantVariant: Constants.REMOVE_PARTICIPANT_VARIANT;
         additionalFields: string;
         isMultiParty: boolean;
 }
@@ -780,7 +784,7 @@ export class PhoneCall {
      * @param {CallInfo} [param.callInfo]
      * @param {string} [param.reason]
      * @param {boolean} [param.closeCallOnError]
-     * @param {Constants.HANGUP_STATUS} [param.agentStatus]
+     * @param {Constants.AGENT_STATUS | Constants.HANGUP_STATUS} [param.agentStatus]
      */
     constructor({ callId, callType, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus }: {
         callId?: string;
@@ -792,7 +796,7 @@ export class PhoneCall {
         callInfo?: CallInfo;
         reason?: Constants.HANGUP_REASON;
         closeCallOnError?: boolean;
-        agentStatus?: Constants.HANGUP_STATUS;
+        agentStatus?: Constants.AGENT_STATUS | Constants.HANGUP_STATUS;
     });
     callId: string;
     callType: Constants.CALL_TYPE;
@@ -801,7 +805,7 @@ export class PhoneCall {
     contact: Contact;
     reason: Constants.HANGUP_REASON;
     closeCallOnError: true;
-    agentStatus: Constants.HANGUP_STATUS;
+    agentStatus: Constants.AGENT_STATUS | Constants.HANGUP_STATUS;
     state: Constants.CALL_STATE;
     callAttributes: PhoneCallAttributes;
 }
