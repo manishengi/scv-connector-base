@@ -171,7 +171,7 @@ async function setConnectorReady() {
                 [constants.SHARED_CAPABILITIES_TYPE.TRANSFER_TO_OMNI_FLOW] : sharedCapabilitiesResult.hasTransferToOmniFlow,
                 [constants.SHARED_CAPABILITIES_TYPE.PENDING_STATUS_CHANGE] : sharedCapabilitiesResult.hasPendingStatusChange,
                 [constants.SHARED_CAPABILITIES_TYPE.SFDC_PENDING_STATE]: sharedCapabilitiesResult.hasSFDCPendingState,
-                [constants.SHARED_CAPABILITIES_TYPE.AGENT_AUTO_ACCEPT]: sharedCapabilitiesResult.hasAgentAutoAccept,
+                [constants.SHARED_CAPABILITIES_TYPE.AGENT_AUTO_ACCEPT_ON_VENDOR]: sharedCapabilitiesResult.hasAgentAutoAcceptOnVendor,
                 [constants.VOICE_CAPABILITIES_TYPE.MUTE] : voiceCapabilitiesResult.hasMute,
                 [constants.VOICE_CAPABILITIES_TYPE.RECORD] : voiceCapabilitiesResult.hasRecord,
                 [constants.VOICE_CAPABILITIES_TYPE.MERGE] : voiceCapabilitiesResult.hasMerge,

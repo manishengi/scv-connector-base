@@ -233,7 +233,7 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
-     * @param {boolean} [param.hasAgentAutoAccept] True if amazon connect has enabled agent auto accept
+     * @param {boolean} [param.hasAgentAutoAcceptOnVendor] True if amazon connect has enabled agent auto accept on vendor
      */
     constructor({
         debugEnabled = true,
@@ -243,7 +243,7 @@ export class SharedCapabilitiesResult {
         hasTransferToOmniFlow = false,
         hasPendingStatusChange = false,
         hasSFDCPendingState = false,
-        hasAgentAutoAccept = false
+        hasAgentAutoAcceptOnVendor = false
     }){
         Validator.validateBoolean(debugEnabled);
         Validator.validateBoolean(hasContactSearch);
@@ -252,7 +252,7 @@ export class SharedCapabilitiesResult {
         Validator.validateBoolean(hasTransferToOmniFlow);
         Validator.validateBoolean(hasPendingStatusChange);
         Validator.validateBoolean(hasSFDCPendingState);
-        Validator.validateBoolean(hasAgentAutoAccept);
+        Validator.validateBoolean(hasAgentAutoAcceptOnVendor);
 
         this.debugEnabled = debugEnabled;
         this.hasContactSearch = hasContactSearch;
@@ -261,7 +261,7 @@ export class SharedCapabilitiesResult {
         this.hasTransferToOmniFlow = hasTransferToOmniFlow;
         this.hasPendingStatusChange = hasPendingStatusChange;
         this.hasSFDCPendingState = hasSFDCPendingState;
-        this.hasAgentAutoAccept = hasAgentAutoAccept;
+        this.hasAgentAutoAcceptOnVendor = hasAgentAutoAcceptOnVendor;
     }
 }
 

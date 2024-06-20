@@ -288,7 +288,7 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
-     * @param {boolean} [param.hasAgentAutoAccept] True if amazon connect has enabled agent auto accept
+     * @param {boolean} [param.hasAgentAutoAcceptOnVendor] True if amazon connect has enabled agent auto accept on vendor
      */
     constructor({
         debugEnabled,
@@ -298,7 +298,7 @@ export class SharedCapabilitiesResult {
         hasTransferToOmniFlow,
         hasPendingStatusChange,
         hasSFDCPendingState,
-        hasAgentAutoAccept
+        hasAgentAutoAcceptOnVendor
     }: {
         debugEnabled?: boolean;
         hasContactSearch?: boolean;
@@ -307,7 +307,7 @@ export class SharedCapabilitiesResult {
         hasTransferToOmniFlow?: boolean;
         hasPendingStatusChange?: boolean;
         hasSFDCPendingState?: boolean;
-        hasAgentAutoAccept?: boolean;
+        hasAgentAutoAcceptOnVendor?: boolean;
     });
     debugEnabled: boolean;
     hasContactSearch: boolean;
@@ -316,7 +316,7 @@ export class SharedCapabilitiesResult {
     hasTransferToOmniFlow: boolean;
     hasPendingStatusChange: boolean;
     hasSFDCPendingState: boolean;
-    hasAgentAutoAccept: boolean;
+    hasAgentAutoAcceptOnVendor: boolean;
 }
 /**
  * Class representing result type for getVoiceCapabilities()
@@ -339,7 +339,7 @@ export class SharedCapabilitiesResult {
      * @param {String} [param.signedRecordingUrl]
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
-     * @param {boolean} [param.hasAgentAutoAccept] True if amazon connect has enabled agent auto accept
+     * @param {boolean} [param.hasAgentAutoAcceptOnVendor] True if amazon connect has enabled agent auto accept on vendor
      */
     constructor({
         hasMute,
