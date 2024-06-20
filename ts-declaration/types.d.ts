@@ -288,6 +288,7 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasTransferToOmniFlow] True if vendor supports transfer to omni flows
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
+     * @param {boolean} [param.hasAgentAutoAccept] True if amazon connect has enabled agent auto accept
      */
     constructor({
         debugEnabled,
@@ -296,7 +297,8 @@ export class SharedCapabilitiesResult {
         hasQueueWaitTime,
         hasTransferToOmniFlow,
         hasPendingStatusChange,
-        hasSFDCPendingState
+        hasSFDCPendingState,
+        hasAgentAutoAccept
     }: {
         debugEnabled?: boolean;
         hasContactSearch?: boolean;
@@ -305,6 +307,7 @@ export class SharedCapabilitiesResult {
         hasTransferToOmniFlow?: boolean;
         hasPendingStatusChange?: boolean;
         hasSFDCPendingState?: boolean;
+        hasAgentAutoAccept?: boolean;
     });
     debugEnabled: boolean;
     hasContactSearch: boolean;
@@ -313,6 +316,7 @@ export class SharedCapabilitiesResult {
     hasTransferToOmniFlow: boolean;
     hasPendingStatusChange: boolean;
     hasSFDCPendingState: boolean;
+    hasAgentAutoAccept: boolean;
 }
 /**
  * Class representing result type for getVoiceCapabilities()
@@ -335,6 +339,7 @@ export class SharedCapabilitiesResult {
      * @param {String} [param.signedRecordingUrl]
      * @param {boolean} [param.hasPendingStatusChange] True if vendor supports Pending Status Change
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
+     * @param {boolean} [param.hasAgentAutoAccept] True if amazon connect has enabled agent auto accept
      */
     constructor({
         hasMute,
