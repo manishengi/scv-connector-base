@@ -186,7 +186,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(false);
             expect(capabilitiesResult.hasPendingStatusChange).toEqual(false);
             expect(capabilitiesResult.hasSFDCPendingState).toEqual(false);
-            expect(capabilitiesResult.hasAgentAutoAcceptOnVendor).toEqual(false);
+            expect(capabilitiesResult.hasAutoAcceptEnabled).toEqual(false);
         });
 
         it('Should create VoiceCapabilitiesResult object - default', () => {
@@ -219,7 +219,7 @@ describe('Types validation tests', () => {
             const hasTransferToOmniFlow = true;
             const hasPendingStatusChange = true;
             const hasSFDCPendingState = true;
-            const hasAgentAutoAcceptOnVendor = true;
+            const hasAutoAcceptEnabled = true;
             expect(() => {
                 capabilitiesResult = new SharedCapabilitiesResult({
                     debugEnabled,
@@ -229,7 +229,7 @@ describe('Types validation tests', () => {
                     hasTransferToOmniFlow,
                     hasPendingStatusChange,
                     hasSFDCPendingState,
-                    hasAgentAutoAcceptOnVendor
+                    hasAutoAcceptEnabled
                 });
             }).not.toThrowError();
             expect(capabilitiesResult.debugEnabled).toEqual(debugEnabled);
@@ -239,7 +239,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasTransferToOmniFlow).toEqual(hasTransferToOmniFlow);
             expect(capabilitiesResult.hasPendingStatusChange).toEqual(hasPendingStatusChange);
             expect(capabilitiesResult.hasSFDCPendingState).toEqual(hasSFDCPendingState);
-            expect(capabilitiesResult.hasAgentAutoAcceptOnVendor).toEqual(hasAgentAutoAcceptOnVendor);
+            expect(capabilitiesResult.hasAutoAcceptEnabled).toEqual(hasAutoAcceptEnabled);
         });
 
         it('Should create VoiceCapabilitiesResult object', () => {
