@@ -187,6 +187,7 @@ declare namespace _default {
         const TRANSFER_TO_OMNI_FLOW: string;
         const PENDING_STATUS_CHANGE: string;
         const SFDC_PENDING_STATE: string;
+        const AUTO_ACCEPT_ENABLED: string;
     }
     namespace VOICE_CAPABILITIES_TYPE {
         const MUTE: string;
