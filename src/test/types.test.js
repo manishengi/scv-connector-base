@@ -493,16 +493,18 @@ describe('Types validation tests', () => {
             const callType = Constants.CALL_TYPE.OUTBOUND;
             const callId = 'callid';
             const agentStatus = 'agentStatus';
+            const agentARN = 'agentARN';
             let callHangupResult;
 
             expect(() => {
-                callHangupResult = new CallResult({ call: new PhoneCall({ reason, closeCallOnError, callType, callId, agentStatus })});
+                callHangupResult = new CallResult({ call: new PhoneCall({ reason, closeCallOnError, callType, callId, agentStatus, agentARN })});
             }).not.toThrowError();
             expect(callHangupResult.call.reason).toEqual(reason);
             expect(callHangupResult.call.closeCallOnError).toEqual(closeCallOnError);
             expect(callHangupResult.call.callType).toEqual(callType);
             expect(callHangupResult.call.callId).toEqual(callId);
             expect(callHangupResult.call.agentStatus).toEqual(agentStatus);
+            expect(callHangupResult.call.agentARN).toEqual(agentARN);
         });
     });
 
@@ -541,10 +543,11 @@ describe('Types validation tests', () => {
             const callType = Constants.CALL_TYPE.OUTBOUND;
             const callId = 'callid';
             const agentStatus = 'agentStatus';
+            const agentARN = 'agentARN';
             let callHangupResult;
 
             expect(() => {
-                callHangupResult = new HangupResult({ calls: [new PhoneCall({ reason, closeCallOnError, callType, callId, agentStatus })]});
+                callHangupResult = new HangupResult({ calls: [new PhoneCall({ reason, closeCallOnError, callType, callId, agentStatus, agentARN })]});
             }).not.toThrowError();
             const hangupResultCall = callHangupResult.calls.pop()
             expect(hangupResultCall.reason).toEqual(reason);
@@ -552,6 +555,7 @@ describe('Types validation tests', () => {
             expect(hangupResultCall.callType).toEqual(callType);
             expect(hangupResultCall.callId).toEqual(callId);
             expect(hangupResultCall.agentStatus).toEqual(agentStatus);
+            expect(hangupResultCall.agentARN).toEqual(agentARN);
         });
     });
 
