@@ -790,8 +790,9 @@ export class PhoneCall {
      * @param {string} [param.reason]
      * @param {boolean} [param.closeCallOnError]
      * @param {Constants.AGENT_STATUS | Constants.HANGUP_STATUS} [param.agentStatus]
+     * @param {string} [param.agentARN]
      */
-    constructor({ callId, callType, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus }: {
+    constructor({ callId, callType, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN }: {
         callId?: string;
         callType?: Constants.CALL_TYPE;
         contact?: Contact;
@@ -802,6 +803,7 @@ export class PhoneCall {
         reason?: Constants.HANGUP_REASON;
         closeCallOnError?: boolean;
         agentStatus?: Constants.AGENT_STATUS | Constants.HANGUP_STATUS;
+        agentARN?: string;
     });
     callId: string;
     callType: Constants.CALL_TYPE;
@@ -813,6 +815,7 @@ export class PhoneCall {
     agentStatus: Constants.AGENT_STATUS | Constants.HANGUP_STATUS;
     state: Constants.CALL_STATE;
     callAttributes: PhoneCallAttributes;
+    agentARN: string;
 }
 
 /** 
