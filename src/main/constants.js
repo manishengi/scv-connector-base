@@ -171,6 +171,10 @@ export default {
         INTERNAL_CALL: 'InternalCall',
         DIALED_CALLBACK: 'DialedCallback'
     },
+    CALL_SUBTYPE: {
+        PSTN: 'PSTN',
+        WEB_RTC: 'WebRTC'
+    },
     DIALER_TYPE: {
         OUTBOUND_PREVIEW: 'OutboundPreview',
         NONE: 'None'

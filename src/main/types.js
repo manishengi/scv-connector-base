@@ -84,6 +84,13 @@ export const Constants = {
     /**
     * @enum {string}
     */
+    /**
+     * @enum {string}
+     */
+    CALL_SUBTYPE: { ...constants.CALL_SUBTYPE },
+    /**
+     * @enum {string}
+     */
     DIALER_TYPE: { ...constants.DIALER_TYPE },
     /**
     * @enum {string}
@@ -848,7 +855,7 @@ export class PhoneCallAttributes {
 }
 
 /** 
-* Class representing a PhoneCall. 
+* Class representing a PhoneCall (PSTN or WebRTC).
 */
 
 export class PhoneCall {
@@ -857,6 +864,7 @@ export class PhoneCall {
      * @param {object} param
      * @param {string} [param.callId] - The unique callId. This is a required parameter
      * @param {CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
+     * @param {CALL_SUBTYPE} [param.callSubtype] - The subtype of the call, one of the CALL_SUBTYPE values
      * @param {Contact} [param.contact] - The Call Target / Contact 
      * @param {string} [param.state] - The state of the call, i.e. ringing, connected, declined, failed 
      * @param {PhoneCallAttributes} [param.callAttributes] - Any additional call attributes
@@ -867,7 +875,7 @@ export class PhoneCall {
      * @param {string} [param.agentStatus]
      * @param {string} [param.agentARN]
      */
-    constructor({callId, callType, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN }) {
+    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN }) {
         // TODO: Revisit the required fields
         if (callId) {
             Validator.validateString(callId);
@@ -876,6 +884,10 @@ export class PhoneCall {
         if (callType) {
             Validator.validateEnum(callType, Object.values(constants.CALL_TYPE));
             this.callType = callType;
+        }
+        if (callSubtype) {
+            Validator.validateEnum(callSubtype, Object.values(constants.CALL_SUBTYPE));
+            this.callSubtype = callSubtype;
         }
         if (phoneNumber) {
             Validator.validateString(phoneNumber);

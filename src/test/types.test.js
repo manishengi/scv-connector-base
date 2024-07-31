@@ -53,7 +53,7 @@ jest.mock('../main/logger');
 
 describe('Types validation tests', () => {
     const invalid_argument = /^Invalid argument/;
-    const dummyPhoneCall = new PhoneCall({ callId: 'callId', callType: Constants.CALL_TYPE.INBOUND, state: 'state', callAttributes: {}, phoneNumber: '100'});
+    const dummyPhoneCall = new PhoneCall({ callId: 'callId', callType: Constants.CALL_TYPE.INBOUND, callSubtype: Constants.CALL_SUBTYPE.PSTN, state: 'state', callAttributes: {}, phoneNumber: '100'});
     const dummyCallInfo = new CallInfo({ isOnHold: false, showMuteButton: true, showAddBlindTransferButton: true, showRecordButton: true, showAddCallerButton: true, showMergeButton: true, showSwapButton: true, additionalFields: "\"SourceType\": \"Service\"" });
 
     describe('CustomError tests', () => {
@@ -292,7 +292,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(hasSetExternalMicrophoneDeviceSetting);
         });
     });
-    
+
     describe('RecordingToggleResult tests', () => {
         it('Should create RecordingToggleResult object - default', () => {
             const isRecordingPaused = true;
@@ -491,17 +491,19 @@ describe('Types validation tests', () => {
             const reason = 'reason';
             const closeCallOnError = true;
             const callType = Constants.CALL_TYPE.OUTBOUND;
+            const callSubtype = Constants.CALL_SUBTYPE.PSTN;
             const callId = 'callid';
             const agentStatus = 'agentStatus';
             const agentARN = 'agentARN';
             let callHangupResult;
 
             expect(() => {
-                callHangupResult = new CallResult({ call: new PhoneCall({ reason, closeCallOnError, callType, callId, agentStatus, agentARN })});
+                callHangupResult = new CallResult({ call: new PhoneCall({ reason, closeCallOnError, callType, callSubtype, callId, agentStatus, agentARN })});
             }).not.toThrowError();
             expect(callHangupResult.call.reason).toEqual(reason);
             expect(callHangupResult.call.closeCallOnError).toEqual(closeCallOnError);
             expect(callHangupResult.call.callType).toEqual(callType);
+            expect(callHangupResult.call.callSubtype).toEqual(callSubtype);
             expect(callHangupResult.call.callId).toEqual(callId);
             expect(callHangupResult.call.agentStatus).toEqual(agentStatus);
             expect(callHangupResult.call.agentARN).toEqual(agentARN);
@@ -541,18 +543,20 @@ describe('Types validation tests', () => {
             const reason = 'reason';
             const closeCallOnError = true;
             const callType = Constants.CALL_TYPE.OUTBOUND;
+            const callSubtype = Constants.CALL_SUBTYPE.PSTN;
             const callId = 'callid';
             const agentStatus = 'agentStatus';
             const agentARN = 'agentARN';
             let callHangupResult;
 
             expect(() => {
-                callHangupResult = new HangupResult({ calls: [new PhoneCall({ reason, closeCallOnError, callType, callId, agentStatus, agentARN })]});
+                callHangupResult = new HangupResult({ calls: [new PhoneCall({ reason, closeCallOnError, callType, callSubtype, callId, agentStatus, agentARN })]});
             }).not.toThrowError();
             const hangupResultCall = callHangupResult.calls.pop()
             expect(hangupResultCall.reason).toEqual(reason);
             expect(hangupResultCall.closeCallOnError).toEqual(closeCallOnError);
             expect(hangupResultCall.callType).toEqual(callType);
+            expect(hangupResultCall.callSubtype).toEqual(callSubtype);
             expect(hangupResultCall.callId).toEqual(callId);
             expect(hangupResultCall.agentStatus).toEqual(agentStatus);
             expect(hangupResultCall.agentARN).toEqual(agentARN);
@@ -915,6 +919,7 @@ describe('Types validation tests', () => {
     describe('PhoneCall tests', () => {
         const callId = 'callId';
         const callType = Constants.CALL_TYPE.INBOUND;
+        const callSubtype = Constants.CALL_SUBTYPE.WEB_RTC;
         const contact = new Contact({});
         const state = 'state';
         const callAttributes = {};
@@ -926,10 +931,11 @@ describe('Types validation tests', () => {
                 let phoneCall;
 
                 expect(() => {
-                    phoneCall = new PhoneCall({callId, callType, callInfo, contact, state, callAttributes, phoneNumber });
+                    phoneCall = new PhoneCall({callId, callType, callSubtype, callInfo, contact, state, callAttributes, phoneNumber });
                 }).not.toThrowError();
                 expect(phoneCall.callId).toEqual(callId);
                 expect(phoneCall.callType).toEqual(callType);
+                expect(phoneCall.callSubtype).toEqual(callSubtype);
                 expect(phoneCall.callInfo).toEqual(callInfo);
                 expect(phoneCall.contact).toEqual(contact);
                 expect(phoneCall.state).toEqual(state);
@@ -941,16 +947,17 @@ describe('Types validation tests', () => {
                 let phoneCall;
 
                 expect(() => {
-                    phoneCall = new PhoneCall({callId, callType, contact, state, callAttributes });
+                    phoneCall = new PhoneCall({callId, callType, callSubtype, contact, state, callAttributes });
                 }).not.toThrowError();
                 expect(phoneCall.callId).toEqual(callId);
                 expect(phoneCall.callType).toEqual(callType);
+                expect(phoneCall.callSubtype).toEqual(callSubtype);
                 expect(phoneCall.contact).toEqual(contact);
                 expect(phoneCall.state).toEqual(state);
                 expect(phoneCall.callAttributes).toEqual(callAttributes);
             });
 
-            it('Should create a PhoneCall object without callId & callType', () => {
+            it('Should create a PhoneCall object without callId & callType & callSubtype', () => {
                 let phoneCall;
 
                 expect(() => {
@@ -965,19 +972,25 @@ describe('Types validation tests', () => {
         describe('PhoneCall failure tests', () => {
             it('Should not create a PhoneCall object for invalid call id', () => {
                 const invalidCallId = 5555555555;
-                expect(() => new PhoneCall({callId: invalidCallId, callType, contact, state, callAttributes, phoneNumber}))
+                expect(() => new PhoneCall({callId: invalidCallId, callType, callSubtype, contact, state, callAttributes, phoneNumber}))
                     .toThrowError(invalid_argument);
             });
 
             it('Should not create a PhoneCall object for invalid call type', () => {
                 const invalidCallType = 'INVALID_TYPE';
-                expect(() => new PhoneCall({callId, callType: invalidCallType, contact, state, callAttributes, phoneNumber}))
+                expect(() => new PhoneCall({callId, callType: invalidCallType, callSubtype, contact, state, callAttributes, phoneNumber}))
                     .toThrowError(invalid_argument);
             });
 
             it('Should not create a PhoneCall object for invalid phone number', () => {
                 const invalidPhoneNumber = {};
-                expect(() => new PhoneCall({callId, callType, contact, state, callAttributes, phoneNumber: invalidPhoneNumber}))
+                expect(() => new PhoneCall({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber: invalidPhoneNumber}))
+                    .toThrowError(invalid_argument);
+            });
+
+            it('Should not create a PhoneCall object for invalid call subtype', () => {
+                const invalidCallSubtype = 'INVALID_CALL_SUBTYPE';
+                expect(() => new PhoneCall({callId, callType, callSubtype: invalidCallSubtype, contact, state, callAttributes, phoneNumber}))
                     .toThrowError(invalid_argument);
             });
         });
@@ -1070,7 +1083,7 @@ describe('Types validation tests', () => {
                 expect(phoneCallAttributes.isOnHold).toBeUndefined();
                 expect(phoneCallAttributes.dialerType).toEqual(dialerType);
                 expect(phoneCallAttributes.hasSupervisorBargedIn).toEqual(false);
-            }); 
+            });
 
             it('Should create a PhoneCallAttributes object with a dialer type', () => {
                 let phoneCallAttributes;
@@ -1151,7 +1164,7 @@ describe('Types validation tests', () => {
             vendorConnector.downloadLogs();
             expect(downloadLogs).toBeCalledTimes(1);
         });
-        
+
         it('Can implement logMessageToVendor', () => {
             expect(() => vendorConnector.logMessageToVendor()).not.toThrowError('Not implemented');
         });
@@ -1410,7 +1423,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1425,7 +1438,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1437,7 +1450,7 @@ describe('Types validation tests', () => {
                 const packetsLost = null;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1449,7 +1462,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = null;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1461,7 +1474,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = null;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1473,7 +1486,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1485,7 +1498,7 @@ describe('Types validation tests', () => {
                 const packetsLost = -1;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1497,7 +1510,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = -500;
                 const roundTripTimeMillis = 350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1509,7 +1522,7 @@ describe('Types validation tests', () => {
                 const packetsLost = 0;
                 const jitterBufferMillis = 500;
                 const roundTripTimeMillis = -350;
-                
+
                 expect(() => {
                     streamStats = new StatsInfo({packetsCount, packetsLost, jitterBufferMillis, roundTripTimeMillis});
                 }).not.toThrowError();
@@ -1528,7 +1541,7 @@ describe('Types validation tests', () => {
             expect(supervisorHangupResult.calls).toEqual([phoneCall]);
         });
         it('Should create a SupervisorHangupResult object successfully', () => {
-            const parentCall = {callId: "callId", voiceCallId: "voiceCallId", callType: "callType" ,from: "from", to: "to", supervisorName: "name", isBargedIn: true};
+            const parentCall = {callId: "callId", voiceCallId: "voiceCallId", callType: "callType", callSubtype: "callSubtype", from: "from", to: "to", supervisorName: "name", isBargedIn: true};
             let supervisedCallInfo
             expect(() => {
                 supervisedCallInfo = new SupervisedCallInfo(parentCall);
