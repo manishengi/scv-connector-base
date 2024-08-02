@@ -153,7 +153,8 @@ const capabilitiesPayload = {
     [constants.VOICE_CAPABILITIES_TYPE.HAS_GET_EXTERNAL_SPEAKER] : voiceCapabilitiesResult.hasGetExternalSpeakerDeviceSetting,
     [constants.VOICE_CAPABILITIES_TYPE.HAS_SET_EXTERNAL_SPEAKER] : voiceCapabilitiesResult.hasSetExternalSpeakerDeviceSetting,
     [constants.VOICE_CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
-    [constants.VOICE_CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasSetExternalMicrophoneDeviceSetting
+    [constants.VOICE_CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasSetExternalMicrophoneDeviceSetting,
+    [constants.VOICE_CAPABILITIES_TYPE.CAN_CONSULT]: voiceCapabilitiesResult.canConsult
 };
 const capabilitiesResultWithMos = new VoiceCapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
 const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.VOICE_CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
