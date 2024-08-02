@@ -208,6 +208,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(false);
+            expect(capabilitiesResult.canConsult).toEqual(false);
         });
 
         it('Should create SharedCapabilitiesResult object', () => {
@@ -258,6 +259,7 @@ describe('Types validation tests', () => {
             const hasSetExternalSpeakerDeviceSetting = true;
             const hasGetExternalMicrophoneDeviceSetting = true;
             const hasSetExternalMicrophoneDeviceSetting = true;
+            const canConsult = true;
             expect(() => {
                 capabilitiesResult = new VoiceCapabilitiesResult({
                     hasMute,
@@ -273,7 +275,8 @@ describe('Types validation tests', () => {
                     hasGetExternalSpeakerDeviceSetting,
                     hasSetExternalSpeakerDeviceSetting,
                     hasGetExternalMicrophoneDeviceSetting,
-                    hasSetExternalMicrophoneDeviceSetting
+                    hasSetExternalMicrophoneDeviceSetting,
+                    canConsult
                 });
             }).not.toThrowError();
             expect(capabilitiesResult.hasMute).toEqual(hasMute);
@@ -290,6 +293,7 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasSetExternalSpeakerDeviceSetting).toEqual(hasSetExternalSpeakerDeviceSetting);
             expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(hasGetExternalMicrophoneDeviceSetting);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(hasSetExternalMicrophoneDeviceSetting);
+            expect(capabilitiesResult.canConsult).toEqual(canConsult);
         });
     });
 

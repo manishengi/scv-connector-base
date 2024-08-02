@@ -356,7 +356,8 @@ export class SharedCapabilitiesResult {
         hasGetExternalSpeakerDeviceSetting,
         hasSetExternalSpeakerDeviceSetting,
         hasGetExternalMicrophoneDeviceSetting,
-        hasSetExternalMicrophoneDeviceSetting
+        hasSetExternalMicrophoneDeviceSetting,
+        canConsult
     }: {
         hasMute?: boolean;
         hasRecord?: boolean;
@@ -372,6 +373,7 @@ export class SharedCapabilitiesResult {
         hasSetExternalSpeakerDeviceSetting?: boolean;
         hasGetExternalMicrophoneDeviceSetting?: boolean;
         hasSetExternalMicrophoneDeviceSetting?: boolean;
+        canConsult?: boolean;
     });
     hasMute: boolean;
     hasRecord: boolean;
@@ -387,6 +389,7 @@ export class SharedCapabilitiesResult {
     hasSetExternalSpeakerDeviceSetting: boolean;
     hasGetExternalMicrophoneDeviceSetting: boolean;
     hasSetExternalMicrophoneDeviceSetting: boolean;
+    canConsult: boolean;
 }
 
 
