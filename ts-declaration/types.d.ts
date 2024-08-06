@@ -68,6 +68,10 @@ export namespace Constants {
         INTERNAL_CALL = constants.CALL_TYPE.INTERNAL_CALL,
         DIALED_CALLBACK = constants.CALL_TYPE.DIALED_CALLBACK,
     }
+    enum CALL_SUBTYPE {
+        PSTN = constants.CALL_SUBTYPE.PSTN,
+        WEB_RTC = constants.CALL_SUBTYPE.WEB_RTC,
+    }
     enum DIALER_TYPE {
         OUTBOUND_PREVIEW = constants.DIALER_TYPE.OUTBOUND_PREVIEW,
         NONE = constants.DIALER_TYPE.NONE,

@@ -82,9 +82,6 @@ export const Constants = {
     */
     CALL_TYPE: { ...constants.CALL_TYPE },
     /**
-    * @enum {string}
-    */
-    /**
      * @enum {string}
      */
     CALL_SUBTYPE: { ...constants.CALL_SUBTYPE },
