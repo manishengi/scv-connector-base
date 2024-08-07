@@ -59,6 +59,13 @@ We use the Jest testing framework. You must test your code to verify that the fu
 npm test
 ```
 
+## Before creating a PR
+Update the `scv-connector-base.js.map` and `scv-connector-base.js` files:
+```
+npm run gulp bundle
+```
+Add these files to the PR as well.
+
 ### Create a pull request
 
 If you've never created a pull request before, follow [these
