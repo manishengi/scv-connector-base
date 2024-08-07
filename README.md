@@ -28,5 +28,12 @@ Lint all the source code and run all the unit tests:
 $ npm test
 ```
 
+## Before creating a PR
+Update the `scv-connector-base.js.map` and `scv-connector-base.js` files:
+```
+npm run gulp bundle
+```
+Add these files to the PR as well.
+
 ## Contributing and Developing Locally
 We welcome contributors into our repo. Please read the [contributing guidelines](https://github.com/salesforce/scv-connector-base/blob/master/CONTRIBUTING.md) for more information.
