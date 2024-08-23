@@ -184,9 +184,11 @@ export class MuteToggleResult {
      * Create MuteToggleResult
      * @param {object} param
      * @param {boolean} param.isMuted
+     * @param {PhoneCall} param.call
      */
-    constructor({ isMuted }) {
+    constructor({ isMuted, call }) {
         this.isMuted = isMuted;
+        this.call = call;
     }
 }
 

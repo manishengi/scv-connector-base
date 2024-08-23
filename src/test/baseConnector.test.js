@@ -624,12 +624,14 @@ describe('SCVConnectorBase tests', () => {
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult1);
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, payload: {
                     phoneNumber: dummyTransferredPhoneCall.contact.phoneNumber,
+                    contact:dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferredPhoneCall.callInfo,
                     initialCallHasEnded: dummyTransferredPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferredPhoneCall.callId
                 }});
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload: {
                     phoneNumber: dummyTransferringPhoneCall.contact.phoneNumber,
+                    contact:dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferringPhoneCall.callInfo,
                     initialCallHasEnded: dummyTransferringPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferringPhoneCall.callId
@@ -649,12 +651,14 @@ describe('SCVConnectorBase tests', () => {
             await expect(telephonyAdapter.getActiveCalls()).resolves.toBe(activeCallsResult1);
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, payload: {
                     phoneNumber: dummyTransferredPhoneCall.contact.phoneNumber,
+                    contact: dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferredPhoneCall.callInfo,
                     initialCallHasEnded: dummyTransferredPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferredPhoneCall.callId
                 }});
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload: {
                     phoneNumber: dummyTransferringPhoneCall.contact.phoneNumber,
+                    contact: dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferringPhoneCall.callInfo,
                     initialCallHasEnded: dummyTransferringPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferringPhoneCall.callId

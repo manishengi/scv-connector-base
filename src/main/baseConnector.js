@@ -282,7 +282,7 @@ async function channelMessageHandler(message) {
         case constants.VOICE_MESSAGE_TYPE.MUTE:
             try {
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
-                const payload = await telephonyConnector.mute();
+                const payload = await telephonyConnector.mute(message.data.call);
                 publishEvent({eventType: constants.VOICE_EVENT_TYPE.MUTE_TOGGLE, payload});
             } catch (e) {
                 if (e instanceof CustomError) {
@@ -295,7 +295,7 @@ async function channelMessageHandler(message) {
         case constants.VOICE_MESSAGE_TYPE.UNMUTE:
             try {
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
-                const payload = await telephonyConnector.unmute();
+                const payload = await telephonyConnector.unmute(message.data.call);
                 publishEvent({eventType: constants.VOICE_EVENT_TYPE.MUTE_TOGGLE, payload});
             } catch (e) {
                 if (e instanceof CustomError) {
@@ -624,6 +624,7 @@ async function channelMessageHandler(message) {
                             case constants.CALL_STATE.TRANSFERRING:
                                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, {
                                     phoneNumber: call.contact.phoneNumber,
+                                    contact:call.contact,
                                     callInfo: call.callInfo,
                                     initialCallHasEnded: call.callAttributes.initialCallHasEnded,
                                     callId: call.callId
@@ -632,6 +633,7 @@ async function channelMessageHandler(message) {
                             case constants.CALL_STATE.TRANSFERRED:
                                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, {
                                     phoneNumber: call.contact.phoneNumber,
+                                    contact:call.contact,
                                     callInfo: call.callInfo,
                                     initialCallHasEnded: call.callAttributes.initialCallHasEnded,
                                     callId: call.callId
