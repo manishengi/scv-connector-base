@@ -1058,7 +1058,7 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                         }, true /* ignoring registerLog for critical event*/)
                     } else {
                         dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, {
-                            reason: call? call.reason : null
+                            callId:  call? call.callId : null, reason: call? call.reason : null
                         }, true /* ignoring registerLog for critical event*/);
                     }
                 }
