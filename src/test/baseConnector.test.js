@@ -2595,6 +2595,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
                 const payload = {
+                    callId: dummyCallId,
                     reason: thirdPartyRemovedResult.reason
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
@@ -2611,6 +2612,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
                 const payload = {
+                    callId: null,
                     reason: null
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
