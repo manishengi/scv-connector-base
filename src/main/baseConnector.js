@@ -962,6 +962,7 @@ export function publishError({ eventType, error }) {
  * MUTE_TOGGLE - MuteToggleResult
  * HOLD_TOGGLE - HoldToggleResult
  * RECORDING_TOGGLE - RecordingToggleResult
+ * WEBRTC_STATS - In-call WebRTCStats
  */
 export async function publishEvent({ eventType, payload, registerLog = true }) {
     switch(eventType) {
@@ -1139,6 +1140,8 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
             if (validatePayload(payload, AudioStats)) {
                 if (payload.stats) {
                     updateAudioStats(payload.stats);
+                    const stats = payload.stats;
+                    dispatchEvent(constants.VOICE_EVENT_TYPE.WEBRTC_STATS, {stats}, registerLog);
                 }
                 if (payload.isAudioStatsCompleted && payload.callId) {
                     const callId = payload.callId;
