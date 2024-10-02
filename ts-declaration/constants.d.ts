@@ -91,6 +91,7 @@ declare namespace _default {
         const SUPERVISOR_HANGUP: string;
         const CALL_BARGED_IN: string;
         const SHOW_TRANSFER_VIEW: string;
+        const AUDIO_STATS: string;
     }
     namespace INFO_TYPE {
         const CAN_NOT_ACCEPT_THE_CALL: string;

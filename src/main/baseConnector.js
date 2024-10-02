@@ -962,7 +962,7 @@ export function publishError({ eventType, error }) {
  * MUTE_TOGGLE - MuteToggleResult
  * HOLD_TOGGLE - HoldToggleResult
  * RECORDING_TOGGLE - RecordingToggleResult
- * WEBRTC_STATS - In-call WebRTCStats
+ * AUDIO_STATS - AudioStats
  */
 export async function publishEvent({ eventType, payload, registerLog = true }) {
     switch(eventType) {
