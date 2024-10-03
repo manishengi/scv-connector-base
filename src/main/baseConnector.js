@@ -1140,8 +1140,13 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
             if (validatePayload(payload, AudioStats)) {
                 if (payload.stats) {
                     updateAudioStats(payload.stats);
-                    const stats = payload.stats;
-                    dispatchEvent(constants.VOICE_EVENT_TYPE.AUDIO_STATS, {stats}, registerLog);
+                    let audioStats;
+                    if (payload.callId) {
+                        audioStats = {stats: payload.stats, callId: payload.callId};
+                    } else {
+                        audioStats = {stats: payload.stats}
+                    }
+                    dispatchEvent(constants.VOICE_EVENT_TYPE.AUDIO_STATS, {audioStats}, registerLog);
                 }
                 if (payload.isAudioStatsCompleted && payload.callId) {
                     const callId = payload.callId;
