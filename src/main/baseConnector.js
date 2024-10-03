@@ -962,6 +962,7 @@ export function publishError({ eventType, error }) {
  * MUTE_TOGGLE - MuteToggleResult
  * HOLD_TOGGLE - HoldToggleResult
  * RECORDING_TOGGLE - RecordingToggleResult
+ * AUDIO_STATS - AudioStats
  */
 export async function publishEvent({ eventType, payload, registerLog = true }) {
     switch(eventType) {
@@ -1139,6 +1140,13 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
             if (validatePayload(payload, AudioStats)) {
                 if (payload.stats) {
                     updateAudioStats(payload.stats);
+                    let audioStats;
+                    if (payload.callId) {
+                        audioStats = {stats: payload.stats, callId: payload.callId};
+                    } else {
+                        audioStats = {stats: payload.stats}
+                    }
+                    dispatchEvent(constants.VOICE_EVENT_TYPE.AUDIO_STATS, {audioStats}, registerLog);
                 }
                 if (payload.isAudioStatsCompleted && payload.callId) {
                     const callId = payload.callId;
