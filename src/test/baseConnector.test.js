@@ -2763,6 +2763,33 @@ describe('SCVConnectorBase tests', () => {
             });
         });
 
+        describe('CALL_UPDATED event', () => {
+            it('Should dispatch event to salesforce', async () => {
+                publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: callResult});
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: callResult});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED,
+                    payload: callResult,
+                    isError: false
+                });
+            });
+
+            it('Should fail with incorrect payload', async () => {
+                publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: {}});
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_CALL
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_CALL,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+        });
+
         describe('MUTE_TOGGLE event from deskphone', () => {
             it('Should dispatch CAN_NOT_TOGGLE_MUTE on an invalid payload from deskphone', async () => {
                 const payload = { isMuted : false };
@@ -3138,6 +3165,21 @@ describe('SCVConnectorBase tests', () => {
                     eventType: constants.VOICE_EVENT_TYPE.AGENT_ERROR,
                     payload: {
                         errorType: constants.VOICE_ERROR_TYPE.AGENT_ERROR,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('CALL_UPDATED', async () => {
+                publishError({ eventType: Constants.VOICE_EVENT_TYPE.CALL_UPDATED, error });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_CALL
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_CALL,
                         error: expect.anything()
                     },
                     isError: true
