@@ -714,10 +714,11 @@ describe('Types validation tests', () => {
             const showMergeButton = true;
             const showSwapButton = true;
             const isMultiParty = true;
+            const isHIDCall = true;
             const endCallDisabled = false;
             let callInfo;
             expect(() => {
-                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty, endCallDisabled });
+                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty, isHIDCall, endCallDisabled });
             }).not.toThrowError();
             expect(callInfo.callStateTimestamp).toBeNull();
             expect(callInfo.isOnHold).toEqual(isOnHold);
@@ -734,6 +735,7 @@ describe('Types validation tests', () => {
             expect(callInfo.queueId).toEqual(null);
             expect(callInfo.queueTimestamp).toEqual(null);
             expect(callInfo.isMultiParty).toEqual(true);
+            expect(callInfo.isHIDCall).toEqual(true);
             expect(callInfo.endCallDisabled).toEqual(false);
         });
 

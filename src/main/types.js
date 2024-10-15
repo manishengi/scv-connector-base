@@ -671,13 +671,16 @@ export class CallInfo {
      * @param {("ALWAYS"|"NEVER"|"ALWAYS_EXCEPT_ON_HOLD")} [param.removeParticipantVariant] - The type of remove participant variant when in a transfer call.
      * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
      * @param {boolean} [param.isMultiParty]
+     * @param {boolean} [param.isHIDCall]
      * @param {boolean} [param.endCallDisabled]
      */
     constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueName = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
-        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false , endCallDisabled = false}) {
+
+        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false, endCallDisabled = false }) {
+
         if (callStateTimestamp) {
             Validator.validateDate(callStateTimestamp);
         }
@@ -709,6 +712,7 @@ export class CallInfo {
         Validator.validateBoolean(showAddBlindTransferButton);
         Validator.validateBoolean(showMergeButton);
         Validator.validateBoolean(showSwapButton);
+        Validator.validateBoolean(isHIDCall);
         Validator.validateBoolean(endCallDisabled);
         if (isExternalTransfer !== undefined) {
             Validator.validateBoolean(isExternalTransfer);
@@ -748,6 +752,7 @@ export class CallInfo {
         this.showSwapButton = showSwapButton;
         this.additionalFields = additionalFields;
         this.isMultiParty = isMultiParty;
+        this.isHIDCall = isHIDCall;
         this.endCallDisabled = endCallDisabled;
     }
 }

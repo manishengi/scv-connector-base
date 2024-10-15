@@ -648,7 +648,8 @@ export class CallInfo {
      * @param {boolean} [param.isMultiParty]
      * @param {boolean} [param.endCallDisabled]
      */
-    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty, endCallDisabled}: {
+
+    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty, isHIDCall, endCallDisabled }: {
         isOnHold: boolean;
         isRecordingPaused: boolean;
         isMuted: boolean;
@@ -679,6 +680,7 @@ export class CallInfo {
         removeParticipantVariant?: Constants.REMOVE_PARTICIPANT_VARIANT;
         additionalFields?: string;
         isMultiParty?: boolean;
+        isHIDCall?: boolean;
         endCallDisabled?: boolean;
     });
         isOnHold: boolean;
@@ -711,6 +713,7 @@ export class CallInfo {
         removeParticipantVariant: Constants.REMOVE_PARTICIPANT_VARIANT;
         additionalFields: string;
         isMultiParty: boolean;
+        isHIDCall: boolean;
         endCallDisabled: boolean;
 }
 /**
