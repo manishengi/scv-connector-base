@@ -715,9 +715,10 @@ describe('Types validation tests', () => {
             const showSwapButton = true;
             const isMultiParty = true;
             const isHIDCall = true;
+            const endCallDisabled = false;
             let callInfo;
             expect(() => {
-                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty, isHIDCall });
+                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty, isHIDCall, endCallDisabled });
             }).not.toThrowError();
             expect(callInfo.callStateTimestamp).toBeNull();
             expect(callInfo.isOnHold).toEqual(isOnHold);
@@ -735,6 +736,7 @@ describe('Types validation tests', () => {
             expect(callInfo.queueTimestamp).toEqual(null);
             expect(callInfo.isMultiParty).toEqual(true);
             expect(callInfo.isHIDCall).toEqual(true);
+            expect(callInfo.endCallDisabled).toEqual(false);
         });
 
         it('Should create CallInfo object', () => {
@@ -1009,13 +1011,14 @@ describe('Types validation tests', () => {
         const isOnHold = true;
         const dialerType = Constants.DIALER_TYPE.NONE;
         const hasSupervisorBargedIn = true;
+        const isAutoMergeOn = true;
 
         describe('PhoneCallAttributes success tests', () => {
             it('Should create a PhoneCallAttributes object without error', () => {
                 let phoneCallAttributes;
 
                 expect(() => {
-                    phoneCallAttributes = new PhoneCallAttributes({ voiceCallId, participantType, parentId, isOnHold, hasSupervisorBargedIn });
+                    phoneCallAttributes = new PhoneCallAttributes({ voiceCallId, participantType, parentId, isOnHold, hasSupervisorBargedIn, isAutoMergeOn });
                 }).not.toThrowError();
                 expect(phoneCallAttributes.voiceCallId).toEqual(voiceCallId);
                 expect(phoneCallAttributes.participantType).toEqual(participantType);
@@ -1023,6 +1026,7 @@ describe('Types validation tests', () => {
                 expect(phoneCallAttributes.isOnHold).toEqual(isOnHold);
                 expect(phoneCallAttributes.dialerType).toEqual(dialerType);
                 expect(phoneCallAttributes.hasSupervisorBargedIn).toEqual(hasSupervisorBargedIn);
+                expect(phoneCallAttributes.isAutoMergeOn).toEqual(isAutoMergeOn);
             });
 
             it('Should create a PhoneCallAttributes object without voiceCallId', () => {

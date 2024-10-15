@@ -52,7 +52,8 @@ export const Constants = {
         SUPERVISOR_CALL_CONNECTED: constants.VOICE_EVENT_TYPE.SUPERVISOR_CALL_CONNECTED,
         SUPERVISOR_HANGUP : constants.VOICE_EVENT_TYPE.SUPERVISOR_HANGUP,
         SHOW_TRANSFER_VIEW: constants.VOICE_EVENT_TYPE.SHOW_TRANSFER_VIEW,
-        AUDIO_STATS: constants.VOICE_EVENT_TYPE.AUDIO_STATS
+        AUDIO_STATS: constants.VOICE_EVENT_TYPE.AUDIO_STATS,
+        CALL_UPDATED: constants.VOICE_EVENT_TYPE.CALL_UPDATED
     },
     /**
     * @enum {string}
@@ -671,12 +672,15 @@ export class CallInfo {
      * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
      * @param {boolean} [param.isMultiParty]
      * @param {boolean} [param.isHIDCall]
+     * @param {boolean} [param.endCallDisabled]
      */
     constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueName = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
-        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false }) {
+
+        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false, endCallDisabled = false }) {
+
         if (callStateTimestamp) {
             Validator.validateDate(callStateTimestamp);
         }
@@ -709,6 +713,7 @@ export class CallInfo {
         Validator.validateBoolean(showMergeButton);
         Validator.validateBoolean(showSwapButton);
         Validator.validateBoolean(isHIDCall);
+        Validator.validateBoolean(endCallDisabled);
         if (isExternalTransfer !== undefined) {
             Validator.validateBoolean(isExternalTransfer);
         }
@@ -748,6 +753,7 @@ export class CallInfo {
         this.additionalFields = additionalFields;
         this.isMultiParty = isMultiParty;
         this.isHIDCall = isHIDCall;
+        this.endCallDisabled = endCallDisabled;
     }
 }
 
@@ -838,8 +844,9 @@ export class PhoneCallAttributes {
      * @param {string} [param.parentId] - The parent call id of the call
      * @param {boolean} [param.isOnHold]
      * @param {boolean} [param.hasSupervisorBargedIn]
+     * @param {boolean} [param.isAutoMergeOn] - for multiparty conference, the call cannot be put on hold, and is being auto-merged
      */
-    constructor({ voiceCallId, participantType, dialerType = Constants.DIALER_TYPE.NONE, parentId, isOnHold, hasSupervisorBargedIn = false }) {
+    constructor({ voiceCallId, participantType, dialerType = Constants.DIALER_TYPE.NONE, parentId, isOnHold, hasSupervisorBargedIn = false, isAutoMergeOn = false }) {
         if (voiceCallId) {
             Validator.validateString(voiceCallId);
         }
@@ -855,13 +862,15 @@ export class PhoneCallAttributes {
 
         Validator.validateBoolean(hasSupervisorBargedIn);
         Validator.validateEnum(dialerType, Object.values(constants.DIALER_TYPE));
-
+        Validator.validateBoolean(isAutoMergeOn);
+        
         this.voiceCallId = voiceCallId;
         this.participantType = participantType;
         this.parentId = parentId;
         this.isOnHold = isOnHold;
         this.dialerType = dialerType;
         this.hasSupervisorBargedIn = hasSupervisorBargedIn;
+        this.isAutoMergeOn = isAutoMergeOn;
     }
 }
 

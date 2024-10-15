@@ -10,7 +10,7 @@ import constants from './constants.js';
 import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTSWITH, CONNECTOR_CONFIG_EXCEPTION_FIELDS } from './constants.js';
 import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
-    VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo, 
+    VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo,
     SharedCapabilitiesResult, VoiceCapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult,
     AudioDevicesResult, ACWInfo } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
@@ -937,6 +937,9 @@ export function publishError({ eventType, error }) {
                     dispatchError(constants.SHARED_ERROR_TYPE.GENERIC_ERROR, error, constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR);
             }
             break;
+        case constants.VOICE_EVENT_TYPE.CALL_UPDATED:
+            dispatchError(constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_CALL, error, constants.VOICE_EVENT_TYPE.CALL_UPDATED);
+            break;
         default:
             console.error('Unhandled error scenario with arguments ', arguments);
     }
@@ -1136,6 +1139,14 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
             }
         break;
         }
+
+        case constants.VOICE_EVENT_TYPE.CALL_UPDATED: {
+            if (validatePayload(payload, CallResult, constants.VOICE_ERROR_TYPE.CAN_NOT_UPDATE_CALL, constants.VOICE_EVENT_TYPE.CALL_UPDATED)) {
+                dispatchEvent(constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload, registerLog);
+            }
+            break;
+        }
+
         case constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS: {
             if (validatePayload(payload, AudioStats)) {
                 if (payload.stats) {
