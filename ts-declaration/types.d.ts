@@ -1052,9 +1052,9 @@ export class TelephonyConnector {
     /**
      * Set Agent Config
      * @param {AgentConfig} config
-     * @returns {Promise<SetAgentConfigResult>}
+     * @returns {Promise<GenericResult>}
      */
-    setAgentConfig(config: AgentConfig): Promise<SetAgentConfigResult>;
+    setAgentConfig(config: AgentConfig): Promise<GenericResult>;
     /**
      * Get voice capabilities
      * @returns {Promise<VoiceCapabilitiesResult>}
