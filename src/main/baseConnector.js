@@ -652,8 +652,10 @@ async function channelMessageHandler(message) {
             try {
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
                 const result = await telephonyConnector.setAgentConfig(message.data.config);
-                Validator.validateClassObject(result, SetAgentConfigResult);
-                result.setIsSystemEvent(!!message.data.config.isSystemEvent);
+                Validator.validateClassObjects(result, GenericResult, SetAgentConfigResult);
+                if (result instanceof SetAgentConfigResult) {
+                    result.setIsSystemEvent(!!message.data.config.isSystemEvent);
+                }
                 dispatchEvent(constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED, result);
             } catch (e) {
                 if (e instanceof CustomError) {

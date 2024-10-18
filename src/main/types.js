@@ -1339,6 +1339,23 @@ export class Validator {
         }
         return this;
     }
+    
+    static validateClassObjects(object, ...classNames) {
+        let isValid = false;
+        for (let i = 0; i < classNames.length; i++) {
+            try {
+                this.validateClassObject(object, classNames[i]);
+                isValid = true;
+                break;
+            } catch(e) {
+                // continue on
+            }
+        }
+        if (!isValid) {
+            throw new Error(`Invalid className. Expecting object matching a class name in ${classNames} but got ${typeof object}`);
+        }
+        return this;
+    }
 }
 
 /** 
