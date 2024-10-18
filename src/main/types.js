@@ -429,9 +429,11 @@ export class ParticipantResult {
      * @param {CallInfo} param.callInfo
      * @param {string} param.phoneNumber
      * @param {string} param.callId
+     * @param {Contact} param.contact
      */
-    constructor({ initialCallHasEnded, callInfo, phoneNumber, callId }) {
+    constructor({ contact, initialCallHasEnded, callInfo, phoneNumber, callId }) {
         Validator.validateClassObject(callInfo, CallInfo);
+        this.contact = contact
         this.initialCallHasEnded = initialCallHasEnded;
         this.callInfo = callInfo;
         this.phoneNumber = phoneNumber;
