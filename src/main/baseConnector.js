@@ -12,7 +12,7 @@ import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldTog
     ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
     VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo,
     SharedCapabilitiesResult, VoiceCapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult,
-    AudioDevicesResult, ACWInfo } from './types';
+    AudioDevicesResult, ACWInfo, SetAgentConfigResult } from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
@@ -652,7 +652,8 @@ async function channelMessageHandler(message) {
             try {
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
                 const result = await telephonyConnector.setAgentConfig(message.data.config);
-                Validator.validateClassObject(result, GenericResult);
+                Validator.validateClassObject(result, SetAgentConfigResult);
+                result.setIsSystemEvent(!!message.data.config.isSystemEvent);
                 dispatchEvent(constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED, result);
             } catch (e) {
                 if (e instanceof CustomError) {

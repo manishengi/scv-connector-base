@@ -593,6 +593,23 @@ export class GenericResult {
     success: boolean;
 }
 /**
+ * Class representing setAgentConfig result type
+ */
+export class SetAgentConfigResult {
+    /**
+     * Create SetAgentConfigResult
+     * @param {object} param
+     * @param {boolean} param.success
+     * @param {boolean} param.isSystemEvent
+     */
+    constructor({ success, isSystemEvent }: {
+        success: boolean;
+        isSystemEvent: boolean;
+    });
+    success: boolean;
+    isSystemEvent: boolean;
+}
+/**
  * Class representing logout result type
  */
 export class LogoutResult {
@@ -1035,9 +1052,9 @@ export class TelephonyConnector {
     /**
      * Set Agent Config
      * @param {AgentConfig} config
-     * @returns {Promise<GenericResult>}
+     * @returns {Promise<SetAgentConfigResult>}
      */
-    setAgentConfig(config: AgentConfig): Promise<GenericResult>;
+    setAgentConfig(config: AgentConfig): Promise<SetAgentConfigResult>;
     /**
      * Get voice capabilities
      * @returns {Promise<VoiceCapabilitiesResult>}

@@ -378,6 +378,24 @@ export class AgentConfigResult {
 }
 
 /**
+ * Class representing result type for setAgentConfig()
+ */
+export class SetAgentConfigResult {
+    /**
+     * Create AgentConfig
+     * @param {object} param
+     */
+    constructor({ success, isSystemEvent = false }) {
+        this.success = success;
+        this.isSystemEvent = isSystemEvent;
+    }
+    
+    setIsSystemEvent(isSystemEvent) {
+        this.isSystemEvent = isSystemEvent;
+    }
+}
+
+/**
  * Class representing AgentConfig type for setAgentConfig()
  */
 export class AgentConfig {

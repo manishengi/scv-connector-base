@@ -44,7 +44,8 @@ import {
     ShowStorageAccessResult,
     ContactsFilter,
     AudioDevicesResult,
-    ACWInfo
+    ACWInfo,
+    SetAgentConfigResult
 } from '../main/index';
 
 
@@ -170,6 +171,29 @@ describe('Types validation tests', () => {
                 agentConfig = new AgentConfig({ selectedPhone });
             }).not.toThrowError();
             expect(agentConfig.selectedPhone).toEqual(selectedPhone);
+        });
+    });
+
+    describe('SetAgentConfigResult tests', () => {
+        it('Should create SetAgentConfigResult object', () => {
+            const success = false;
+            let setAgentConfigResult;
+            expect(() => {
+                setAgentConfigResult = new SetAgentConfigResult({ success });
+            }).not.toThrowError();
+            expect(setAgentConfigResult.success).toEqual(success);
+            expect(setAgentConfigResult.isSystemEvent).toEqual(false);
+        });
+        
+        it('Should create SetAgentConfigResult object with isSystemEvent true', () => {
+            const success = true;
+            const isSystemEvent = true;
+            let setAgentConfigResult;
+            expect(() => {
+                setAgentConfigResult = new SetAgentConfigResult({ success, isSystemEvent });
+            }).not.toThrowError();
+            expect(setAgentConfigResult.success).toEqual(success);
+            expect(setAgentConfigResult.isSystemEvent).toEqual(isSystemEvent);
         });
     });
 
