@@ -255,6 +255,7 @@ describe('SCVConnectorBase tests', () => {
     DemoTelephonyAdapter.prototype.wrapUpCall = jest.fn();
     DemoTelephonyAdapter.prototype.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
     DemoTelephonyAdapter.prototype.setAgentConfig = jest.fn().mockResolvedValue(setAgentConfigResult);
+    DemoTelephonyAdapter.prototype.setAgentConfigGenericResult = jest.fn().mockResolvedValue(genericResult);
 
     const eventMap = {};
     const channelPort = {
@@ -2044,6 +2045,18 @@ describe('SCVConnectorBase tests', () => {
                 assertChannelPortPayloadEventLog({
                     eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED,
                     payload: setAgentConfigResult,
+                    isError: false
+                });
+            });
+            it('Should call setAgentConfig with Generic Result', async () => {
+                fireMessage(constants.VOICE_MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                DemoTelephonyAdapter.prototype.setAgentConfig = jest.fn().mockResolvedValue(genericResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.setAgentConfigGenericResult()).resolves.toBe(genericResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED, payload: genericResult});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED,
+                    payload: genericResult,
                     isError: false
                 });
             });
