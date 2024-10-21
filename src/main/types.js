@@ -621,6 +621,24 @@ export class GenericResult {
 }
 
 /**
+ * Class representing result type for setAgentConfig()
+ */
+export class SetAgentConfigResult extends GenericResult {
+    /**
+     * Create AgentConfig
+     * @param {object} param
+     */
+    constructor({ success, isSystemEvent = false }) {
+        super({ success });
+        this.isSystemEvent = isSystemEvent;
+    }
+    
+    setIsSystemEvent(isSystemEvent) {
+        this.isSystemEvent = isSystemEvent;
+    }
+}
+
+/**
  * Class representing logout result type
  */
  export class LogoutResult {
@@ -1320,6 +1338,23 @@ export class Validator {
     static validateClassObject(object, className) {
         if (!(object instanceof className)) {
             throw new Error(`Invalid className. Expecting object of class ${className} but got ${typeof object}`);
+        }
+        return this;
+    }
+    
+    static validateClassObjects(object, ...classNames) {
+        let isValid = false;
+        for (let i = 0; i < classNames.length; i++) {
+            try {
+                this.validateClassObject(object, classNames[i]);
+                isValid = true;
+                break;
+            } catch(e) {
+                // continue on
+            }
+        }
+        if (!isValid) {
+            throw new Error(`Invalid className. Expecting object matching a class name in ${classNames} but got ${typeof object}`);
         }
         return this;
     }

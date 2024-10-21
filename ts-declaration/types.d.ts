@@ -596,6 +596,23 @@ export class GenericResult {
     success: boolean;
 }
 /**
+ * Class representing setAgentConfig result type
+ */
+export class SetAgentConfigResult {
+    /**
+     * Create SetAgentConfigResult
+     * @param {object} param
+     * @param {boolean} param.success
+     * @param {boolean} param.isSystemEvent
+     */
+    constructor({ success, isSystemEvent }: {
+        success: boolean;
+        isSystemEvent: boolean;
+    });
+    success: boolean;
+    isSystemEvent: boolean;
+}
+/**
  * Class representing logout result type
  */
 export class LogoutResult {

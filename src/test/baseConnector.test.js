@@ -9,7 +9,7 @@ import { initializeConnector, Constants, publishEvent, publishError, publishLog,
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, SharedCapabilitiesResult, VoiceCapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement,
-    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult, ACWInfo } from '../main/index';
+    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult, ACWInfo, SetAgentConfigResult } from '../main/index';
 import baseConstants from '../main/constants';
 
 import { log } from '../main/logger';
@@ -94,6 +94,7 @@ const isCustomerOnHold = true;
 const holdToggleResult = new HoldToggleResult({ isThirdPartyOnHold, isCustomerOnHold, calls });
 const success = true;
 const genericResult = new GenericResult({ success });
+const setAgentConfigResult = new SetAgentConfigResult({ success, isSystemEvent: false });
 const logoutResult = new LogoutResult({ success, loginFrameHeight });
 const customErrorResult = new CustomError({ labelName: dummyLabelName, namespace: dummyNamespace, message: dummyMessage });
 const contacts = [ new Contact({}) ];
@@ -161,7 +162,7 @@ const capabilitiesResultWithMos = new VoiceCapabilitiesResult({ hasMute, hasReco
 const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.VOICE_CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
 
 const dummyActiveTransferredallResult = new ActiveCallsResult({ activeCalls: [dummyTransferredCall] });
-const config = { selectedPhone };
+const config = { config: { selectedPhone } };
 const dummyStatusInfo = {statusId: 'dummyStatusId', statusApiName: 'dummyStatusApiName', statusName: 'dummyStatusName'};
 const error = 'error';
 const sanitizePayload = (payload) => {
@@ -253,7 +254,8 @@ describe('SCVConnectorBase tests', () => {
     DemoTelephonyAdapter.prototype.getSignedRecordingUrl = jest.fn().mockResolvedValue(signedRecordingUrlResult);
     DemoTelephonyAdapter.prototype.wrapUpCall = jest.fn();
     DemoTelephonyAdapter.prototype.getAgentConfig = jest.fn().mockResolvedValue(agentConfigResult);
-    DemoTelephonyAdapter.prototype.setAgentConfig = jest.fn().mockResolvedValue(genericResult);
+    DemoTelephonyAdapter.prototype.setAgentConfig = jest.fn().mockResolvedValue(setAgentConfigResult);
+    DemoTelephonyAdapter.prototype.setAgentConfigGenericResult = jest.fn().mockResolvedValue(genericResult);
 
     const eventMap = {};
     const channelPort = {
@@ -2038,7 +2040,19 @@ describe('SCVConnectorBase tests', () => {
             it('Should call setAgentConfig', async () => {
                 fireMessage(constants.VOICE_MESSAGE_TYPE.SET_AGENT_CONFIG, config);
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
-                await expect(telephonyAdapter.setAgentConfig()).resolves.toBe(genericResult);
+                await expect(telephonyAdapter.setAgentConfig()).resolves.toBe(setAgentConfigResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED, payload: setAgentConfigResult});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED,
+                    payload: setAgentConfigResult,
+                    isError: false
+                });
+            });
+            it('Should call setAgentConfig with Generic Result', async () => {
+                fireMessage(constants.VOICE_MESSAGE_TYPE.SET_AGENT_CONFIG, config);
+                DemoTelephonyAdapter.prototype.setAgentConfig = jest.fn().mockResolvedValue(genericResult);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.setAgentConfigGenericResult()).resolves.toBe(genericResult);
                 assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED, payload: genericResult});
                 assertChannelPortPayloadEventLog({
                     eventType: constants.VOICE_EVENT_TYPE.AGENT_CONFIG_UPDATED,
