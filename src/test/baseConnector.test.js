@@ -156,7 +156,8 @@ const capabilitiesPayload = {
     [constants.VOICE_CAPABILITIES_TYPE.HAS_GET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasGetExternalMicrophoneDeviceSetting,
     [constants.VOICE_CAPABILITIES_TYPE.HAS_SET_EXTERNAL_MICROPHONE] : voiceCapabilitiesResult.hasSetExternalMicrophoneDeviceSetting,
     [constants.VOICE_CAPABILITIES_TYPE.CAN_CONSULT]: voiceCapabilitiesResult.canConsult,
-    [constants.VOICE_CAPABILITIES_TYPE.DIAL_PAD]: voiceCapabilitiesResult.isDialPadDisabled
+    [constants.VOICE_CAPABILITIES_TYPE.DIAL_PAD]: voiceCapabilitiesResult.isDialPadDisabled,
+    [constants.VOICE_CAPABILITIES_TYPE.HAS_HID_SUPPORT]: voiceCapabilitiesResult.isHidSupported
 };
 const capabilitiesResultWithMos = new VoiceCapabilitiesResult({ hasMute, hasRecord, hasMerge, hasSwap, hasSignedRecordingUrl, supportsMos });
 const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.VOICE_CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };

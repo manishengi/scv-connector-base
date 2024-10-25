@@ -206,6 +206,8 @@ declare namespace _default {
         const HAS_GET_EXTERNAL_MICROPHONE: string;
         const HAS_SET_EXTERNAL_MICROPHONE: string;
         const CAN_CONSULT: string;
+        const DIAL_PAD: string;
+        const HAS_HID_SUPPORT: string;
     }
     namespace CALL_STATE {
         const RINGING: string;

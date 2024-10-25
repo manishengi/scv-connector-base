@@ -348,6 +348,7 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasSFDCPendingState] True if amazon connect has sfdc_pending state
      * @param {boolean} [param.hasAutoAcceptEnabled] True if agent has enabled auto accept
      * @param {boolean} [param.isDialPadDisabled] True if dial pad is disabled
+     * @param {boolean} [param.isHidSupported] True if hid or headset controllers are supported by vendor
      */
     constructor({
         hasMute,
@@ -365,7 +366,8 @@ export class SharedCapabilitiesResult {
         hasGetExternalMicrophoneDeviceSetting,
         hasSetExternalMicrophoneDeviceSetting,
         canConsult,
-        isDialPadDisabled
+        isDialPadDisabled,
+        isHidSupported
     }: {
         hasMute?: boolean;
         hasRecord?: boolean;
@@ -382,7 +384,8 @@ export class SharedCapabilitiesResult {
         hasGetExternalMicrophoneDeviceSetting?: boolean;
         hasSetExternalMicrophoneDeviceSetting?: boolean;
         canConsult?: boolean;
-        isDialPadDisabled?: boolean
+        isDialPadDisabled?: boolean;
+        isHidSupported?: boolean;
     });
     hasMute: boolean;
     hasRecord: boolean;
@@ -400,6 +403,7 @@ export class SharedCapabilitiesResult {
     hasSetExternalMicrophoneDeviceSetting: boolean;
     canConsult: boolean;
     isDialPadDisabled: boolean;
+    isHidSupported: boolean;
 }
 
 

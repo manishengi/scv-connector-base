@@ -296,6 +296,7 @@ export class VoiceCapabilitiesResult {
      * @param {boolean} [param.hasSetExternalMicrophoneDeviceSetting] True if vendor supports setting the microphone device ID
      * @param {boolean} [param.canConsult] True if can consult
      * @param {boolean} [param.isDialPadDisabled] True if dial pad is disabled
+     * @param {boolean} [param.isHidSupported] True if vendor supports hid or headset controllers
      */
     constructor({
         hasMute = true,
@@ -313,7 +314,8 @@ export class VoiceCapabilitiesResult {
         hasGetExternalMicrophoneDeviceSetting = false,
         hasSetExternalMicrophoneDeviceSetting = false,
         canConsult= false,
-        isDialPadDisabled = false
+        isDialPadDisabled = false,
+        isHidSupported = false
     }) {
         Validator.validateBoolean(hasMute);
         Validator.validateBoolean(hasRecord);
@@ -331,6 +333,7 @@ export class VoiceCapabilitiesResult {
         Validator.validateBoolean(hasSetExternalMicrophoneDeviceSetting);
         Validator.validateBoolean(canConsult);
         Validator.validateBoolean(isDialPadDisabled);
+        Validator.validateBoolean(isHidSupported);
 
         this.hasMute = hasMute;
         this.hasRecord = hasRecord;
@@ -348,6 +351,7 @@ export class VoiceCapabilitiesResult {
         this.hasSetExternalMicrophoneDeviceSetting = hasSetExternalMicrophoneDeviceSetting;
         this.canConsult = canConsult;
         this.isDialPadDisabled = isDialPadDisabled;
+        this.isHidSupported = isHidSupported;
     }
 }
 

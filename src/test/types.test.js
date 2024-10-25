@@ -233,6 +233,8 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(false);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(false);
             expect(capabilitiesResult.canConsult).toEqual(false);
+            expect(capabilitiesResult.isDialPadDisabled).toEqual(false);
+            expect(capabilitiesResult.isHidSupported).toEqual(false);
         });
 
         it('Should create SharedCapabilitiesResult object', () => {
@@ -284,6 +286,8 @@ describe('Types validation tests', () => {
             const hasGetExternalMicrophoneDeviceSetting = true;
             const hasSetExternalMicrophoneDeviceSetting = true;
             const canConsult = true;
+            const isDialPadDisabled = true;
+            const isHidSupported = true;
             expect(() => {
                 capabilitiesResult = new VoiceCapabilitiesResult({
                     hasMute,
@@ -300,7 +304,9 @@ describe('Types validation tests', () => {
                     hasSetExternalSpeakerDeviceSetting,
                     hasGetExternalMicrophoneDeviceSetting,
                     hasSetExternalMicrophoneDeviceSetting,
-                    canConsult
+                    canConsult,
+                    isDialPadDisabled,
+                    isHidSupported
                 });
             }).not.toThrowError();
             expect(capabilitiesResult.hasMute).toEqual(hasMute);
@@ -318,6 +324,8 @@ describe('Types validation tests', () => {
             expect(capabilitiesResult.hasGetExternalMicrophoneDeviceSetting).toEqual(hasGetExternalMicrophoneDeviceSetting);
             expect(capabilitiesResult.hasSetExternalMicrophoneDeviceSetting).toEqual(hasSetExternalMicrophoneDeviceSetting);
             expect(capabilitiesResult.canConsult).toEqual(canConsult);
+            expect(capabilitiesResult.isDialPadDisabled).toEqual(isDialPadDisabled);
+            expect(capabilitiesResult.isHidSupported).toEqual(isHidSupported);
         });
     });
 
