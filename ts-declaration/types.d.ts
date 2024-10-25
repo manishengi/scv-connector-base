@@ -349,6 +349,7 @@ export class SharedCapabilitiesResult {
      * @param {boolean} [param.hasAutoAcceptEnabled] True if agent has enabled auto accept
      * @param {boolean} [param.isDialPadDisabled] True if dial pad is disabled
      * @param {boolean} [param.isHidSupported] True if hid or headset controllers are supported by vendor
+     * @param {boolean} [param.isPhoneBookDisabled] True if phone book is disabled
      */
     constructor({
         hasMute,
@@ -367,7 +368,8 @@ export class SharedCapabilitiesResult {
         hasSetExternalMicrophoneDeviceSetting,
         canConsult,
         isDialPadDisabled,
-        isHidSupported
+        isHidSupported,
+        isPhoneBookDisabled
     }: {
         hasMute?: boolean;
         hasRecord?: boolean;
@@ -386,6 +388,7 @@ export class SharedCapabilitiesResult {
         canConsult?: boolean;
         isDialPadDisabled?: boolean;
         isHidSupported?: boolean;
+        isPhoneBookDisabled?: boolean;
     });
     hasMute: boolean;
     hasRecord: boolean;
@@ -404,6 +407,7 @@ export class SharedCapabilitiesResult {
     canConsult: boolean;
     isDialPadDisabled: boolean;
     isHidSupported: boolean;
+    isPhoneBookDisabled: boolean;
 }
 
 

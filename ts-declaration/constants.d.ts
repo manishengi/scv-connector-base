@@ -208,6 +208,7 @@ declare namespace _default {
         const CAN_CONSULT: string;
         const DIAL_PAD: string;
         const HAS_HID_SUPPORT: string;
+        const PHONEBOOK_DISABLE: string;
     }
     namespace CALL_STATE {
         const RINGING: string;
