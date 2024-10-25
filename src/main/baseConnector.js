@@ -1036,12 +1036,13 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         }
         case constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED: {
             if (validatePayload(payload, ParticipantResult, constants.VOICE_ERROR_TYPE.CAN_NOT_CONNECT_PARTICIPANT, constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED)) {
-                const { initialCallHasEnded, callInfo, phoneNumber, callId } = payload;
+                const { initialCallHasEnded, callInfo, phoneNumber, callId, contact } = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, {
                     initialCallHasEnded,
                     callInfo,
                     phoneNumber,
-                    callId
+                    callId,
+                    contact
                 }, true /* ignoring registerLog for critical event*/);
             }
             break;
