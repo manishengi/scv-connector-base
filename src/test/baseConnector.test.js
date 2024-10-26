@@ -2579,7 +2579,8 @@ describe('SCVConnectorBase tests', () => {
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
-                    callId: participantResult.callId
+                    callId: participantResult.callId,
+                    contact: participantResult.contact
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, payload });
                 assertChannelPortPayloadEventLog({
