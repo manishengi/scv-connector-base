@@ -200,11 +200,17 @@ export class MuteToggleResult {
      * Create MuteToggleResult
      * @param {object} param
      * @param {boolean} param.isMuted
+     * @param {PhoneCall} param.call
+     * @param {boolean} param.isGlobal
      */
-    constructor({ isMuted }: {
+    constructor({ isMuted, call, isGlobal }: {
         isMuted: boolean;
+        call: PhoneCall;
+        isGlobal: boolean;
     });
     isMuted: boolean;
+    call: PhoneCall;
+    isGlobal: boolean;
 }
 /**
  * Class representing result type for getActiveCalls()
