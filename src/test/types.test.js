@@ -965,13 +965,14 @@ describe('Types validation tests', () => {
         const callAttributes = {};
         const phoneNumber = '5555555555';
         const callInfo = new CallInfo({ isOnHold: false });
+        const receiverContactId = 'receiverContactId';
 
         describe('PhoneCall success tests', () => {
             it('Should create a PhoneCall object without error', () => {
                 let phoneCall;
 
                 expect(() => {
-                    phoneCall = new PhoneCall({callId, callType, callSubtype, callInfo, contact, state, callAttributes, phoneNumber });
+                    phoneCall = new PhoneCall({callId, callType, callSubtype, callInfo, contact, state, callAttributes, phoneNumber, receiverContactId });
                 }).not.toThrowError();
                 expect(phoneCall.callId).toEqual(callId);
                 expect(phoneCall.callType).toEqual(callType);
@@ -981,6 +982,7 @@ describe('Types validation tests', () => {
                 expect(phoneCall.state).toEqual(state);
                 expect(phoneCall.callAttributes).toEqual(callAttributes);
                 expect(phoneCall.phoneNumber).toEqual(phoneNumber);
+                expect(phoneCall.receiverContactId).toEqual(receiverContactId);
             });
 
             it('Should create a PhoneCall object without phone number', () => {
