@@ -608,9 +608,11 @@ export class DialOptions {
     /**
      * Create DialOptions
      * @param {boolean} [param.isCallback]
+     * @param {boolean} [param.isConsultCall]
      */
-    constructor({ isCallback = false }) {
+    constructor({ isCallback = false, isConsultCall = false }) {
         this.isCallback = isCallback;
+        this.isConsultCall = isConsultCall;
     }
 }
 

@@ -391,8 +391,9 @@ async function channelMessageHandler(message) {
             try {
                 const telephonyConnector = await vendorConnector.getTelephonyConnector();
                 const isCallback = message.data.params && message.data.params.indexOf(constants.DIAL_OPTIONS.CALLBACK) >= 0;
+                const isConsultCall = message.data.params && message.data.params.indexOf(constants.DIAL_OPTIONS.CONSULT) >= 0;
                 const payload = await telephonyConnector.dial(new Contact(message.data.contact),
-                                                              new DialOptions({ isCallback }));
+                                                              new DialOptions({ isCallback, isConsultCall }));
                 Validator.validateClassObject(payload, CallResult);
                 const { call } = payload;
                 // If connectors wants this to be created as callback 

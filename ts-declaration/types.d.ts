@@ -69,6 +69,7 @@ export namespace Constants {
         TRANSFER = constants.CALL_TYPE.TRANSFER,
         INTERNAL_CALL = constants.CALL_TYPE.INTERNAL_CALL,
         DIALED_CALLBACK = constants.CALL_TYPE.DIALED_CALLBACK,
+        CONSULT = constants.CALL_TYPE.CONSULT
     }
     enum CALL_SUBTYPE {
         PSTN = constants.CALL_SUBTYPE.PSTN,
