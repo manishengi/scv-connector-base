@@ -681,11 +681,10 @@ export class CallInfo {
      * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
      * @param {boolean} [param.isMultiParty]
      * @param {boolean} [param.endCallDisabled]
-     * @param {string} [params.receiverContactId]
      * @param {string} [params.renderContactId]
      */
 
-    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty, isHIDCall, endCallDisabled, receiverContactId, renderContactId }: {
+    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty, isHIDCall, endCallDisabled, renderContactId }: {
         isOnHold: boolean;
         isRecordingPaused: boolean;
         isMuted: boolean;
@@ -718,7 +717,6 @@ export class CallInfo {
         isMultiParty?: boolean;
         isHIDCall?: boolean;
         endCallDisabled?: boolean;
-        receiverContactId?: string;
         renderContactId?: string;
     });
         isOnHold: boolean;
@@ -753,7 +751,6 @@ export class CallInfo {
         isMultiParty: boolean;
         isHIDCall: boolean;
         endCallDisabled: boolean;
-        receiverContactId: string;
         renderContactId: string;
 }
 /**
