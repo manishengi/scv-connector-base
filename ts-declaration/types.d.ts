@@ -806,14 +806,18 @@ export class PhoneCallAttributes {
      * @param {string} [param.parentId] - The parent call id of the call
      * @param {boolean} [param.isOnHold]
      * @param {boolean} [param.hasSupervisorBargedIn]
+     * @param {boolean} [param.isAutoMergeOn]
+     * @param {boolean} [param.isConsultCall]
      */
-    constructor({ voiceCallId, participantType, dialerType, parentId, isOnHold, hasSupervisorBargedIn}: {
+    constructor({ voiceCallId, participantType, dialerType, parentId, isOnHold, hasSupervisorBargedIn, isAutoMergeOn, isConsultCall }: {
         voiceCallId?: string;
         participantType?: Constants.PARTICIPANT_TYPE;
         dialerType?: Constants.DIALER_TYPE;
         parentId?: string;
         isOnHold?: boolean;
         hasSupervisorBargedIn?: boolean;
+        isAutoMergeOn?: boolean;
+        isConsultCall?: boolean;
     });
     voiceCallId: string;
     participantType: Constants.PARTICIPANT_TYPE;
@@ -821,6 +825,8 @@ export class PhoneCallAttributes {
     parentId: string;
     isOnHold: boolean;
     hasSupervisorBargedIn: boolean;
+    isAutoMergeOn: boolean;
+    isConsultCall? boolean;
 }
 /**
 * Class representing a PhoneCall.

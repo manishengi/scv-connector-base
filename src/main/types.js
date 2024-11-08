@@ -875,8 +875,9 @@ export class PhoneCallAttributes {
      * @param {boolean} [param.isOnHold]
      * @param {boolean} [param.hasSupervisorBargedIn]
      * @param {boolean} [param.isAutoMergeOn] - for multiparty conference, the call cannot be put on hold, and is being auto-merged
+     * @param {boolean} [param.isConsultCall] - true if the call is a Consult call
      */
-    constructor({ voiceCallId, participantType, dialerType = Constants.DIALER_TYPE.NONE, parentId, isOnHold, hasSupervisorBargedIn = false, isAutoMergeOn = false }) {
+    constructor({ voiceCallId, participantType, dialerType = Constants.DIALER_TYPE.NONE, parentId, isOnHold, hasSupervisorBargedIn = false, isAutoMergeOn = false, isConsultCall = false }) {
         if (voiceCallId) {
             Validator.validateString(voiceCallId);
         }
@@ -893,6 +894,7 @@ export class PhoneCallAttributes {
         Validator.validateBoolean(hasSupervisorBargedIn);
         Validator.validateEnum(dialerType, Object.values(constants.DIALER_TYPE));
         Validator.validateBoolean(isAutoMergeOn);
+        Validator.validateBoolean(isConsultCall);
         
         this.voiceCallId = voiceCallId;
         this.participantType = participantType;
@@ -901,6 +903,7 @@ export class PhoneCallAttributes {
         this.dialerType = dialerType;
         this.hasSupervisorBargedIn = hasSupervisorBargedIn;
         this.isAutoMergeOn = isAutoMergeOn;
+        this.isConsultCall = isConsultCall;
     }
 }
 
