@@ -753,7 +753,7 @@ export class CallInfo {
             Validator.validateString(additionalFields);
         }
         Validator.validateBoolean(isMultiParty);
-        if(renderContactId) {
+        if (renderContactId) {
             Validator.validateString(renderContactId);
         }
         this.callStateTimestamp = callStateTimestamp;
