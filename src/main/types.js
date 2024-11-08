@@ -703,13 +703,14 @@ export class CallInfo {
      * @param {boolean} [param.isMultiParty]
      * @param {boolean} [param.isHIDCall]
      * @param {boolean} [param.endCallDisabled]
+     * @param {string} [param.receiverContactId]
      */
     constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueName = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
 
-        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false, endCallDisabled = false }) {
+        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false, endCallDisabled = false, receiverContactId = null }) {
 
         if (callStateTimestamp) {
             Validator.validateDate(callStateTimestamp);
@@ -752,6 +753,9 @@ export class CallInfo {
             Validator.validateString(additionalFields);
         }
         Validator.validateBoolean(isMultiParty);
+        if (receiverContactId) {
+            Validator.validateString(receiverContactId);
+        }
         this.callStateTimestamp = callStateTimestamp;
         this.isRecordingPaused = isRecordingPaused;
         this.isMuted = isMuted;
@@ -784,6 +788,7 @@ export class CallInfo {
         this.isMultiParty = isMultiParty;
         this.isHIDCall = isHIDCall;
         this.endCallDisabled = endCallDisabled;
+        this.receiverContactId = receiverContactId;
     }
 }
 
