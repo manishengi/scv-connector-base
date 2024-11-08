@@ -929,9 +929,8 @@ export class PhoneCall {
      * @param {boolean} [param.closeCallOnError]
      * @param {string} [param.agentStatus]
      * @param {string} [param.agentARN]
-     * @param {string} [param.receiverContactId]
      */
-    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN, receiverContactId=null }) {
+    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN }) {
         // TODO: Revisit the required fields
         if (callId) {
             Validator.validateString(callId);
@@ -956,10 +955,6 @@ export class PhoneCall {
         if (contact) {
             Validator.validateClassObject(contact, Contact);
             this.contact = contact;
-        }
-        if (receiverContactId) {
-            Validator.validateString(receiverContactId);
-            this.receiverContactId = receiverContactId;
         }
         if (reason) {
             this.reason = reason;
