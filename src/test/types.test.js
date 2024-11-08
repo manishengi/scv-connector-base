@@ -749,9 +749,10 @@ describe('Types validation tests', () => {
             const isHIDCall = true;
             const endCallDisabled = false;
             const receiverContactId = 'receiverContactId';
+            const renderContactId = 'renderContactId';
             let callInfo;
             expect(() => {
-                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty, isHIDCall, endCallDisabled, receiverContactId });
+                callInfo = new CallInfo({ isOnHold, initialCallId, isExternalTransfer, showMuteButton, showAddCallerButton, showRecordButton, showAddBlindTransferButton, showMergeButton, showSwapButton, isMultiParty, isHIDCall, endCallDisabled, receiverContactId, renderContactId });
             }).not.toThrowError();
             expect(callInfo.callStateTimestamp).toBeNull();
             expect(callInfo.isOnHold).toEqual(isOnHold);
@@ -771,6 +772,7 @@ describe('Types validation tests', () => {
             expect(callInfo.isHIDCall).toEqual(true);
             expect(callInfo.endCallDisabled).toEqual(false);
             expect(callInfo.receiverContactId).toEqual(receiverContactId);
+            expect(callInfo.renderContactId).toEqual(renderContactId);
         });
 
         it('Should create CallInfo object', () => {
