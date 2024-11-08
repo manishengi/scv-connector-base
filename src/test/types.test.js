@@ -1046,13 +1046,14 @@ describe('Types validation tests', () => {
         const dialerType = Constants.DIALER_TYPE.NONE;
         const hasSupervisorBargedIn = true;
         const isAutoMergeOn = true;
+        const isConsultCall = true;
 
         describe('PhoneCallAttributes success tests', () => {
             it('Should create a PhoneCallAttributes object without error', () => {
                 let phoneCallAttributes;
 
                 expect(() => {
-                    phoneCallAttributes = new PhoneCallAttributes({ voiceCallId, participantType, parentId, isOnHold, hasSupervisorBargedIn, isAutoMergeOn });
+                    phoneCallAttributes = new PhoneCallAttributes({ voiceCallId, participantType, parentId, isOnHold, hasSupervisorBargedIn, isAutoMergeOn, isConsultCall });
                 }).not.toThrowError();
                 expect(phoneCallAttributes.voiceCallId).toEqual(voiceCallId);
                 expect(phoneCallAttributes.participantType).toEqual(participantType);
@@ -1061,6 +1062,7 @@ describe('Types validation tests', () => {
                 expect(phoneCallAttributes.dialerType).toEqual(dialerType);
                 expect(phoneCallAttributes.hasSupervisorBargedIn).toEqual(hasSupervisorBargedIn);
                 expect(phoneCallAttributes.isAutoMergeOn).toEqual(isAutoMergeOn);
+                expect(phoneCallAttributes.isConsultCall).toEqual(isConsultCall);
             });
 
             it('Should create a PhoneCallAttributes object without voiceCallId', () => {
