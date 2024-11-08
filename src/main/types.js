@@ -187,10 +187,12 @@ export class MuteToggleResult {
      * @param {object} param
      * @param {boolean} param.isMuted
      * @param {PhoneCall} param.call
+     * @param {boolean} param.isGlobal
      */
-    constructor({ isMuted, call }) {
+    constructor({ isMuted, call, isGlobal }) {
         this.isMuted = isMuted;
         this.call = call;
+        this.isGlobal = isGlobal;
     }
 }
 
@@ -701,13 +703,14 @@ export class CallInfo {
      * @param {boolean} [param.isMultiParty]
      * @param {boolean} [param.isHIDCall]
      * @param {boolean} [param.endCallDisabled]
+     * @param {string} [param.renderContactId]
      */
     constructor({ callStateTimestamp = null, isOnHold, isMuted = false, isRecordingPaused = false, initialCallId, queueId = null, queueName = null, queueTimestamp = null, isSoftphoneCall = true, 
         acceptEnabled = true, declineEnabled = true, muteEnabled = true, swapEnabled = true, conferenceEnabled = true, holdEnabled = true,
         recordEnabled = true, addCallerEnabled = true, extensionEnabled = true, isReplayable = true, isBargeable = false, isExternalTransfer, 
         showMuteButton = true, showRecordButton = true, showAddCallerButton = true, showAddBlindTransferButton = true, showMergeButton = true,
 
-        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false, endCallDisabled = false }) {
+        showSwapButton = true, removeParticipantVariant = Constants.REMOVE_PARTICIPANT_VARIANT.ALWAYS, additionalFields = null, isMultiParty = false, isHIDCall = false, endCallDisabled = false, renderContactId = null }) {
 
         if (callStateTimestamp) {
             Validator.validateDate(callStateTimestamp);
@@ -750,6 +753,9 @@ export class CallInfo {
             Validator.validateString(additionalFields);
         }
         Validator.validateBoolean(isMultiParty);
+        if (renderContactId) {
+            Validator.validateString(renderContactId);
+        }
         this.callStateTimestamp = callStateTimestamp;
         this.isRecordingPaused = isRecordingPaused;
         this.isMuted = isMuted;
@@ -782,6 +788,7 @@ export class CallInfo {
         this.isMultiParty = isMultiParty;
         this.isHIDCall = isHIDCall;
         this.endCallDisabled = endCallDisabled;
+        this.renderContactId = renderContactId;
     }
 }
 
