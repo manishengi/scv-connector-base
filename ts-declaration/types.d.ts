@@ -201,11 +201,17 @@ export class MuteToggleResult {
      * Create MuteToggleResult
      * @param {object} param
      * @param {boolean} param.isMuted
+     * @param {PhoneCall} param.call
+     * @param {boolean} param.isGlobal
      */
-    constructor({ isMuted }: {
+    constructor({ isMuted, call, isGlobal }: {
         isMuted: boolean;
+        call: PhoneCall;
+        isGlobal: boolean;
     });
     isMuted: boolean;
+    call: PhoneCall;
+    isGlobal: boolean;
 }
 /**
  * Class representing result type for getActiveCalls()
@@ -676,9 +682,10 @@ export class CallInfo {
      * @param {String} [param.additionalFields] - Represents additional standard and custom fields in the voice call record, where each key-value pair value corresponds to a standard or custom field and its values.
      * @param {boolean} [param.isMultiParty]
      * @param {boolean} [param.endCallDisabled]
+     * @param {string} [params.renderContactId]
      */
 
-    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty, isHIDCall, endCallDisabled }: {
+    constructor({ callStateTimestamp, isOnHold, isMuted, isRecordingPaused, initialCallId, isSoftphoneCall, acceptEnabled, declineEnabled, muteEnabled, swapEnabled, conferenceEnabled, holdEnabled, recordEnabled, addCallerEnabled, extensionEnabled, isReplayable, isBargeable, isExternalTransfer, removeParticipantVariant, queueName, queueId, queueTimestamp, showMuteButton, showRecordButton, showAddCallerButton, showAddBlindTransferButton, showMergeButton, showSwapButton, additionalFields, isMultiParty, isHIDCall, endCallDisabled, renderContactId }: {
         isOnHold: boolean;
         isRecordingPaused: boolean;
         isMuted: boolean;
@@ -711,6 +718,7 @@ export class CallInfo {
         isMultiParty?: boolean;
         isHIDCall?: boolean;
         endCallDisabled?: boolean;
+        renderContactId?: string;
     });
         isOnHold: boolean;
         isRecordingPaused: boolean;
@@ -744,6 +752,7 @@ export class CallInfo {
         isMultiParty: boolean;
         isHIDCall: boolean;
         endCallDisabled: boolean;
+        renderContactId: string;
 }
 /**
  * Class representing a Contact. This object is used to represent
