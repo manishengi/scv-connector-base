@@ -172,7 +172,8 @@ export default {
         ADD_PARTICIPANT: 'AddParticipant',
         TRANSFER:'Transfer',
         INTERNAL_CALL: 'InternalCall',
-        DIALED_CALLBACK: 'DialedCallback'
+        DIALED_CALLBACK: 'DialedCallback',
+        CONSULT: 'Consult'
     },
     CALL_SUBTYPE: {
         PSTN: 'PSTN',
@@ -275,7 +276,8 @@ export default {
         UNPAUSED: 'UNPAUSED'
     },
     DIAL_OPTIONS: {
-        CALLBACK: "isCallback=true"
+        CALLBACK: "isCallback=true",
+        CONSULT: "isConsultCall"
     },
     HANGUP_STATUS: {
         MISSED_AGENT: "MissedCallAgent",
