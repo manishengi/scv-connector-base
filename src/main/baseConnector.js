@@ -1025,8 +1025,9 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         }
         case constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED: {
             if (validatePayload(payload, ParticipantResult, constants.VOICE_ERROR_TYPE.CAN_NOT_ADD_PARTICIPANT, constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED)) {
-                const { initialCallHasEnded, callInfo, phoneNumber, callId } = payload;
+                const { contact, initialCallHasEnded, callInfo, phoneNumber, callId } = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, {
+                    contact,
                     initialCallHasEnded,
                     callInfo,
                     phoneNumber,
