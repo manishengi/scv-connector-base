@@ -1799,6 +1799,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.addParticipant()).resolves.toBe(participantResult);
                 const payload = {
+                    contact: null,
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
@@ -1819,6 +1820,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.addParticipant()).resolves.toBe(participantResult);
                 const payload = {
+                    contact: null,
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
@@ -2543,6 +2545,7 @@ describe('SCVConnectorBase tests', () => {
             it('Should dispatch PARTICIPANT_ADDED on a valid payload', async () => {
                 publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload: participantResult });
                 const payload = {
+                    contact: null,
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
