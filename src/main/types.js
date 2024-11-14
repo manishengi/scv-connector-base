@@ -179,6 +179,28 @@ export class CustomError extends Error {
 }
 
 /**
+ * Class representing a Hid Device
+ */
+export class HidDevice {
+    /**
+     * Create Hid Device
+     * @param productId
+     * @param vendorId
+     */
+     constructor({ productId, vendorId }) {
+         if (productId) {
+             Validator.validateNumber(productId);
+         }
+         if (vendorId) {
+             Validator.validateNumber(vendorId);
+         }
+
+         this.productId = productId;
+         this.vendorId = vendorId;
+     }
+}
+
+/**
  * Class representing result type for mute() & unmute()
  */
 export class MuteToggleResult {
@@ -374,7 +396,7 @@ export class AgentConfigResult {
      * @param {string} param.microphoneDeviceId
      */
     constructor({ phones = [constants.PHONE_TYPE.SOFT_PHONE], selectedPhone = new Phone({type: constants.PHONE_TYPE.SOFT_PHONE}),
-                    speakerDeviceId = '', microphoneDeviceId = '' }) {
+                    speakerDeviceId = '', microphoneDeviceId = ''}) {
         Validator.validateClassObject(phones, Array);
         Validator.validateClassObject(selectedPhone, Phone);
         Validator.validateString(speakerDeviceId);
@@ -397,12 +419,18 @@ export class AgentConfig {
      * @param {Phone} param.selectedPhone
      * @param {string} param.speakerDeviceId
      * @param {string} param.microphoneDeviceId
+     * @param {HidDevice} param.hidDeviceInfo
      */
-    constructor({ selectedPhone,speakerDeviceId, microphoneDeviceId }) {
+    constructor({ selectedPhone,speakerDeviceId, microphoneDeviceId, hidDeviceInfo }) {
         Validator.validateClassObject(selectedPhone, Phone);
+        //Hid device info is optional
+        if (hidDeviceInfo !== undefined) {
+            Validator.validateClassObject(hidDeviceInfo, HidDevice);
+        }
         this.selectedPhone = selectedPhone;
         this.speakerDeviceId = speakerDeviceId;
         this.microphoneDeviceId = microphoneDeviceId;
+        this.hidDeviceInfo = hidDeviceInfo;
     }
 }
 

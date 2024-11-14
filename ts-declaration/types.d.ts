@@ -193,6 +193,24 @@ export class AudioDevice {
     label: string;
     groupId: string;
 }
+
+/**
+ * Class representing a HID Device
+ */
+export class HidDevice {
+    /**
+     * Create a HID Device object
+     * @param productId
+     * @param vendorId
+     */
+    constructor({productId, vendorId}: {
+        productId: number,
+        vendorId: number
+    });
+    productId: number;
+    vendorId: number;
+}
+
 /**
  * Class representing result type for mute() & unmute()
  */
@@ -277,15 +295,18 @@ export class AgentConfig {
      * @param {Phone} param.selectedPhone
      * @param {string} [param.speakerDeviceId]
      * @param {string} [param.microphoneDeviceId]
+     * @param {HidDevice} [param.hidDeviceInfo]
      */
-    constructor({ selectedPhone, speakerDeviceId, microphoneDeviceId }: {
+    constructor({ selectedPhone, speakerDeviceId, microphoneDeviceId, hidDeviceInfo }: {
         selectedPhone?: Phone;
         speakerDeviceId?: string;
         microphoneDeviceId?: string;
+        hidDeviceInfo?: HidDevice;
     });
     selectedPhone: Phone;
     speakerDeviceId: string;
     microphoneDeviceId: string;
+    hidDeviceInfo: HidDevice;
 }
 
 /**

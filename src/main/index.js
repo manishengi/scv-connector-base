@@ -49,5 +49,6 @@ export {
     ContactsFilter,
     AudioDevicesResult,
     ACWInfo,
-    SetAgentConfigResult
+    SetAgentConfigResult,
+    HidDevice
 } from './types.js';
