@@ -1025,11 +1025,12 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         }
         case constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED: {
             if (validatePayload(payload, ParticipantResult, constants.VOICE_ERROR_TYPE.CAN_NOT_ADD_PARTICIPANT, constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED)) {
-                const { contact, initialCallHasEnded, callInfo, phoneNumber, callId } = payload;
+                const { contact, initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId } = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, {
                     contact,
                     initialCallHasEnded,
                     callInfo,
+                    callAttributes,
                     phoneNumber,
                     callId
                 }, true /* ignoring registerLog for critical event*/);
@@ -1038,10 +1039,11 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         }
         case constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED: {
             if (validatePayload(payload, ParticipantResult, constants.VOICE_ERROR_TYPE.CAN_NOT_CONNECT_PARTICIPANT, constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED)) {
-                const { initialCallHasEnded, callInfo, phoneNumber, callId, contact } = payload;
+                const { initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact } = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, {
                     initialCallHasEnded,
                     callInfo,
+                    callAttributes,
                     phoneNumber,
                     callId,
                     contact
