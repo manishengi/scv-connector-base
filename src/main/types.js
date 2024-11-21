@@ -465,14 +465,16 @@ export class ParticipantResult {
      * @param {object} param
      * @param {boolean} param.initialCallHasEnded
      * @param {CallInfo} param.callInfo
+     * @param {PhoneCallAttributes} [param.callAttributes] - Any additional call attributes
      * @param {string} param.phoneNumber
      * @param {string} param.callId
      * @param {Contact} param.contact
      */
-    constructor({ initialCallHasEnded, callInfo, phoneNumber, callId, contact = null }) {
+    constructor({ initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact = null }) {
         Validator.validateClassObject(callInfo, CallInfo);
         this.initialCallHasEnded = initialCallHasEnded;
         this.callInfo = callInfo;
+        this.callAttributes = callAttributes;
         this.phoneNumber = phoneNumber;
         this.callId = callId;
         this.contact = contact
