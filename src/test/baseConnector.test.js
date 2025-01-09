@@ -1672,7 +1672,8 @@ describe('SCVConnectorBase tests', () => {
                 await expect(telephonyAdapter.conference()).resolves.toBe(holdToggleResult);
                 const payload = {
                     isThirdPartyOnHold: holdToggleResult.isThirdPartyOnHold,
-                    isCustomerOnHold: holdToggleResult.isCustomerOnHold
+                    isCustomerOnHold: holdToggleResult.isCustomerOnHold,
+                    calls: calls
                 };
                 assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.HOLD_TOGGLE, payload });
                 assertChannelPortPayloadEventLog({
