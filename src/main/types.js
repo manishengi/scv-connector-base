@@ -572,8 +572,9 @@ export class HoldToggleResult {
      * @param {boolean} param.isThirdPartyOnHold
      * @param {boolean} param.isCustomerOnHold
      * @param {PhoneCall[]} [param.calls]
+     * @param {boolean} param.isCallMerged
      */
-    constructor({ isThirdPartyOnHold, isCustomerOnHold, calls }) {
+    constructor({ isThirdPartyOnHold, isCustomerOnHold, calls , isCallMerged}) {
         if (calls) {
             Object.values(calls).forEach(call => {
                 Validator.validateClassObject(call, PhoneCall);
@@ -582,6 +583,7 @@ export class HoldToggleResult {
         }
         this.isThirdPartyOnHold = isThirdPartyOnHold;
         this.isCustomerOnHold = isCustomerOnHold;
+        this.isCallMerged = isCallMerged;
     }
 }
 

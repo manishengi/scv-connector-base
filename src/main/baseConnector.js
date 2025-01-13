@@ -1141,10 +1141,12 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         break;
         case constants.VOICE_EVENT_TYPE.PARTICIPANTS_CONFERENCED: {
             if (validatePayload(payload, HoldToggleResult, constants.VOICE_ERROR_TYPE.CAN_NOT_CONFERENCE, constants.VOICE_EVENT_TYPE.PARTICIPANTS_CONFERENCED)) {
-                const { isThirdPartyOnHold, isCustomerOnHold } = payload;
+                const { isThirdPartyOnHold, isCustomerOnHold, calls , isCallMerged} = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.HOLD_TOGGLE, {
                     isThirdPartyOnHold,
-                    isCustomerOnHold
+                    isCustomerOnHold,
+                    isCallMerged,
+                    calls
                 }, true /* ignoring registerLog for critical event*/);
             }
         break;
