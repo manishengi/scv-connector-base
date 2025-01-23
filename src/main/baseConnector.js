@@ -439,6 +439,7 @@ async function channelMessageHandler(message) {
                         id: contact.id,
                         type: contact.type,
                         name: contact.name,
+                        contactListType: contact.contactListType,
                         phoneNumber: contact.phoneNumber,
                         prefix: contact.prefix,
                         extension: contact.extension,

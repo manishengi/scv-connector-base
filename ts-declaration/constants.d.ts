@@ -175,6 +175,11 @@ declare namespace _default {
         const AGENT: string;
         const FLOW: string;
     }
+    namespace CONTACT_LIST_TYPE {
+        const TRANSFER: string;
+        const CONFERENCE: string;
+        const ALL: string;
+    }
     namespace AGENT_CONFIG_TYPE {
         const SHOW_AGENT_SETTINGS: string;
         const PHONES: string;

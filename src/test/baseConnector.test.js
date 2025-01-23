@@ -1499,6 +1499,7 @@ describe('SCVConnectorBase tests', () => {
                         endpointARN: contact.endpointARN,
                         phoneNumber: contact.phoneNumber,
                         name: contact.name,
+                        contactListType: contact.contactListType,
                         type: contact.type,
                         availability: contact.availability
                     };
@@ -1539,6 +1540,7 @@ describe('SCVConnectorBase tests', () => {
                         endpointARN: contact.endpointARN,
                         phoneNumber: contact.phoneNumber,
                         name: contact.name,
+                        contactListType: contact.contactListType,
                         type: contact.type,
                         availability: contact.availability
                     };
