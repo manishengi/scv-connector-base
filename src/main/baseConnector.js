@@ -939,6 +939,12 @@ export function publishError({ eventType, error }) {
                 case constants.VOICE_ERROR_TYPE.MICROPHONE_NOT_SHARED:
                     dispatchError(constants.VOICE_ERROR_TYPE.MICROPHONE_NOT_SHARED, error, constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR);
                     break;
+                case constants.VOICE_ERROR_TYPE.USER_BUSY_ERROR:
+                    dispatchError(constants.VOICE_ERROR_TYPE.USER_BUSY_ERROR, error, constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR);
+                    break;
+                case constants.VOICE_ERROR_TYPE.WEBRTC_ERROR:
+                    dispatchError(constants.VOICE_ERROR_TYPE.WEBRTC_ERROR, error, constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR);
+                    break;
                 default:
                     dispatchError(constants.SHARED_ERROR_TYPE.GENERIC_ERROR, error, constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR);
             }
