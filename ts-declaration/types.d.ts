@@ -88,7 +88,7 @@ export namespace Constants {
     }
     enum CONTACT_LIST_TYPE {
         TRANSFER = constants.CONTACT_LIST_TYPE.TRANSFER,
-        CONFERENCE =constants.CONTACT_LIST_TYPE.CONFERENCE,
+        CONFERENCE = constants.CONTACT_LIST_TYPE.CONFERENCE,
         ALL = constants.CONTACT_LIST_TYPE.ALL
     }
     enum CALL_STATE {
