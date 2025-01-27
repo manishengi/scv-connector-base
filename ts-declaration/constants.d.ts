@@ -114,6 +114,8 @@ declare namespace _default {
         const AGENT_ERROR: string;
         const MICROPHONE_NOT_SHARED: string;
         const UNSUPPORTED_BROWSER: string;
+        const USER_BUSY_ERROR: string;
+        const WEBRTC_ERROR: string;
         const CAN_NOT_DECLINE_THE_CALL: string;
         const CAN_NOT_END_THE_CALL: string;
         const CAN_NOT_HOLD_CALL: string;

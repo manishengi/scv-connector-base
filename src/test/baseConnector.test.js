@@ -3254,6 +3254,36 @@ describe('SCVConnectorBase tests', () => {
                         isError: true
                     });
                 });
+
+                it('should publish USER_BUSY_ERROR SOFTPHONE_ERROR for microphone error', async () => {
+                    publishError({ eventType: Constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR, error: constants.VOICE_ERROR_TYPE.USER_BUSY_ERROR });
+                    assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                            message: constants.VOICE_ERROR_TYPE.USER_BUSY_ERROR
+                        }});
+                    assertChannelPortPayloadEventLog({
+                        eventType: constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR,
+                        payload: {
+                            errorType: constants.VOICE_ERROR_TYPE.USER_BUSY_ERROR,
+                            error: expect.anything()
+                        },
+                        isError: true
+                    });
+                });
+
+                it('should publish WEBRTC_ERROR SOFTPHONE_ERROR for microphone error', async () => {
+                    publishError({ eventType: Constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR, error: constants.VOICE_ERROR_TYPE.WEBRTC_ERROR });
+                    assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                            message: constants.VOICE_ERROR_TYPE.WEBRTC_ERROR
+                        }});
+                    assertChannelPortPayloadEventLog({
+                        eventType: constants.VOICE_EVENT_TYPE.SOFTPHONE_ERROR,
+                        payload: {
+                            errorType: constants.VOICE_ERROR_TYPE.WEBRTC_ERROR,
+                            error: expect.anything()
+                        },
+                        isError: true
+                    });
+                });
             });
 
             it('DEFAULT', async () => {
