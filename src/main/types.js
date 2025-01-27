@@ -842,7 +842,7 @@ export class Contact {
      * @param {string} [param.id] - The unique contactId
      * @param {("PhoneBook"|"Queue"|"PhoneNumber"|"Agent")} [param.type] - The type of the contact, one of the CONTACT_TYPE values
      * @param {string} [param.name] - The label for this contact to be displayed in the UI
-     * @param {("Transfer"|"Conference"|"All")} [param.contactListType] - The type of contact List, one of the CONTACT_LIST_TYPE values
+     * @param {("Transfer"|"Conference"|"All")} [param.listType] - The type of contact List, one of the CONTACT_LIST_TYPE values
      * @param {string} [param.phoneNumber] - The phone number associcated with this contact
      * @param {string} [param.prefix] - Any prefix to be dialed before dialing the number (i.e. +1)
      * @param {string} [param.extension] - Any extension to be dialed after dialing the number
@@ -853,7 +853,7 @@ export class Contact {
      * @param {string} [param.description] - Contact Description
      * @param {string} [param.queueWaitTime] - Estimated Queue Wait Time
      */
-    constructor({phoneNumber, id, type, name, contactListType, prefix, extension, endpointARN, queue, availability, recordId, description, queueWaitTime}) {
+    constructor({phoneNumber, id, type, name, listType, prefix, extension, endpointARN, queue, availability, recordId, description, queueWaitTime}) {
         if (phoneNumber) {
             Validator.validateString(phoneNumber);
         }
@@ -866,8 +866,8 @@ export class Contact {
         if (name) {
             Validator.validateString(name);
         }
-        if (contactListType) {
-            Validator.validateEnum(contactListType, Object.values(Constants.CONTACT_LIST_TYPE));
+        if (listType) {
+            Validator.validateEnum(listType, Object.values(Constants.CONTACT_LIST_TYPE));
         }
         if (prefix) {
             Validator.validateString(prefix);
@@ -892,7 +892,7 @@ export class Contact {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.contactListType = contactListType;
+        this.listType = listType;
         this.prefix = prefix;
         this.extension = extension;
         this.endpointARN = endpointARN;
