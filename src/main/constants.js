@@ -192,6 +192,11 @@ export default {
         AGENT: 'Agent',
         FLOW: 'Flow'
     },
+    CONTACT_LIST_TYPE: {
+        TRANSFER: 'Transfer',
+        CONFERENCE: 'Conference',
+        ALL: 'All'
+    },
     AGENT_CONFIG_TYPE: {
         SHOW_AGENT_SETTINGS: 'SHOW_AGENT_SETTINGS',
         PHONES: 'PHONES',
