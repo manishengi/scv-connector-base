@@ -51,7 +51,8 @@ function sanitizePayload(payload) {
                     if (property !== 'phoneNumber' &&
                         property !== 'number' &&
                         property !== 'name' &&
-                        property !== 'callAttributes') {
+                        property !== 'callAttributes' &&
+                        property !== '/reqHvcc/reqTelephonyIntegrationCertificate') {
                         sanitizedPayload[property] = sanitizePayload(payload[property]);
                     }
                 }
