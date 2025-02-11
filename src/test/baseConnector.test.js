@@ -181,7 +181,7 @@ const sanitizePayload = (payload) => {
                 // expect.Anything() doesn't serialize well so not sanitizing that
                 if (property === 'error') {
                     sanitizedPayload[property] = payload[property];
-                } else if (property !== 'phoneNumber' && property !== 'number' && property !== 'name' && property !== 'callAttributes') {
+                } else if (property !== 'phoneNumber' && property !== 'number' && property !== 'name' && property !== 'callAttributes' && property !== '/reqHvcc/reqTelephonyIntegrationCertificate') {
                     sanitizedPayload[property] = sanitizePayload(payload[property]);
                 }
             }
