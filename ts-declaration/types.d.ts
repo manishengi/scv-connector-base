@@ -864,7 +864,7 @@ export class PhoneCallAttributes {
     isOnHold: boolean;
     hasSupervisorBargedIn: boolean;
     isAutoMergeOn: boolean;
-    isConsultCall? boolean;
+    isConsultCall?: boolean;
 }
 /**
 * Class representing a PhoneCall.
