@@ -35,6 +35,7 @@ const loginFrameHeight = 300;
 const invalidResult = {};
 const dummyPhoneNumber = '123456789';
 const dummyCallId = 'callId'
+const dummyConsultCallId = 'consultCallId';
 const dummyContact = new Contact({ phoneNumber: dummyPhoneNumber });
 const dummyCallInfo = new CallInfo({ isOnHold: false });
 const dummyPhoneCall = new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.INBOUND, callSubtype: constants.CALL_SUBTYPE.PSTN, state: 'state', callAttributes: {}, phoneNumber: '100'});
@@ -52,6 +53,7 @@ const thirdPartyRemovedResult = new CallResult({ call: new PhoneCall({ callId: d
 const initialCallerRemovedResult = new CallResult({ call: new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.ADD_PARTICIPANT, callSubtype: constants.CALL_SUBTYPE.PSTN, reason: dummyReason, state: 'state', callAttributes: { participantType: constants.PARTICIPANT_TYPE.INITIAL_CALLER }, phoneNumber: '100'}) });
 const dummyTransferringCall = new PhoneCall({ callId: 'callId', callType: constants.CALL_TYPE.ADD_PARTICIPANT, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRING, callAttributes: { initialCallHasEnded: false }, phoneNumber: '100'});
 const dummyTransferredCall = new PhoneCall({ callId: 'dummyCallId', callType: constants.CALL_TYPE.ADD_PARTICIPANT, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRED, callAttributes: { initialCallHasEnded: false }, phoneNumber: '100'});
+const dummyConsultCall = new PhoneCall({ callId: dummyConsultCallId, callType: constants.CALL_TYPE.CONSULT, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRED, callAttributes: { initialCallHasEnded: false }, phoneNumber: '101'});
 const dummyActiveTransferringCallResult = new ActiveCallsResult({ activeCalls: [dummyTransferringCall] });
 const dummyTransferringPhoneCall = new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.INBOUND, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRING, callAttributes: { initialCallHasEnded: false }, phoneNumber: '100'});
 const dummyTransferredPhoneCall = new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.INBOUND, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRED, callAttributes: { initialCallHasEnded: false }, phoneNumber: '100'});
@@ -80,6 +82,7 @@ const emptyActiveCallsResult = new ActiveCallsResult({ activeCalls: [] });
 const activeCallsResult = new ActiveCallsResult({ activeCalls: [ dummyPhoneCall ] });
 const activeCallsResult1 = new ActiveCallsResult({ activeCalls: [ dummyPhoneCall, dummyRingingPhoneCall, dummyConnectedPhoneCall, dummyTransferringPhoneCall, dummyTransferredPhoneCall, dummySupervisorRingingPhoneCall, dummySupervisorConnectedPhoneCall, dummySupervisorBargedInPhoneCall ] });
 const activeCallsResult2 = new ActiveCallsResult({ activeCalls: [ dummyNonReplayablePhoneCall ] });
+const dummyConsultCallResult = new CallResult({ call: new PhoneCall({ callId: dummyConsultCallId, callType: constants.CALL_TYPE.CONSULT, callSubtype: constants.CALL_SUBTYPE.PSTN, reason: dummyReason, state: 'state', callAttributes: { participantType: constants.PARTICIPANT_TYPE.INITIAL_CALLER }, phoneNumber: '101'}) });
 const callResult = new CallResult({ call: dummyPhoneCall });
 const callbackResult = new CallResult({ call: dummyCallback });
 const dialedCallbackResult = new CallResult( { call: dummyDialedCallback});
@@ -164,6 +167,7 @@ const capabilitiesResultWithMos = new VoiceCapabilitiesResult({ hasMute, hasReco
 const capabilitiesPayloadWithMos = { ...capabilitiesPayload, [constants.VOICE_CAPABILITIES_TYPE.MOS] : capabilitiesResultWithMos.supportsMos };
 
 const dummyActiveTransferredallResult = new ActiveCallsResult({ activeCalls: [dummyTransferredCall] });
+const dummyConsultCallEndResult = new ActiveCallsResult({ activeCalls: [dummyTransferredCall, dummyConsultCall] });
 const config = { config: { selectedPhone } };
 const dummyStatusInfo = {statusId: 'dummyStatusId', statusApiName: 'dummyStatusApiName', statusName: 'dummyStatusName'};
 const error = 'error';
@@ -2621,6 +2625,23 @@ describe('SCVConnectorBase tests', () => {
                 const payload = {
                     callId: dummyCallId,
                     reason: thirdPartyRemovedResult.reason
+                };
+                assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED,
+                    payload,
+                    isError: false
+                });
+            });
+
+            it('Should dispatch PARTICIPANT_REMOVED on a consult payload', async () => {
+                telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(dummyConsultCallEndResult);
+                publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload: dummyConsultCallResult });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyConsultCallEndResult);
+                const payload = {
+                    callId: dummyConsultCallId,
+                    reason: dummyReason
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
                 assertChannelPortPayloadEventLog({

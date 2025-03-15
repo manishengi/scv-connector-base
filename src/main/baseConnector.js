@@ -1067,6 +1067,11 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                     const activeCalls = activeCallsResult.activeCalls;
                     if (activeCalls.length === 0) {
                         dispatchEvent(constants.VOICE_EVENT_TYPE.HANGUP, call, true /* ignoring registerLog for critical event*/);
+                    } else if (call && call.callType === constants.CALL_TYPE.CONSULT &&
+                        call.callAttributes && call.callAttributes.participantType === constants.PARTICIPANT_TYPE.INITIAL_CALLER) {
+                        dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, {
+                            callId: call.callId, reason: call.reason
+                        }, true);
                     } else if (call && call.callAttributes && call.callAttributes.participantType === constants.PARTICIPANT_TYPE.INITIAL_CALLER) {
                         // when there is still transfer call, based on the state of the transfer call, fire PARTICIPANT_ADDED or PARTICIPANT_CONNECTED
                         const transferCall = Object.values(activeCalls).filter((obj) => obj['callType'] === constants.CALL_TYPE.ADD_PARTICIPANT).pop();
