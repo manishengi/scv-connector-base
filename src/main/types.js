@@ -1012,7 +1012,6 @@ export class PhoneCall {
             Validator.validateClassObject(toContact, Contact);
             this.toContact = toContact;
         } else if (contact) {
-            Validator.validateClassObject(contact, Contact);
             this.toContact = contact;
         }
         if (reason) {
