@@ -835,8 +835,10 @@ export class PhoneCall {
      * @param {boolean} [param.closeCallOnError]
      * @param {string} [param.agentStatus]
      * @param {string} [param.agentARN]
+     * @param {Contact} [param.fromContact]
+     * @param {Contact} [param.toContact]
      */
-    constructor({ callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN }: {
+    constructor({ callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN, fromContact, toContact }: {
         callId?: string;
         callType?: string;
         callSubtype?: string;
@@ -849,6 +851,8 @@ export class PhoneCall {
         closeCallOnError?: boolean;
         agentStatus?: string;
         agentARN?: string;
+        fromContact?: Contact;
+        toContact?: Contact;
     });
     callId: string;
     callType: string;
@@ -856,6 +860,8 @@ export class PhoneCall {
     phoneNumber: string;
     callInfo: CallInfo;
     contact: Contact;
+    fromContact: Contact;
+    toContact: Contact;
     reason: string;
     closeCallOnError: true;
     agentStatus: string;
