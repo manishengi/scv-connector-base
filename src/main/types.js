@@ -966,7 +966,7 @@ export class PhoneCall {
      * @param {string} [param.callId] - The unique callId. This is a required parameter
      * @param {CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {CALL_SUBTYPE} [param.callSubtype] - The subtype of the call, one of the CALL_SUBTYPE values
-     * @param {Contact} [param.contact] - The Call Target / Contact 
+     * @param {Contact} [param.contact] - The Call Target / Contact . TODO: to be deprecated, replace with toContact
      * @param {string} [param.state] - The state of the call, i.e. ringing, connected, declined, failed 
      * @param {PhoneCallAttributes} [param.callAttributes] - Any additional call attributes
      * @param {string} [param.phoneNumber] - The phone number associated with this call (usually external number)
@@ -975,8 +975,10 @@ export class PhoneCall {
      * @param {boolean} [param.closeCallOnError]
      * @param {string} [param.agentStatus]
      * @param {string} [param.agentARN]
+     * @param {Contact} [param.fromContact] - This is optional, and being populated when dialing/consulting a contact or adding a participant
+     * @param {Contact} [param.toContact] - This is currently the same as param.contact (just rename)
      */
-    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN }) {
+    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN, fromContact, toContact }) {
         // TODO: Revisit the required fields
         if (callId) {
             Validator.validateString(callId);
@@ -1001,6 +1003,16 @@ export class PhoneCall {
         if (contact) {
             Validator.validateClassObject(contact, Contact);
             this.contact = contact;
+        }
+        if (fromContact) {
+            Validator.validateClassObject(fromContact, Contact);
+            this.fromContact = fromContact;
+        }
+        if (toContact) {
+            Validator.validateClassObject(toContact, Contact);
+            this.toContact = toContact;
+        } else if (contact) {
+            this.toContact = contact;
         }
         if (reason) {
             this.reason = reason;

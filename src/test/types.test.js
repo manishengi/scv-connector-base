@@ -981,6 +981,8 @@ describe('Types validation tests', () => {
         const callType = Constants.CALL_TYPE.INBOUND;
         const callSubtype = Constants.CALL_SUBTYPE.WEB_RTC;
         const contact = new Contact({});
+        const fromContact = new Contact({});
+        const toContact = new Contact({});
         const state = 'state';
         const callAttributes = {};
         const phoneNumber = '5555555555';
@@ -991,7 +993,7 @@ describe('Types validation tests', () => {
                 let phoneCall;
 
                 expect(() => {
-                    phoneCall = new PhoneCall({callId, callType, callSubtype, callInfo, contact, state, callAttributes, phoneNumber });
+                    phoneCall = new PhoneCall({callId, callType, callSubtype, callInfo, contact, state, callAttributes, phoneNumber, fromContact, toContact });
                 }).not.toThrowError();
                 expect(phoneCall.callId).toEqual(callId);
                 expect(phoneCall.callType).toEqual(callType);
@@ -1001,6 +1003,8 @@ describe('Types validation tests', () => {
                 expect(phoneCall.state).toEqual(state);
                 expect(phoneCall.callAttributes).toEqual(callAttributes);
                 expect(phoneCall.phoneNumber).toEqual(phoneNumber);
+                expect(phoneCall.fromContact).toEqual(fromContact);
+                expect(phoneCall.toContact).toEqual(toContact);
             });
 
             it('Should create a PhoneCall object without phone number', () => {
@@ -1024,6 +1028,18 @@ describe('Types validation tests', () => {
                     phoneCall = new PhoneCall({ contact, state, callAttributes });
                 }).not.toThrowError();
                 expect(phoneCall.contact).toEqual(contact);
+                expect(phoneCall.state).toEqual(state);
+                expect(phoneCall.callAttributes).toEqual(callAttributes);
+            });
+
+            it('Should create a PhoneCall object with toContact without using contact object', () => {
+                let phoneCall;
+
+                expect(() => {
+                    phoneCall = new PhoneCall({ contact, state, callAttributes });
+                }).not.toThrowError();
+                expect(phoneCall.contact).toEqual(contact);
+                expect(phoneCall.toContact).toEqual(contact);
                 expect(phoneCall.state).toEqual(state);
                 expect(phoneCall.callAttributes).toEqual(callAttributes);
             });
