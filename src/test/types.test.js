@@ -1031,6 +1031,18 @@ describe('Types validation tests', () => {
                 expect(phoneCall.state).toEqual(state);
                 expect(phoneCall.callAttributes).toEqual(callAttributes);
             });
+
+            it('Should create a PhoneCall object with toContact without using contact object', () => {
+                let phoneCall;
+
+                expect(() => {
+                    phoneCall = new PhoneCall({ contact, state, callAttributes });
+                }).not.toThrowError();
+                expect(phoneCall.contact).toEqual(contact);
+                expect(phoneCall.toContact).toEqual(contact);
+                expect(phoneCall.state).toEqual(state);
+                expect(phoneCall.callAttributes).toEqual(callAttributes);
+            });
         });
 
         describe('PhoneCall failure tests', () => {
