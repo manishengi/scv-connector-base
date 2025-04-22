@@ -592,6 +592,17 @@ export class GenericResult {
     success: boolean;
 }
 /**
+ * Class representing result type for setAgentStatus()
+ */
+export class SetAgentStateResult extends GenericResult {
+    /**
+     * Create AgentState
+     * @param {object} param
+     */
+    constructor({ success, isStatusSyncNeeded }: object);
+    isStatusSyncNeeded: any;
+}
+/**
  * Class representing result type for setAgentConfig()
  */
 export class SetAgentConfigResult extends GenericResult {

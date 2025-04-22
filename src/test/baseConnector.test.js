@@ -5,11 +5,21 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { initializeConnector, Constants, publishEvent, publishError, publishLog, AgentStatusInfo, AgentVendorStatusInfo, StateChangeResult, CustomError } from '../main/index';
+import {
+    initializeConnector,
+    Constants,
+    publishEvent,
+    publishError,
+    publishLog,
+    AgentStatusInfo,
+    AgentVendorStatusInfo,
+    StateChangeResult,
+    CustomError,
+} from '../main/index';
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, SharedCapabilitiesResult, VoiceCapabilitiesResult,
     AgentConfigResult, Phone, HangupResult, SignedRecordingUrlResult, LogoutResult, AudioStats, StatsInfo, AudioStatsElement,
-    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult, ACWInfo, SetAgentConfigResult } from '../main/index';
+    SuperviseCallResult, SupervisorHangupResult, SupervisedCallInfo, ShowStorageAccessResult, AudioDevicesResult, ACWInfo, SetAgentConfigResult, SetAgentStateResult } from '../main/index';
 import baseConstants from '../main/constants';
 
 import { log } from '../main/logger';
@@ -98,6 +108,7 @@ const holdToggleResult = new HoldToggleResult({ isThirdPartyOnHold, isCustomerOn
 const success = true;
 const genericResult = new GenericResult({ success });
 const setAgentConfigResult = new SetAgentConfigResult({ success, isSystemEvent: false });
+const setAgentStateResult = new SetAgentStateResult({ success, isStatusSyncNeeded: true });
 const logoutResult = new LogoutResult({ success, loginFrameHeight });
 const customErrorResult = new CustomError({ labelName: dummyLabelName, namespace: dummyNamespace, message: dummyMessage });
 const contacts = [ new Contact({}) ];
@@ -230,7 +241,7 @@ describe('SCVConnectorBase tests', () => {
     // VendorConnector overrides
     DemoAdapter.prototype.init = jest.fn().mockResolvedValue(initResult_connectorReady);
     DemoAdapter.prototype.getTelephonyConnector = jest.fn().mockResolvedValue(telephonyAdapter);
-    DemoAdapter.prototype.setAgentStatus = jest.fn().mockResolvedValue(genericResult);
+    DemoAdapter.prototype.setAgentStatus = jest.fn().mockResolvedValue(setAgentStateResult);
     DemoAdapter.prototype.logout = jest.fn().mockResolvedValue(logoutResult);
     DemoAdapter.prototype.handleMessage = jest.fn(),
         DemoAdapter.prototype.downloadLogs = jest.fn();
@@ -1259,10 +1270,10 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch SET_AGENT_STATUS_RESULT on a successful setAgentStatus() invocation without a payload', async () => {
-                adapter.setAgentStatus = jest.fn().mockResolvedValue(genericResult);
+                adapter.setAgentStatus = jest.fn().mockResolvedValue(setAgentStateResult);
                 fireMessage(constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS);
-                await expect(adapter.setAgentStatus()).resolves.toBe(genericResult);
-                const payload = { success: genericResult.success };
+                await expect(adapter.setAgentStatus()).resolves.toBe(setAgentStateResult);
+                const payload = { success: setAgentStateResult.success, isStatusSyncNeeded: setAgentStateResult.isStatusSyncNeeded };
                 assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, payload });
                 assertChannelPortPayloadEventLog({
                     eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT,
@@ -1272,10 +1283,10 @@ describe('SCVConnectorBase tests', () => {
             });
 
             it('Should dispatch SET_AGENT_STATUS_RESULT on a successful setAgentStatus() invocation with a payload', async () => {
-                adapter.setAgentStatus = jest.fn().mockResolvedValue(genericResult);
+                adapter.setAgentStatus = jest.fn().mockResolvedValue(setAgentStateResult);
                 fireMessage(constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS, { agentStatus: 'dummyAgentStatus', statusInfo: dummyStatusInfo });
-                await expect(adapter.setAgentStatus()).resolves.toBe(genericResult);
-                const payload = { success: genericResult.success };
+                await expect(adapter.setAgentStatus()).resolves.toBe(setAgentStateResult);
+                const payload = { success: setAgentStateResult.success, isStatusSyncNeeded: setAgentStateResult.isStatusSyncNeeded };
                 assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, payload });
                 assertChannelPortPayloadEventLog({
                     eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT,

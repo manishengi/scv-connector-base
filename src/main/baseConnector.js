@@ -8,11 +8,41 @@
 /* eslint-disable no-unused-vars */
 import constants from './constants.js';
 import { CONNECTOR_CONFIG_EXPOSED_FIELDS, CONNECTOR_CONFIG_EXPOSED_FIELDS_STARTSWITH, CONNECTOR_CONFIG_EXCEPTION_FIELDS } from './constants.js';
-import { Validator, GenericResult, InitResult, CallResult, HangupResult, HoldToggleResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
-    ParticipantResult, RecordingToggleResult, AgentConfigResult, ActiveCallsResult, SignedRecordingUrlResult, LogoutResult,
-    VendorConnector, Contact, AudioStats, SuperviseCallResult, SupervisorHangupResult, AgentStatusInfo, SupervisedCallInfo,
-    SharedCapabilitiesResult, VoiceCapabilitiesResult, AgentVendorStatusInfo, StateChangeResult, CustomError, DialOptions, ShowStorageAccessResult,
-    AudioDevicesResult, ACWInfo, SetAgentConfigResult } from './types';
+import {
+    Validator,
+    GenericResult,
+    InitResult,
+    CallResult,
+    HangupResult,
+    HoldToggleResult,
+    ContactsResult,
+    PhoneContactsResult,
+    MuteToggleResult,
+    ParticipantResult,
+    RecordingToggleResult,
+    AgentConfigResult,
+    ActiveCallsResult,
+    SignedRecordingUrlResult,
+    LogoutResult,
+    VendorConnector,
+    Contact,
+    AudioStats,
+    SuperviseCallResult,
+    SupervisorHangupResult,
+    AgentStatusInfo,
+    SupervisedCallInfo,
+    SharedCapabilitiesResult,
+    VoiceCapabilitiesResult,
+    AgentVendorStatusInfo,
+    StateChangeResult,
+    CustomError,
+    DialOptions,
+    ShowStorageAccessResult,
+    AudioDevicesResult,
+    ACWInfo,
+    SetAgentConfigResult,
+    SetAgentStateResult
+} from './types';
 import { enableMos, getMOS, initAudioStats, updateAudioStats } from './mosUtil';
 import { log, getLogs } from './logger';
 
@@ -354,9 +384,9 @@ async function channelMessageHandler(message) {
                 const statusInfo = message.data.statusInfo || {};
                 const enqueueNextState = message.data.enqueueNextState || false;
                 const payload = await vendorConnector.setAgentStatus(message.data.agentStatus, statusInfo, enqueueNextState);
-                Validator.validateClassObject(payload, GenericResult);
-                const { success } = payload;
-                dispatchEvent(constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, { success });
+                Validator.validateClassObject(payload, GenericResult, SetAgentStateResult);
+                const { success, isStatusSyncNeeded } = payload;
+                dispatchEvent(constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, { success, isStatusSyncNeeded });
             } catch (e) {
                 if (e instanceof CustomError) {
                     dispatchCustomError(e, constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS);

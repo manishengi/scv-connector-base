@@ -46,6 +46,7 @@ import {
     AudioDevicesResult,
     ACWInfo,
     SetAgentConfigResult,
+    SetAgentStateResult,
     HidDevice
 } from '../main/index';
 
@@ -207,6 +208,29 @@ describe('Types validation tests', () => {
             }).not.toThrowError();
             expect(setAgentConfigResult.success).toEqual(success);
             expect(setAgentConfigResult.isSystemEvent).toEqual(isSystemEvent);
+        });
+    });
+
+    describe('SetAgentStateResult tests', () => {
+        it('Should create SetAgentStateResult object', () => {
+            const success = false;
+            let setAgentStateResult;
+            expect(() => {
+                setAgentStateResult = new SetAgentStateResult({ success });
+            }).not.toThrowError();
+            expect(setAgentStateResult.success).toEqual(success);
+            expect(setAgentStateResult.isStatusSyncNeeded).toEqual(true);
+        });
+
+        it('Should create SetAgentStateResult object with isStatusSyncNeeded false', () => {
+            const success = true;
+            const isStatusSyncNeeded = false;
+            let setAgentStateResult;
+            expect(() => {
+                setAgentStateResult = new SetAgentStateResult({ success, isStatusSyncNeeded });
+            }).not.toThrowError();
+            expect(setAgentStateResult.success).toEqual(success);
+            expect(setAgentStateResult.isStatusSyncNeeded).toEqual(isStatusSyncNeeded);
         });
     });
 
