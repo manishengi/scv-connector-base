@@ -14,7 +14,7 @@ import {
     AgentStatusInfo,
     AgentVendorStatusInfo,
     StateChangeResult,
-    CustomError,
+    CustomError
 } from '../main/index';
 import { ActiveCallsResult, InitResult, CallResult, HoldToggleResult, GenericResult, ContactsResult, PhoneContactsResult, MuteToggleResult,
     ParticipantResult, RecordingToggleResult, Contact, PhoneCall, CallInfo, VendorConnector, TelephonyConnector, SharedCapabilitiesResult, VoiceCapabilitiesResult,
@@ -1269,11 +1269,11 @@ describe('SCVConnectorBase tests', () => {
                 assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, payload: { success: false } });
             });
 
-            it('Should dispatch SET_AGENT_STATUS_RESULT on a successful setAgentStatus() invocation without a payload', async () => {
-                adapter.setAgentStatus = jest.fn().mockResolvedValue(setAgentStateResult);
+            it('Should dispatch SET_AGENT_STATUS_RESULT with GenericResult on a successful setAgentStatus() invocation without a payload', async () => {
+                adapter.setAgentStatus = jest.fn().mockResolvedValue(genericResult);
                 fireMessage(constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS);
-                await expect(adapter.setAgentStatus()).resolves.toBe(setAgentStateResult);
-                const payload = { success: setAgentStateResult.success, isStatusSyncNeeded: setAgentStateResult.isStatusSyncNeeded };
+                await expect(adapter.setAgentStatus()).resolves.toBe(genericResult);
+                const payload = { success: genericResult.success };
                 assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, payload });
                 assertChannelPortPayloadEventLog({
                     eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT,
@@ -1282,7 +1282,20 @@ describe('SCVConnectorBase tests', () => {
                 });
             });
 
-            it('Should dispatch SET_AGENT_STATUS_RESULT on a successful setAgentStatus() invocation with a payload', async () => {
+            it('Should dispatch SET_AGENT_STATUS_RESULT with GenericResult on a successful setAgentStatus() invocation with a payload', async () => {
+                adapter.setAgentStatus = jest.fn().mockResolvedValue(genericResult);
+                fireMessage(constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS, { agentStatus: 'dummyAgentStatus', statusInfo: dummyStatusInfo });
+                await expect(adapter.setAgentStatus()).resolves.toBe(genericResult);
+                const payload = { success: genericResult.success };
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, payload });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT,
+                    payload,
+                    isError: false
+                });
+            });
+
+            it('Should dispatch SET_AGENT_STATUS_RESULT with SetAgentStateResult on a successful setAgentStatus() invocation', async () => {
                 adapter.setAgentStatus = jest.fn().mockResolvedValue(setAgentStateResult);
                 fireMessage(constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS, { agentStatus: 'dummyAgentStatus', statusInfo: dummyStatusInfo });
                 await expect(adapter.setAgentStatus()).resolves.toBe(setAgentStateResult);
