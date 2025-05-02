@@ -1280,6 +1280,7 @@ describe('SCVConnectorBase tests', () => {
                     payload,
                     isError: false
                 });
+                expect(channelPort.postMessage.mock.calls[4][0].payload.telephonyEventPayload).toStrictEqual(payload);
             });
 
             it('Should dispatch SET_AGENT_STATUS_RESULT with GenericResult on a successful setAgentStatus() invocation with a payload', async () => {
@@ -1293,6 +1294,7 @@ describe('SCVConnectorBase tests', () => {
                     payload,
                     isError: false
                 });
+                expect(channelPort.postMessage.mock.calls[4][0].payload.telephonyEventPayload).toStrictEqual(payload);
             });
 
             it('Should dispatch SET_AGENT_STATUS_RESULT with SetAgentStateResult on a successful setAgentStatus() invocation', async () => {
@@ -1306,6 +1308,7 @@ describe('SCVConnectorBase tests', () => {
                     payload,
                     isError: false
                 });
+                expect(channelPort.postMessage.mock.calls[4][0].payload.telephonyEventPayload).toStrictEqual(payload);
             });
         });
 

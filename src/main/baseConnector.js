@@ -386,7 +386,8 @@ async function channelMessageHandler(message) {
                 const payload = await vendorConnector.setAgentStatus(message.data.agentStatus, statusInfo, enqueueNextState);
                 Validator.validateClassObject(payload, GenericResult, SetAgentStateResult);
                 const { success, isStatusSyncNeeded } = payload;
-                dispatchEvent(constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, { success, isStatusSyncNeeded });
+                dispatchEvent(constants.SHARED_EVENT_TYPE.SET_AGENT_STATUS_RESULT, 
+                    isStatusSyncNeeded !== undefined ? { success, isStatusSyncNeeded } : { success });
             } catch (e) {
                 if (e instanceof CustomError) {
                     dispatchCustomError(e, constants.SHARED_MESSAGE_TYPE.SET_AGENT_STATUS);
