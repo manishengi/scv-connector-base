@@ -664,6 +664,7 @@ async function channelMessageHandler(message) {
                                     phoneNumber: call.contact.phoneNumber,
                                     contact:call.contact,
                                     callInfo: call.callInfo,
+                                    callAttributes: call.callAttributes,
                                     initialCallHasEnded: call.callAttributes.initialCallHasEnded,
                                     callId: call.callId
                                 });
@@ -673,6 +674,7 @@ async function channelMessageHandler(message) {
                                     phoneNumber: call.contact.phoneNumber,
                                     contact:call.contact,
                                     callInfo: call.callInfo,
+                                    callAttributes: call.callAttributes,
                                     initialCallHasEnded: call.callAttributes.initialCallHasEnded,
                                     callId: call.callId
                                 });
