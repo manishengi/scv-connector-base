@@ -66,7 +66,7 @@ const dummyTransferredCall = new PhoneCall({ callId: 'dummyCallId', callType: co
 const dummyConsultCall = new PhoneCall({ callId: dummyConsultCallId, callType: constants.CALL_TYPE.CONSULT, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRED, callAttributes: { initialCallHasEnded: false }, phoneNumber: '101'});
 const dummyActiveTransferringCallResult = new ActiveCallsResult({ activeCalls: [dummyTransferringCall] });
 const dummyTransferringPhoneCall = new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.INBOUND, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRING, callAttributes: { initialCallHasEnded: false }, phoneNumber: '100'});
-const dummyTransferredPhoneCall = new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.INBOUND, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRED, callAttributes: { initialCallHasEnded: false }, phoneNumber: '100'});
+const dummyTransferredPhoneCall = new PhoneCall({ callId: dummyCallId, callType: constants.CALL_TYPE.INBOUND, callSubtype: constants.CALL_SUBTYPE.PSTN, contact: dummyContact, state: constants.CALL_STATE.TRANSFERRED, callAttributes: { initialCallHasEnded: false, isAutoMergeOn: true }, phoneNumber: '100'});
 const dummyReason = 'dummyReason';
 const dummyCloseCallOnError = true;
 const dummyIsOmniSoftphone = true;
@@ -646,6 +646,7 @@ describe('SCVConnectorBase tests', () => {
                     phoneNumber: dummyTransferredPhoneCall.contact.phoneNumber,
                     contact:dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferredPhoneCall.callInfo,
+                    callAttributes: dummyTransferredPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferredPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferredPhoneCall.callId
                 }});
@@ -653,6 +654,7 @@ describe('SCVConnectorBase tests', () => {
                     phoneNumber: dummyTransferringPhoneCall.contact.phoneNumber,
                     contact:dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferringPhoneCall.callInfo,
+                    callAttributes: dummyTransferringPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferringPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferringPhoneCall.callId
                 } });
@@ -673,6 +675,7 @@ describe('SCVConnectorBase tests', () => {
                     phoneNumber: dummyTransferredPhoneCall.contact.phoneNumber,
                     contact: dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferredPhoneCall.callInfo,
+                    callAttributes: dummyTransferredPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferredPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferredPhoneCall.callId
                 }});
@@ -680,6 +683,7 @@ describe('SCVConnectorBase tests', () => {
                     phoneNumber: dummyTransferringPhoneCall.contact.phoneNumber,
                     contact: dummyTransferredPhoneCall.contact,
                     callInfo: dummyTransferringPhoneCall.callInfo,
+                    callAttributes: dummyTransferringPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferringPhoneCall.callAttributes.initialCallHasEnded,
                     callId: dummyTransferringPhoneCall.callId
                 } });
