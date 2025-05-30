@@ -982,6 +982,7 @@ export class PhoneCall {
      * Create a PhoneCall.
      * @param {object} param
      * @param {string} [param.callId] - The unique callId. This is a required parameter
+     * @param {string} [param.connectionId] - Only used For Amazon. This is to separate callId and connectionId
      * @param {CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {CALL_SUBTYPE} [param.callSubtype] - The subtype of the call, one of the CALL_SUBTYPE values
      * @param {Contact} [param.contact] - The Call Target / Contact . TODO: to be deprecated, replace with toContact
@@ -996,12 +997,18 @@ export class PhoneCall {
      * @param {Contact} [param.fromContact] - This is optional, and being populated when dialing/consulting a contact or adding a participant
      * @param {Contact} [param.toContact] - This is currently the same as param.contact (just rename)
      */
-    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN, fromContact, toContact }) {
+    constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN, fromContact, toContact, connectionId }) {
         // TODO: Revisit the required fields
         if (callId) {
             Validator.validateString(callId);
             this.callId = callId;
         }
+
+        if (connectionId) {
+            Validator.validateString(connectionId);
+            this.connectionId = connectionId;
+        }
+
         if (callType) {
             Validator.validateEnum(callType, Object.values(constants.CALL_TYPE));
             this.callType = callType;
