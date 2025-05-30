@@ -536,15 +536,11 @@ export class CallResult {
     /**
      * Create CallResult
      * @param {object} param
-     * @param {PhoneCall[]|PhoneCall} [param.call]
+     * @param {PhoneCall} [param.call]
      */
     constructor({ call }) {
         if (call !== undefined) {
-            if (call instanceof Array) {
-                call.forEach(callObj => Validator.validateClassObject(callObj, PhoneCall));
-            } else {
-                Validator.validateClassObject(call, PhoneCall);
-            }
+            Validator.validateClassObject(call, PhoneCall);
         }
         this.call = call;
     }

@@ -94,7 +94,6 @@ const activeCallsResult1 = new ActiveCallsResult({ activeCalls: [ dummyPhoneCall
 const activeCallsResult2 = new ActiveCallsResult({ activeCalls: [ dummyNonReplayablePhoneCall ] });
 const dummyConsultCallResult = new CallResult({ call: new PhoneCall({ callId: dummyConsultCallId, callType: constants.CALL_TYPE.CONSULT, callSubtype: constants.CALL_SUBTYPE.PSTN, reason: dummyReason, state: 'state', callAttributes: { participantType: constants.PARTICIPANT_TYPE.INITIAL_CALLER }, phoneNumber: '101'}) });
 const callResult = new CallResult({ call: dummyPhoneCall });
-const callResult2 = new CallResult({ call: [dummyPhoneCall, dummyTransferredCall] });
 const callbackResult = new CallResult({ call: dummyCallback });
 const dialedCallbackResult = new CallResult( { call: dummyDialedCallback});
 const callHangUpResult = new HangupResult({ calls: [new PhoneCall({ reason: dummyReason, callId: dummyCallId, closeCallOnError: dummyCloseCallOnError, callType: dummyCallType, callSubtype: dummyCallSubtype, agentStatus: dummyAgentStatus, isOmniSoftphone: dummyIsOmniSoftphone })]});
@@ -2840,22 +2839,12 @@ describe('SCVConnectorBase tests', () => {
         });
 
         describe('CALL_UPDATED event', () => {
-            it('Should dispatch event to salesforce with single call', async () => {
+            it('Should dispatch event to salesforce', async () => {
                 publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: callResult});
                 assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: callResult});
                 assertChannelPortPayloadEventLog({
                     eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED,
                     payload: callResult,
-                    isError: false
-                });
-            });
-
-            it('Should dispatch event to salesforce with multiple calls', async () => {
-                publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: callResult2});
-                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED, payload: callResult2});
-                assertChannelPortPayloadEventLog({
-                    eventType: constants.VOICE_EVENT_TYPE.CALL_UPDATED,
-                    payload: callResult2,
                     isError: false
                 });
             });
