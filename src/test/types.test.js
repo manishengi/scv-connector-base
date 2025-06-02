@@ -1045,6 +1045,7 @@ describe('Types validation tests', () => {
                 expect(phoneCall.contact).toEqual(contact);
                 expect(phoneCall.state).toEqual(state);
                 expect(phoneCall.callAttributes).toEqual(callAttributes);
+                expect(phoneCall.connectionId).toEqual(callId);
             });
 
             it('Should create a PhoneCall object without callId & callType & callSubtype', () => {
