@@ -978,7 +978,7 @@ export class PhoneCall {
      * Create a PhoneCall.
      * @param {object} param
      * @param {string} [param.callId] - The unique callId. This is a required parameter
-     * @param {string} [param.connectionId] - Only used For Amazon. This is to separate callId and connectionId
+     * @param {string} [param.connectionId] - This is to separate callId and connectionId.
      * @param {CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {CALL_SUBTYPE} [param.callSubtype] - The subtype of the call, one of the CALL_SUBTYPE values
      * @param {Contact} [param.contact] - The Call Target / Contact . TODO: to be deprecated, replace with toContact
@@ -1000,9 +1000,14 @@ export class PhoneCall {
             this.callId = callId;
         }
 
+        // The connectionId if exists, will be a support when there is a same callId.
+        // We will do the operations on call based on connectionId.
+        // If connectionId does not exist, it will fallback and be same as callId.
         if (connectionId) {
             Validator.validateString(connectionId);
             this.connectionId = connectionId;
+        } else if (callId) {
+            this.connectionId = callId;
         }
 
         if (callType) {
