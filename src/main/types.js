@@ -978,7 +978,7 @@ export class PhoneCall {
      * Create a PhoneCall.
      * @param {object} param
      * @param {string} [param.callId] - The unique callId. This is a required parameter
-     * @param {string} [param.connectionId] - This is to separate callId and connectionId.
+     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      * @param {CALL_TYPE} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {CALL_SUBTYPE} [param.callSubtype] - The subtype of the call, one of the CALL_SUBTYPE values
      * @param {Contact} [param.contact] - The Call Target / Contact . TODO: to be deprecated, replace with toContact
