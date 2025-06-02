@@ -995,12 +995,11 @@ export class PhoneCall {
      */
     constructor({callId, callType, callSubtype, contact, state, callAttributes, phoneNumber, callInfo, reason, closeCallOnError, agentStatus, agentARN, fromContact, toContact, connectionId }) {
         // TODO: Revisit the required fields
-        // Salesforce uses connectionId to represent a call leg as provided or assumed to be same as callId
         if (callId) {
             Validator.validateString(callId);
             this.callId = callId;
         }
-
+        // Salesforce uses connectionId to represent a call leg as provided or assumed to be same as callId
         // if provided, connectionId can be used in the connector API instead of the callId
         // if not provided, it will be a copy of the callId
         if (connectionId) {
@@ -1009,7 +1008,6 @@ export class PhoneCall {
         } else if (callId) {
             this.connectionId = callId;
         }
-
         if (callType) {
             Validator.validateEnum(callType, Object.values(constants.CALL_TYPE));
             this.callType = callType;
