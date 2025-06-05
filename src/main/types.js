@@ -609,7 +609,7 @@ export class HoldToggleResult {
      * @param {number} [param.duration] in seconds
      * @param {string} [param.callId] Salesforce callId of the voice call
      */
-    constructor({ success, url, duration, callId}) {
+    constructor({ success, url, duration, callId }) {
         if (success) {
             // For a successfull result, url is required
             Validator.validateString(url);
@@ -1580,7 +1580,7 @@ export class SupervisedCallInfo {
      * @param {boolean} [param.isBargedIn] - True if the Supervisor has barged in, False if the supervisor is listening in.
      */
 
-    constructor({callId, voiceCallId, callType, from, to, supervisorName, isBargedIn, connectionId}) {
+    constructor({callId, voiceCallId, callType, from, to, supervisorName, isBargedIn, connectionId }) {
         Validator.validateString(callId);
         this.callId = callId;
         this.voiceCallId = voiceCallId;
@@ -1609,7 +1609,7 @@ export class AudioStats {
      * @param {AudioStatsElement[]} param.stats - array of AudioStatsElement
      * @param {boolean} [param.isAudioStatsCompleted] - True if the audio stats is completed, will calculate MOS and update VoiceCall record
      */
-    constructor({ callId, stats, isAudioStatsCompleted}) {
+    constructor({ callId, stats, isAudioStatsCompleted }) {
         if (callId) {
             Validator.validateString(callId);
             this.callId = callId;
