@@ -608,9 +608,8 @@ export class HoldToggleResult {
      * @param {string} [param.url]
      * @param {number} [param.duration] in seconds
      * @param {string} [param.callId] Salesforce callId of the voice call
-     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      */
-    constructor({ success, url, duration, callId , connectionId}) {
+    constructor({ success, url, duration, callId}) {
         if (success) {
             // For a successfull result, url is required
             Validator.validateString(url);
@@ -623,11 +622,6 @@ export class HoldToggleResult {
         this.url = url;
         this.duration = duration;
         this.callId = callId;
-        if (connectionId) {
-            this.connectionId = connectionId;
-        } else {
-            this.connectionId = callId;
-        }
     }
 }
 
@@ -1612,21 +1606,13 @@ export class AudioStats {
      * Create a AudioStats
      * @param {object} param
      * @param {string} [param.callId] - The unique callId.
-     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      * @param {AudioStatsElement[]} param.stats - array of AudioStatsElement
      * @param {boolean} [param.isAudioStatsCompleted] - True if the audio stats is completed, will calculate MOS and update VoiceCall record
      */
-    constructor({ callId, stats, isAudioStatsCompleted , connectionId}) {
+    constructor({ callId, stats, isAudioStatsCompleted}) {
         if (callId) {
             Validator.validateString(callId);
             this.callId = callId;
-        }
-
-        if (connectionId) {
-            Validator.validateString(connectionId);
-            this.connectionId = connectionId;
-        } else if (callId) {
-            this.connectionId = callId;
         }
 
         if (stats) {

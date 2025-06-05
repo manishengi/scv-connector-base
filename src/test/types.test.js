@@ -430,24 +430,6 @@ describe('Types validation tests', () => {
             expect(signedRecordingUrlResult.url).toEqual(url);
             expect(signedRecordingUrlResult.callId).toEqual(callId);
             expect(signedRecordingUrlResult.duration).toEqual(duration);
-            expect(signedRecordingUrlResult.connectionId).toEqual(callId);
-        });
-
-        it('Should create SignedRecordingUrlResult object with connectionId', () => {
-            const success = true;
-            const url = 'url';
-            const duration = 10;
-            const callId = 'callId';
-            const connectionId = 'connectionId';
-            let signedRecordingUrlResult;
-            expect(() => {
-                signedRecordingUrlResult = new SignedRecordingUrlResult({ success, url, duration, callId, connectionId });
-            }).not.toThrowError();
-            expect(signedRecordingUrlResult.success).toEqual(success);
-            expect(signedRecordingUrlResult.url).toEqual(url);
-            expect(signedRecordingUrlResult.callId).toEqual(callId);
-            expect(signedRecordingUrlResult.duration).toEqual(duration);
-            expect(signedRecordingUrlResult.connectionId).toEqual(connectionId);
         });
 
         it('Should create SignedRecordingUrlResult object without duration', () => {
