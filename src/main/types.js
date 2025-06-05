@@ -473,8 +473,9 @@ export class ParticipantResult {
      * @param {string} param.phoneNumber
      * @param {string} param.callId
      * @param {Contact} param.contact
+     * @param {string} param.connectionId - optional connectionID representing a call leg.
      */
-    constructor({ initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact = null }) {
+    constructor({ initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact = null , connectionId}) {
         Validator.validateClassObject(callInfo, CallInfo);
         this.initialCallHasEnded = initialCallHasEnded;
         this.callInfo = callInfo;
@@ -482,6 +483,11 @@ export class ParticipantResult {
         this.phoneNumber = phoneNumber;
         this.callId = callId;
         this.contact = contact
+        if (connectionId) {
+            this.connectionId = connectionId;
+        } else {
+            this.connectionId = callId;
+        }
     }
 }
 
@@ -1565,6 +1571,7 @@ export class SupervisedCallInfo {
      * Create a AgentStatusInfo.
      * @param {object} param
      * @param {string} [param.callId] - The unique supervised vendor call ID (required)
+     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      * @param {string} [param.voiceCallId] - The supervised salesforce voice call ID
      * @param {string} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {string} [param.from] - From phone number (for Inbound calls)
@@ -1573,7 +1580,7 @@ export class SupervisedCallInfo {
      * @param {boolean} [param.isBargedIn] - True if the Supervisor has barged in, False if the supervisor is listening in.
      */
 
-    constructor({callId, voiceCallId, callType, from, to, supervisorName, isBargedIn}) {
+    constructor({callId, voiceCallId, callType, from, to, supervisorName, isBargedIn, connectionId }) {
         Validator.validateString(callId);
         this.callId = callId;
         this.voiceCallId = voiceCallId;
@@ -1582,6 +1589,11 @@ export class SupervisedCallInfo {
         this.to = to;
         this.supervisorName = supervisorName;
         this.isBargedIn = isBargedIn;
+        if (connectionId) {
+            this.connectionId = connectionId;
+        } else {
+            this.connectionId = callId;
+        }
     }
 }
 
