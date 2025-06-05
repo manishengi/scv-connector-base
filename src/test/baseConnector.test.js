@@ -3470,7 +3470,7 @@ describe('SCVConnectorBase tests', () => {
             publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.CALL_CONNECTED, payload: callResult });
             publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS, payload: new AudioStats({stats: [dummyAudioStatsElementWithAudioInput]})});
 
-            publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS, payload: new AudioStats({callId: dummyCallId, isAudioStatsCompleted: true}) });
+            publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS, payload: new AudioStats({callId: dummyCallId, connectionId: dummyCallId, isAudioStatsCompleted: true}) });
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS_COMPLETED, payload: {callId: dummyCallId, mos: 4.3672791040000005} });
             assertChannelPortPayloadEventLog({
                 eventType: constants.VOICE_EVENT_TYPE.UPDATE_AUDIO_STATS_COMPLETED,

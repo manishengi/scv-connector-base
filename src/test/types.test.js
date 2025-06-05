@@ -414,6 +414,7 @@ describe('Types validation tests', () => {
             expect(signedRecordingUrlResult.url).toBeUndefined();
             expect(signedRecordingUrlResult.duration).toBeUndefined();
             expect(signedRecordingUrlResult.callId).toBeUndefined();
+            expect(signedRecordingUrlResult.connectionId).toBeUndefined();
         });
 
         it('Should create SignedRecordingUrlResult object', () => {
@@ -429,6 +430,24 @@ describe('Types validation tests', () => {
             expect(signedRecordingUrlResult.url).toEqual(url);
             expect(signedRecordingUrlResult.callId).toEqual(callId);
             expect(signedRecordingUrlResult.duration).toEqual(duration);
+            expect(signedRecordingUrlResult.connectionId).toEqual(callId);
+        });
+
+        it('Should create SignedRecordingUrlResult object with connectionId', () => {
+            const success = true;
+            const url = 'url';
+            const duration = 10;
+            const callId = 'callId';
+            const connectionId = 'connectionId';
+            let signedRecordingUrlResult;
+            expect(() => {
+                signedRecordingUrlResult = new SignedRecordingUrlResult({ success, url, duration, callId, connectionId });
+            }).not.toThrowError();
+            expect(signedRecordingUrlResult.success).toEqual(success);
+            expect(signedRecordingUrlResult.url).toEqual(url);
+            expect(signedRecordingUrlResult.callId).toEqual(callId);
+            expect(signedRecordingUrlResult.duration).toEqual(duration);
+            expect(signedRecordingUrlResult.connectionId).toEqual(connectionId);
         });
 
         it('Should create SignedRecordingUrlResult object without duration', () => {
@@ -494,6 +513,31 @@ describe('Types validation tests', () => {
             expect(participantResult.callAttributes).toEqual(callAttributes);
             expect(participantResult.phoneNumber).toEqual(dummyPhoneNumber);
             expect(participantResult.callId).toEqual(callId);
+            expect(participantResult.connectionId).toEqual(callId);
+        });
+
+        it('Should create ParticipantResult object with connectionId', () => {
+            const dummyPhoneNumber = 'phoneNumber';
+            const callId = 'callid';
+            const connectionId = 'connectionId';
+            const callAttributes = { isConsultCall: false };
+            let participantResult;
+            expect(() => {
+                participantResult = new ParticipantResult({
+                    initialCallHasEnded: true,
+                    callAttributes,
+                    callInfo: dummyCallInfo,
+                    phoneNumber: dummyPhoneNumber,
+                    callId,
+                    connectionId
+                });
+            }).not.toThrowError();
+            expect(participantResult.initialCallHasEnded).toEqual(true);
+            expect(participantResult.callInfo).toEqual(dummyCallInfo);
+            expect(participantResult.callAttributes).toEqual(callAttributes);
+            expect(participantResult.phoneNumber).toEqual(dummyPhoneNumber);
+            expect(participantResult.callId).toEqual(callId);
+            expect(participantResult.connectionId).toEqual(connectionId);
         });
     });
 
@@ -1648,12 +1692,42 @@ describe('Types validation tests', () => {
             expect(supervisorHangupResult.calls).toEqual([phoneCall]);
         });
         it('Should create a SupervisorHangupResult object successfully', () => {
-            const parentCall = {callId: "callId", voiceCallId: "voiceCallId", callType: "callType", callSubtype: "callSubtype", from: "from", to: "to", supervisorName: "name", isBargedIn: true};
+            const parentCall = {
+                callId: "callId",
+                voiceCallId: "voiceCallId",
+                callType: "callType",
+                callSubtype: "callSubtype",
+                from: "from",
+                to: "to",
+                supervisorName: "name",
+                isBargedIn: true
+            };
             let supervisedCallInfo
             expect(() => {
                 supervisedCallInfo = new SupervisedCallInfo(parentCall);
             }).not.toThrowError();
             expect(supervisedCallInfo.callId).toEqual("callId");
+            expect(supervisedCallInfo.connectionId).toEqual("callId");
+        });
+
+        it('Should create a SupervisorHangupResult object successfully with connectionId', () => {
+            const parentCall = {
+                callId: "callId",
+                connectionId: "connectionId",
+                voiceCallId: "voiceCallId",
+                callType: "callType",
+                callSubtype: "callSubtype",
+                from: "from",
+                to: "to",
+                supervisorName: "name",
+                isBargedIn: true
+            };
+            let supervisedCallInfo
+            expect(() => {
+                supervisedCallInfo = new SupervisedCallInfo(parentCall);
+            }).not.toThrowError();
+            expect(supervisedCallInfo.callId).toEqual("callId");
+            expect(supervisedCallInfo.connectionId).toEqual("connectionId");
         });
     });
 

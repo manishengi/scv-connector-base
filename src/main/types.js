@@ -473,8 +473,9 @@ export class ParticipantResult {
      * @param {string} param.phoneNumber
      * @param {string} param.callId
      * @param {Contact} param.contact
+     * @param {string} param.connectionId - optional connectionID representing a call leg.
      */
-    constructor({ initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact = null }) {
+    constructor({ initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact = null , connectionId}) {
         Validator.validateClassObject(callInfo, CallInfo);
         this.initialCallHasEnded = initialCallHasEnded;
         this.callInfo = callInfo;
@@ -482,6 +483,11 @@ export class ParticipantResult {
         this.phoneNumber = phoneNumber;
         this.callId = callId;
         this.contact = contact
+        if (connectionId) {
+            this.connectionId = connectionId;
+        } else {
+            this.connectionId = callId;
+        }
     }
 }
 
@@ -602,8 +608,9 @@ export class HoldToggleResult {
      * @param {string} [param.url]
      * @param {number} [param.duration] in seconds
      * @param {string} [param.callId] Salesforce callId of the voice call
+     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      */
-    constructor({ success, url, duration, callId }) {
+    constructor({ success, url, duration, callId , connectionId}) {
         if (success) {
             // For a successfull result, url is required
             Validator.validateString(url);
@@ -616,6 +623,11 @@ export class HoldToggleResult {
         this.url = url;
         this.duration = duration;
         this.callId = callId;
+        if (connectionId) {
+            this.connectionId = connectionId;
+        } else {
+            this.connectionId = callId;
+        }
     }
 }
 
@@ -1565,6 +1577,7 @@ export class SupervisedCallInfo {
      * Create a AgentStatusInfo.
      * @param {object} param
      * @param {string} [param.callId] - The unique supervised vendor call ID (required)
+     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      * @param {string} [param.voiceCallId] - The supervised salesforce voice call ID
      * @param {string} [param.callType] - The type of the call, one of the CALL_TYPE values
      * @param {string} [param.from] - From phone number (for Inbound calls)
@@ -1573,7 +1586,7 @@ export class SupervisedCallInfo {
      * @param {boolean} [param.isBargedIn] - True if the Supervisor has barged in, False if the supervisor is listening in.
      */
 
-    constructor({callId, voiceCallId, callType, from, to, supervisorName, isBargedIn}) {
+    constructor({callId, voiceCallId, callType, from, to, supervisorName, isBargedIn, connectionId}) {
         Validator.validateString(callId);
         this.callId = callId;
         this.voiceCallId = voiceCallId;
@@ -1582,6 +1595,11 @@ export class SupervisedCallInfo {
         this.to = to;
         this.supervisorName = supervisorName;
         this.isBargedIn = isBargedIn;
+        if (connectionId) {
+            this.connectionId = connectionId;
+        } else {
+            this.connectionId = callId;
+        }
     }
 }
 
@@ -1594,13 +1612,21 @@ export class AudioStats {
      * Create a AudioStats
      * @param {object} param
      * @param {string} [param.callId] - The unique callId.
+     * @param {string} [param.connectionId] - optional connectionID representing a call leg.
      * @param {AudioStatsElement[]} param.stats - array of AudioStatsElement
      * @param {boolean} [param.isAudioStatsCompleted] - True if the audio stats is completed, will calculate MOS and update VoiceCall record
      */
-    constructor({ callId, stats, isAudioStatsCompleted }) {
+    constructor({ callId, stats, isAudioStatsCompleted , connectionId}) {
         if (callId) {
             Validator.validateString(callId);
             this.callId = callId;
+        }
+
+        if (connectionId) {
+            Validator.validateString(connectionId);
+            this.connectionId = connectionId;
+        } else if (callId) {
+            this.connectionId = callId;
         }
 
         if (stats) {
