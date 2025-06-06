@@ -648,7 +648,8 @@ describe('SCVConnectorBase tests', () => {
                     callInfo: dummyTransferredPhoneCall.callInfo,
                     callAttributes: dummyTransferredPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferredPhoneCall.callAttributes.initialCallHasEnded,
-                    callId: dummyTransferredPhoneCall.callId
+                    callId: dummyTransferredPhoneCall.callId,
+                    connectionId: dummyTransferredPhoneCall.connectionId
                 }});
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload: {
                     phoneNumber: dummyTransferringPhoneCall.contact.phoneNumber,
@@ -656,7 +657,8 @@ describe('SCVConnectorBase tests', () => {
                     callInfo: dummyTransferringPhoneCall.callInfo,
                     callAttributes: dummyTransferringPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferringPhoneCall.callAttributes.initialCallHasEnded,
-                    callId: dummyTransferringPhoneCall.callId
+                    callId: dummyTransferringPhoneCall.callId,
+                    connectionId: dummyTransferredPhoneCall.connectionId
                 } });
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_STARTED, payload: dummyRingingPhoneCall });
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_CONNECTED, payload: dummyConnectedPhoneCall });
@@ -677,7 +679,8 @@ describe('SCVConnectorBase tests', () => {
                     callInfo: dummyTransferredPhoneCall.callInfo,
                     callAttributes: dummyTransferredPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferredPhoneCall.callAttributes.initialCallHasEnded,
-                    callId: dummyTransferredPhoneCall.callId
+                    callId: dummyTransferredPhoneCall.callId,
+                    connectionId: dummyTransferredPhoneCall.connectionId
                 }});
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload: {
                     phoneNumber: dummyTransferringPhoneCall.contact.phoneNumber,
@@ -685,7 +688,8 @@ describe('SCVConnectorBase tests', () => {
                     callInfo: dummyTransferringPhoneCall.callInfo,
                     callAttributes: dummyTransferringPhoneCall.callAttributes,
                     initialCallHasEnded: dummyTransferringPhoneCall.callAttributes.initialCallHasEnded,
-                    callId: dummyTransferringPhoneCall.callId
+                    callId: dummyTransferringPhoneCall.callId,
+                    connectionId: dummyTransferredPhoneCall.connectionId
                 } });
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_STARTED, payload: dummyRingingPhoneCall });
             assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_CONNECTED, payload: dummyConnectedPhoneCall });
@@ -1841,7 +1845,8 @@ describe('SCVConnectorBase tests', () => {
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
-                    callId: participantResult.callId
+                    callId: participantResult.callId,
+                    connectionId: participantResult.connectionId
                 };
                 assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload });
                 assertChannelPortPayloadEventLog({
@@ -1862,7 +1867,8 @@ describe('SCVConnectorBase tests', () => {
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
-                    callId: participantResult.callId
+                    callId: participantResult.callId,
+                    connectionId: participantResult.connectionId
                 };
                 assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload });
                 assertChannelPortPayloadEventLog({
@@ -2587,7 +2593,8 @@ describe('SCVConnectorBase tests', () => {
                     initialCallHasEnded: participantResult.initialCallHasEnded,
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
-                    callId: participantResult.callId
+                    callId: participantResult.callId,
+                    connectionId: participantResult.connectionId
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, payload });
                 assertChannelPortPayloadEventLog({
@@ -2621,6 +2628,7 @@ describe('SCVConnectorBase tests', () => {
                     callInfo: participantResult.callInfo,
                     phoneNumber: participantResult.phoneNumber,
                     callId: participantResult.callId,
+                    connectionId: participantResult.connectionId,
                     contact: participantResult.contact
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, payload });
@@ -2653,8 +2661,9 @@ describe('SCVConnectorBase tests', () => {
                 publishEvent({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload: thirdPartyRemovedResult });
                 await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
-                const payload = {
+                let payload = {
                     callId: dummyCallId,
+                    connectionId: dummyCallId,
                     reason: thirdPartyRemovedResult.reason
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
@@ -2672,6 +2681,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyConsultCallEndResult);
                 const payload = {
                     callId: dummyConsultCallId,
+                    connectionId: dummyConsultCallId,
                     reason: dummyReason
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
@@ -2689,6 +2699,7 @@ describe('SCVConnectorBase tests', () => {
                 await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(dummyActiveTransferredallResult);
                 const payload = {
                     callId: null,
+                    connectionId: null,
                     reason: null
                 };
                 assertChannelPortPayload({ eventType: Constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, payload });
