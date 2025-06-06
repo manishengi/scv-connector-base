@@ -666,7 +666,8 @@ async function channelMessageHandler(message) {
                                     callInfo: call.callInfo,
                                     callAttributes: call.callAttributes,
                                     initialCallHasEnded: call.callAttributes.initialCallHasEnded,
-                                    callId: call.callId
+                                    callId: call.callId,
+                                    connectionId: call.connectionId
                                 });
                                 break;
                             case constants.CALL_STATE.TRANSFERRED:
@@ -676,7 +677,8 @@ async function channelMessageHandler(message) {
                                     callInfo: call.callInfo,
                                     callAttributes: call.callAttributes,
                                     initialCallHasEnded: call.callAttributes.initialCallHasEnded,
-                                    callId: call.callId
+                                    callId: call.callId,
+                                    connectionId: call.connectionId
                                 });
                                 break;
                             default:
@@ -1061,28 +1063,30 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
         }
         case constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED: {
             if (validatePayload(payload, ParticipantResult, constants.VOICE_ERROR_TYPE.CAN_NOT_ADD_PARTICIPANT, constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED)) {
-                const { contact, initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId } = payload;
+                const { contact, initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, connectionId } = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_ADDED, {
                     contact,
                     initialCallHasEnded,
                     callInfo,
                     callAttributes,
                     phoneNumber,
-                    callId
+                    callId,
+                    connectionId
                 }, true /* ignoring registerLog for critical event*/);
             }
             break;
         }
         case constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED: {
             if (validatePayload(payload, ParticipantResult, constants.VOICE_ERROR_TYPE.CAN_NOT_CONNECT_PARTICIPANT, constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED)) {
-                const { initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact } = payload;
+                const { initialCallHasEnded, callInfo, callAttributes, phoneNumber, callId, contact, connectionId } = payload;
                 dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_CONNECTED, {
                     initialCallHasEnded,
                     callInfo,
                     callAttributes,
                     phoneNumber,
                     callId,
-                    contact
+                    contact,
+                    connectionId
                 }, true /* ignoring registerLog for critical event*/);
             }
             break;
@@ -1112,7 +1116,9 @@ export async function publishEvent({ eventType, payload, registerLog = true }) {
                         }, true /* ignoring registerLog for critical event*/)
                     } else {
                         dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, {
-                            callId:  call? call.callId : null, reason: call? call.reason : null
+                            callId:  call? call.callId : null,
+                            connectionId:  call? call.connectionId : null,
+                            reason: call? call.reason : null
                         }, true /* ignoring registerLog for critical event*/);
                     }
                 }
