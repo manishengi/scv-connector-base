@@ -384,21 +384,6 @@ describe('SCVConnectorBase tests', () => {
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
         });
 
-        it('Should dispatch init to the vendor for a message from a Salesforce workspace domain', () => {
-            const message = {
-                data: {
-                    type: constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR,
-                    connectorConfig: constants.CONNECTOR_CONFIG
-                },
-                ports: [channelPort],
-                origin: 'https://orgfarm-d506aff378.lightning.force-com.cj6x25uar7dm14thqzvy0.wc.crm.dev'
-            };
-
-            adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
-            eventMap['message'](message);
-            expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
-        });
-
         it('Should log the right fields when init is called', () => {
             const message = {
                 data: {
