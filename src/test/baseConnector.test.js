@@ -399,6 +399,50 @@ describe('SCVConnectorBase tests', () => {
             expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
         });
 
+        it('Should dispatch init to the vendor for a message from a Salesforce military domain (crmforce.mil)', () => {
+            const message = {
+                data: {
+                    type: constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR,
+                    connectorConfig: constants.CONNECTOR_CONFIG
+                },
+                ports: [channelPort],
+                origin: 'https://military-org.pc-rnd.crmforce.mil'
+            };
+
+            adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
+            eventMap['message'](message);
+            expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
+        });
+
+        it('Should dispatch init to the vendor for a message from a Salesforce military domain (salesforce.mil)', () => {
+            const message = {
+                data: {
+                    type: constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR,
+                    connectorConfig: constants.CONNECTOR_CONFIG
+                },
+                ports: [channelPort],
+                origin: 'https://dod-enterprise.pc-rnd.salesforce.mil'
+            };
+
+            adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
+            eventMap['message'](message);
+            expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
+        });
+
+        it('Should NOT dispatch init to the vendor for a message from invalid military domain', () => {
+            const message = {
+                data: {
+                    type: constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR,
+                    connectorConfig: constants.CONNECTOR_CONFIG
+                },
+                ports: [channelPort],
+                origin: 'https://invalid.army.mil'
+            };
+
+            eventMap['message'](message);
+            expect(adapter.init).not.toHaveBeenCalled();
+        });
+
         it('Should log the right fields when init is called', () => {
             const message = {
                 data: {

@@ -808,7 +808,7 @@ async function channelMessageHandler(message) {
 async function windowMessageHandler(message) {
     switch (message.data.type) {
         case constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR: {
-            const sfDomain = /^https:\/\/[\w-.]+(lightning\.[\w]+\.soma\.force\.com|\.lightning\.force\.com|\.lightning\.pc-rnd\.force\.com|\.stm\.force\.com|\.vf\.force\.com|\.salesforce\.com|\.my\.salesforce-sites\.com|\.lightning\.localhost\.[\w]+\.force.com|\.lightning\.force-com\.[\w.-]+\.crm\.dev)$/;
+            const sfDomain = /^https:\/\/[\w-.]+(lightning\.[\w]+\.soma\.force\.com|\.lightning\.force\.com|\.lightning\.pc-rnd\.force\.com|\.stm\.force\.com|\.vf\.force\.com|\.salesforce\.com|\.my\.salesforce-sites\.com|\.lightning\.localhost\.[\w]+\.force.com|\.lightning\.force-com\.[\w.-]+\.crm\.dev|\.pc-rnd\.(salesforce|crmforce)\.mil)$/;
             const originUrl = new URL(message.origin);
             const url = originUrl.protocol + '//' + originUrl.hostname;
 
