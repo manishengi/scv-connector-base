@@ -443,6 +443,36 @@ describe('SCVConnectorBase tests', () => {
             expect(adapter.init).not.toHaveBeenCalled();
         });
 
+        it('Should dispatch init to the vendor for a message from a Lightning production military domain', () => {
+            const message = {
+                data: {
+                    type: constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR,
+                    connectorConfig: constants.CONNECTOR_CONFIG
+                },
+                ports: [channelPort],
+                origin: 'https://usa9402scrt2voicegov.lightning.crmforce.mil'
+            };
+
+            adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
+            eventMap['message'](message);
+            expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
+        });
+
+        it('Should dispatch init to the vendor for a message from a sandbox Lightning military domain', () => {
+            const message = {
+                data: {
+                    type: constants.SHARED_MESSAGE_TYPE.SETUP_CONNECTOR,
+                    connectorConfig: constants.CONNECTOR_CONFIG
+                },
+                ports: [channelPort],
+                origin: 'https://scrtusa9402mil--scrt.sandbox.lightning.crmforce.mil'
+            };
+
+            adapter.init = jest.fn().mockResolvedValue(initResult_connectorReady);
+            eventMap['message'](message);
+            expect(adapter.init).toHaveBeenCalledWith(constants.CONNECTOR_CONFIG);
+        });
+
         it('Should log the right fields when init is called', () => {
             const message = {
                 data: {
