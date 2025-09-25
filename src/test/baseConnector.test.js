@@ -1554,6 +1554,46 @@ describe('SCVConnectorBase tests', () => {
                 });
             });
 
+            it('Should dispatch PHONE_NUMBER_NOT_VALID error when dial() fails with invalid phone number', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch AREA_CODE_NOT_IN_DIALABLE_LIST error when dial() fails with restricted area code', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+            
             it('Should dispatch CALL_STARTED on a successful dial() invocation', async () => {
                 telephonyAdapter.dial = jest.fn().mockResolvedValue(callResult);
                 fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });

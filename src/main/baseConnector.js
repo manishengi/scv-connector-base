@@ -443,6 +443,12 @@ async function channelMessageHandler(message) {
                         case constants.VOICE_ERROR_TYPE.INVALID_DESTINATION:
                             dispatchError(constants.VOICE_ERROR_TYPE.INVALID_DESTINATION, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
                             break;
+                        case constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID:
+                            dispatchError(constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST:
+                            dispatchError(constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
                         case constants.SHARED_ERROR_TYPE.GENERIC_ERROR:
                             dispatchError(constants.SHARED_ERROR_TYPE.GENERIC_ERROR, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
                             break;
