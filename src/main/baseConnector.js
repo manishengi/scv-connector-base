@@ -449,6 +449,30 @@ async function channelMessageHandler(message) {
                         case constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST:
                             dispatchError(constants.VOICE_ERROR_TYPE.AREA_CODE_NOT_IN_DIALABLE_LIST, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
                             break;
+                        case constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID_E164_FORMAT:
+                            dispatchError(constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID_E164_FORMAT, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.UNAUTHORIZED_SERVICE_CALL:
+                            dispatchError(constants.VOICE_ERROR_TYPE.UNAUTHORIZED_SERVICE_CALL, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.AGENT_AT_MAXIMUM_CAPACITY:
+                            dispatchError(constants.VOICE_ERROR_TYPE.AGENT_AT_MAXIMUM_CAPACITY, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.OUTBOUND_QUEUE_MISCONFIGURED:
+                            dispatchError(constants.VOICE_ERROR_TYPE.OUTBOUND_QUEUE_MISCONFIGURED, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.CALL_THROTTLED:
+                            dispatchError(constants.VOICE_ERROR_TYPE.CALL_THROTTLED, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.TIMEOUT_ERROR:
+                            dispatchError(constants.VOICE_ERROR_TYPE.TIMEOUT_ERROR, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.UNABLE_TO_CONNECT_TO_AGENT:
+                            dispatchError(constants.VOICE_ERROR_TYPE.UNABLE_TO_CONNECT_TO_AGENT, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
+                        case constants.VOICE_ERROR_TYPE.AGENT_NOT_INITIALIZED:
+                            dispatchError(constants.VOICE_ERROR_TYPE.AGENT_NOT_INITIALIZED, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
+                            break;
                         case constants.SHARED_ERROR_TYPE.GENERIC_ERROR:
                             dispatchError(constants.SHARED_ERROR_TYPE.GENERIC_ERROR, getErrorMessage(e), constants.VOICE_MESSAGE_TYPE.DIAL);
                             break;
