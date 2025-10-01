@@ -1593,6 +1593,166 @@ describe('SCVConnectorBase tests', () => {
                     isError: true
                 });
             });
+
+            it('Should dispatch PHONE_NUMBER_NOT_VALID_E164_FORMAT error when dial() fails with invalid E164 format', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID_E164_FORMAT });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID_E164_FORMAT
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.PHONE_NUMBER_NOT_VALID_E164_FORMAT,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch UNAUTHORIZED_SERVICE_CALL error when dial() fails with unauthorized service call', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.UNAUTHORIZED_SERVICE_CALL });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.UNAUTHORIZED_SERVICE_CALL
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.UNAUTHORIZED_SERVICE_CALL,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch AGENT_AT_MAXIMUM_CAPACITY error when dial() fails with agent at maximum capacity', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.AGENT_AT_MAXIMUM_CAPACITY });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.AGENT_AT_MAXIMUM_CAPACITY
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.AGENT_AT_MAXIMUM_CAPACITY,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch OUTBOUND_QUEUE_MISCONFIGURED error when dial() fails with misconfigured queue', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.OUTBOUND_QUEUE_MISCONFIGURED });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.OUTBOUND_QUEUE_MISCONFIGURED
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.OUTBOUND_QUEUE_MISCONFIGURED,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch CALL_THROTTLED error when dial() fails with call throttled', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.CALL_THROTTLED });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.CALL_THROTTLED
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.CALL_THROTTLED,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch TIMEOUT_ERROR error when dial() fails with timeout', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.TIMEOUT_ERROR });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.TIMEOUT_ERROR
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.TIMEOUT_ERROR,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch UNABLE_TO_CONNECT_TO_AGENT error when dial() fails to connect to agent', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.UNABLE_TO_CONNECT_TO_AGENT });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.UNABLE_TO_CONNECT_TO_AGENT
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.UNABLE_TO_CONNECT_TO_AGENT,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
+
+            it('Should dispatch AGENT_NOT_INITIALIZED error when dial() fails with agent not initialized', async () => {
+                const errorResult = new ErrorResult({ type: Constants.VOICE_ERROR_TYPE.AGENT_NOT_INITIALIZED });
+                telephonyAdapter.dial = jest.fn().mockRejectedValue(errorResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.DIAL, { contact: dummyContact });
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.dial()).rejects.toBe(errorResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.CALL_FAILED });
+                assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.ERROR, payload: {
+                        message: constants.VOICE_ERROR_TYPE.AGENT_NOT_INITIALIZED
+                    }});
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_MESSAGE_TYPE.DIAL,
+                    payload: {
+                        errorType: constants.VOICE_ERROR_TYPE.AGENT_NOT_INITIALIZED,
+                        error: expect.anything()
+                    },
+                    isError: true
+                });
+            });
             
             it('Should dispatch CALL_STARTED on a successful dial() invocation', async () => {
                 telephonyAdapter.dial = jest.fn().mockResolvedValue(callResult);
