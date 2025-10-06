@@ -299,8 +299,12 @@ async function channelMessageHandler(message) {
                 Validator.validateClassObject(activeCallsResult, ActiveCallsResult);
                 const activeCalls = activeCallsResult.activeCalls;
                 const { calls } = payload;
-                // after end calls from vendor side, if no more active calls, fire HANGUP, otherwise, fire PARTICIPANT_REMOVED
-                if (activeCalls.length === 0) {
+                // After end call returns from vendor side, 
+                // if the call is a consult, fire HANGUP
+                // else if no more active calls, fire HANGUP, otherwise, fire PARTICIPANT_REMOVED
+                if (calls.length > 0 && calls[0] && calls[0].callType === constants.CALL_TYPE.CONSULT) {
+                    dispatchEvent(constants.VOICE_EVENT_TYPE.HANGUP, calls[0]);
+                } else if (activeCalls.length === 0) {
                     dispatchEvent(constants.VOICE_EVENT_TYPE.HANGUP, calls);
                 } else {
                     dispatchEvent(constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED, calls.length > 0 && calls[0]);
