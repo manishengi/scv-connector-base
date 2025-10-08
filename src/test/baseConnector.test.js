@@ -97,6 +97,7 @@ const callResult = new CallResult({ call: dummyPhoneCall });
 const callbackResult = new CallResult({ call: dummyCallback });
 const dialedCallbackResult = new CallResult( { call: dummyDialedCallback});
 const callHangUpResult = new HangupResult({ calls: [new PhoneCall({ reason: dummyReason, callId: dummyCallId, closeCallOnError: dummyCloseCallOnError, callType: dummyCallType, callSubtype: dummyCallSubtype, agentStatus: dummyAgentStatus, isOmniSoftphone: dummyIsOmniSoftphone })]});
+const consultCallHangUpResult = new HangupResult({ calls: [new PhoneCall({ reason: dummyReason, callId: dummyCallId, closeCallOnError: dummyCloseCallOnError, callType: constants.CALL_TYPE.CONSULT, callSubtype: dummyCallSubtype, agentStatus: dummyAgentStatus, isOmniSoftphone: dummyIsOmniSoftphone })]});
 const muteToggleResult = new MuteToggleResult({ isMuted: true });
 const unmuteToggleResult = new MuteToggleResult({ isMuted: false });
 const signedRecordingUrlResult = new SignedRecordingUrlResult({ success: true, url: 'recordingUrl', duration: 10, callId: 'callId' });
@@ -1029,6 +1030,20 @@ describe('SCVConnectorBase tests', () => {
                 assertChannelPortPayloadEventLog({
                     eventType: constants.VOICE_EVENT_TYPE.PARTICIPANT_REMOVED,
                     payload: callHangUpResult.calls[0],
+                    isError: false
+                });
+            });
+            it('Should dispatch HANGUP on a successful endCall() invocation for a Consult Call with non empty active calls', async () => {
+                telephonyAdapter.endCall = jest.fn().mockResolvedValue(consultCallHangUpResult);
+                telephonyAdapter.getActiveCalls = jest.fn().mockResolvedValue(activeCallsResult);
+                fireMessage(constants.VOICE_MESSAGE_TYPE.END_CALL);
+                await expect(adapter.getTelephonyConnector()).resolves.toBe(telephonyAdapter);
+                await expect(telephonyAdapter.endCall()).resolves.toEqual(consultCallHangUpResult);
+                await expect(telephonyAdapter.getActiveCalls()).resolves.toEqual(activeCallsResult);
+                assertChannelPortPayload({ eventType: constants.VOICE_EVENT_TYPE.HANGUP, payload: consultCallHangUpResult.calls[0] });
+                assertChannelPortPayloadEventLog({
+                    eventType: constants.VOICE_EVENT_TYPE.HANGUP,
+                    payload: consultCallHangUpResult.calls[0],
                     isError: false
                 });
             });
