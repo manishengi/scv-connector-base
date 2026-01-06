@@ -1,3 +1,5 @@
+# Note: This is the 260-freeze Base Connector. No new development should be done on this branch
+
 # Service Cloud Voice base connector
 The base connector is an SDK for partner telephony systems that integrate with Salesforce Service Cloud Voice.
 
