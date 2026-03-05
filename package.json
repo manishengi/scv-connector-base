@@ -58,7 +58,6 @@
     "yargs": "^13.3.2"
   },
   "jest": {
-    "clearMocks": true,
     "coverageThreshold": {
       "global": {
         "branches": 100,
