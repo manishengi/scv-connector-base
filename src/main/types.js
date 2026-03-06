@@ -1572,6 +1572,41 @@ export class AgentVendorStatusInfo {
     }
 }
 
+/**
+ * NOTE: SALESFORCE INTERNAL USE ONLY
+ * Class representing global resiliency region change event.
+ */
+export class GlobalResiliencyRegionChangedEvent {
+    /**
+     * Create a GlobalResiliencyRegionChangedEvent.
+     * @param {object} param
+     * @param {string} [param.activeRegion] - new active region
+     */
+    constructor({activeRegion}) {
+        Validator.validateString(activeRegion);
+        this.activeRegion = activeRegion;
+    }
+}
+
+/**
+ * NOTE: SALESFORCE INTERNAL USE ONLY
+ * Class representing global resiliency failover completed event.
+ */
+export class GlobalResiliencyFailoverCompletedEvent {
+    /**
+     * Create a GlobalResiliencyFailoverCompletedEvent.
+     * @param {object} param
+     * @param {string} [param.activeRegion] - new active region
+     * @param {string} [param.activeCcpUrl] - new ccp url
+     */
+    constructor({activeRegion, activeCcpUrl}) {
+        Validator.validateString(activeRegion);
+        Validator.validateString(activeCcpUrl);
+        this.activeRegion = activeRegion;
+        this.activeCcpUrl = activeCcpUrl;
+    }
+}
+
 /** 
  * Class representing a Supervised Call Info. This object is used to represent 
  * information about a call that is being supervised by a supervisor.
