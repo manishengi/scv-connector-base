@@ -9,7 +9,7 @@
     "test": "gulp test",
     "lint": "gulp lint",
     "jsdoc": "jsdoc -d ./docs ./src/main/*.js README.md",
-    "tsd": "npm i @types/linkify-it@3.0.5; npx -p typescript tsc src/main/*.js --declaration --allowJs --emitDeclarationOnly --outDir ts-declaration"
+    "tsd": "npm i @types/linkify-it@3.0.5; npx -p typescript tsc src/main/*.js --declaration --allowJs --emitDeclarationOnly --outDir ts-declaration --skipLibCheck"
   },
   "pre-commit": [
     "gulp"
