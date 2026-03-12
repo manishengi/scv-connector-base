@@ -10,7 +10,7 @@
 import net.sfdc.dci.BuildUtils
 import net.sfdc.dci.CodeCoverageUtils
 
-env.RELEASE_BRANCHES = ['master', 'byo-cc']
+env.RELEASE_BRANCHES = ['master', 'byo-cc','262-freeze']
 
 def complianceFlags = [
                         enable: true,//For ensuring PR has WI mentiooned
@@ -93,7 +93,9 @@ executePipeline(envDef) {
                     sh "npm config set //${registry}:_auth ${authToken}"
                 }
             }
-            sh "npm publish --registry=https://${registry}"
+            // Fixed release version for the 262-freeze branch
+            // TODO: read the branch name to use as a tag.
+            sh "npm publish --registry=https://${registry} --tag 262freeze"
         }
     }
 
