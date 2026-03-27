@@ -3756,7 +3756,7 @@ describe('SCVConnectorBase tests', () => {
 
         describe('GLOBAL_RESILIENCY_FAILOVER_COMPLETED event', () => {
             it('Should dispatch GLOBAL_RESILIENCY_FAILOVER_COMPLETED with payload', async () => {
-                const payload = new GlobalResiliencyFailoverCompletedEvent({ activeRegion: 'us-west-2', activeCcpUrl: 'https://ccp.example.com' });
+                const payload = new GlobalResiliencyFailoverCompletedEvent({ activeRegion: 'us-west-2' });
                 publishEvent({ eventType: constants.SHARED_EVENT_TYPE.GLOBAL_RESILIENCY_FAILOVER_COMPLETED, payload });
                 assertChannelPortPayload({ eventType: constants.SHARED_EVENT_TYPE.GLOBAL_RESILIENCY_FAILOVER_COMPLETED, payload });
                 assertChannelPortPayloadEventLog({

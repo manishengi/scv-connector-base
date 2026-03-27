@@ -1603,13 +1603,10 @@ export class GlobalResiliencyFailoverCompletedEvent {
      * Create a GlobalResiliencyFailoverCompletedEvent.
      * @param {object} param
      * @param {string} [param.activeRegion] - new active region
-     * @param {string} [param.activeCcpUrl] - new ccp url
      */
-    constructor({activeRegion, activeCcpUrl}) {
+    constructor({activeRegion}) {
         Validator.validateString(activeRegion);
-        Validator.validateString(activeCcpUrl);
         this.activeRegion = activeRegion;
-        this.activeCcpUrl = activeCcpUrl;
     }
 }
 
