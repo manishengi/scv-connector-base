@@ -1610,6 +1610,18 @@ export class GlobalResiliencyFailoverCompletedEvent {
     }
 }
 
+/**
+ * NOTE: SALESFORCE INTERNAL USE ONLY
+ * Class representing global resiliency failover pending event.
+ */
+export class GlobalResiliencyFailoverPendingEvent {
+    /**
+     * Create a GlobalResiliencyFailoverPendingEvent.
+     */
+    constructor() {
+    }
+}
+
 /** 
  * Class representing a Supervised Call Info. This object is used to represent 
  * information about a call that is being supervised by a supervisor.

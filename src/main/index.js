@@ -53,5 +53,6 @@ export {
     SetAgentStateResult,
     HidDevice,
     GlobalResiliencyRegionChangedEvent,
-    GlobalResiliencyFailoverCompletedEvent
+    GlobalResiliencyFailoverCompletedEvent,
+    GlobalResiliencyFailoverPendingEvent
 } from './types.js';
