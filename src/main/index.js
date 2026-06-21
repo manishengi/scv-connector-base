@@ -54,5 +54,6 @@ export {
     HidDevice,
     GlobalResiliencyRegionChangedEvent,
     GlobalResiliencyFailoverCompletedEvent,
-    GlobalResiliencyFailoverPendingEvent
+    GlobalResiliencyFailoverPendingEvent,
+    AudioDevice
 } from './types.js';
